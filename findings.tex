@@ -98,8 +98,6 @@ the assignment involves a previously declared variable.
 
 \item {\em Object and arguments of the deprecated API method are in the form of complex expressions.} The invocation of a deprecated method in the example that AppEvolve may learn from may use variables for the object and arguments of the method. These edits do not work when the object and arguments use complex expresssions. AppEvolve is not flexible enough to apply the edits correctly by treating these expressions as variables. The code in the left hand side of Listing 6 in Table~\ref{tab:mitigatesucc} shows an example of this case. The deprecated API method in this listing is {\tt setTextAppearance}.
 
-%\jl{There are two occurrences of the label lst:complexexpress}
-
 \item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
 \begin{lstlisting}[language=diff,numbers=none,caption=Edits that add imports and a private field,captionpos=b]
 18a19
