@@ -1,89 +1,16 @@
 We tried to modify the target location in the app's source code so that AppEvolve can produce an applicable update. For most cases that AppEvolve fails to update the apps, we notice that simple refactoring of the target app might suffice to allow edits learned from examples to be applied successfully in the target app. We show these successful modifications on cases presented in Section~\ref{sec:findings}.
 \begin{enumerate}
-\item We modify the code in Listing~\ref{lst:invokeret} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
-Spanned getTitle(){
-    Spanned a;
-    a = Html.fromHtml(title);
-    return a;
-}
-\end{lstlisting}
-In the above listing, rather than directly returning the result of {\tt fromHtml} deprecated method invocation, we first assign it to a variable named {\tt a} of type {\tt Spanned}. %This allows AppEvolve to generate an applicable update to this piece of code.
+\item We refactor the code in the left hand of Listing 1 in Table~\ref{tab:mitigatesucc} into the code in its right hand side. In this refactored code, rather than directly returning the result of {\tt fromHtml} deprecated method invocation, we first assign it to a variable named {\tt a} of type {\tt Spanned}. %This allows AppEvolve to generate an applicable update to this piece of code.
 
-\item We modify the code in Listing~\ref{lst:invokeif} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
-public void play() {
-    int res;
-    int arg1 = AudioManager.STREAM_MUSIC;
-    int arg2 = AudioManager.AUDIOFOCUS_GAIN;
-    AudioManager res = mAudioManager.requestAudioFocus
-        (mAudioFocusListener, arg1, arg2);
-    if (res != AudioManager
-        .AUDIOFOCUS_REQUEST_GRANTED) {
-        return;
-    }
-}
-\end{lstlisting}
-In the above listing, rather than directly inserting {\tt AudioManager.STREAM\_MUSIC} and {\tt AudioManager.AUDIOFOCUS\_GAIN} constants as the second and third arguments of {\tt requestAudioFocus} deprecated method invocation, they are first assigned to variables named {\tt arg1} of type {\tt int} and {\tt arg2} of type {\tt int}, respectively. Moreover, the result of {\tt requestAudioFocus} deprecated method invocation is assigned to a variable  named {\tt res} of type {\tt AudioManager}, which is then used in an if condition.
+\item We refactor the code in the left hand of Listing 2 in Table~\ref{tab:mitigatesucc} into the code in its right hand side. In this refactored code, rather than directly inserting {\tt AudioManager.STREAM\_MUSIC} and {\tt AudioManager.AUDIOFOCUS\_GAIN} constants as the second and third arguments of {\tt requestAudioFocus} deprecated method invocation, they are first assigned to variables named {\tt arg1} of type {\tt int} and {\tt arg2} of type {\tt int}, respectively. Moreover, the result of {\tt requestAudioFocus} deprecated method invocation is assigned to a variable  named {\tt res} of type {\tt AudioManager}, which is then used in an if condition.
 
-\item We modify the code in Listing~\ref{lst:invokemarg} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
-protected String getInputDataString() {
-    int hour;
-    hour = timePicker.getCurrentHour();
-    int minute;
-    minute = timePicker.getCurrentMinute();
-    return String.format("%02d:%02d", hour, minute);
-}
-\end{lstlisting}
-In the above listing, rather than directly inserting the result of invoking {\tt getCurrentHour} deprecated method to {\tt String.format} second argument, the result is first assigned to a variable named {\tt hour} of type {\tt int}.
+\item We refactor the code in the left hand of Listing 3 in  Table~\ref{tab:mitigatesucc} into the code in its right hand side. In this refactored code, rather than directly inserting the result of invoking {\tt getCurrentHour} deprecated method to {\tt String.format} second argument, the result is first assigned to a variable named {\tt hour} of type {\tt int}.
 
-\item We modify the code in Listing~\ref{lst:invokearit} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
-public void displayTime(View view) {
-	int hour;
-	int minute;
-	hour = timePicker.getCurrentHour();
-	minute = timePicker.getCurrentMinute();
-	String time = hour + ":" + minute;
-    Toast.makeText(this, time, Toast.LENGTH_SHORT)
-        .show();
-}
-\end{lstlisting}
-In the above listing, rather than concatenating the result of invoking {\tt getCurrentHour} deprecated method directly with ":" string, the result is first assigned to a variable named {\tt hour} of type {\tt int}.
+\item We refactor the code in the left hand of Listing 4 in  Table~\ref{tab:mitigatesucc} into the code in its right hand side. In this refactored code,, rather than concatenating the result of invoking {\tt getCurrentHour} deprecated method directly with ":" string, the result is first assigned to a variable named {\tt hour} of type {\tt int}.
 
-\item We modify the code in Listing~\ref{lst:indirectassign} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
-public Schedule generate() {
-    TimePicker timePicker = (TimePicker) activity
-        .findViewById(R.id.timePicker);
-    int hours;
-    int minutes;
-    hours = timePicker.getCurrentHour();
-    minutes = timePicker.getCurrentMinute();
-    SeekBar seekBar = (SeekBar) activity
-        .findViewById(R.id.setLuminosity);
-    int luminosity = seekBar.getProgress();
-    return new Schedule(hours, minutes, luminosity);
-}
-\end{lstlisting}
-In the above listing, rather than directly assigning the result of invoking {\tt getCurrentHour} to a variable named {\tt hours} when it is declared, we declare the variable {\tt hours} first and then assign the result of invoking {\tt getCurrentHour} to the variable {\tt hours}.
+\item We refactor the code in the left hand of Listing 5 in  Table~\ref{tab:mitigatesucc} into the code in its right hand side. In this refactored code, rather than directly assigning the result of invoking {\tt getCurrentHour} to a variable named {\tt hours} when it is declared, we declare the variable {\tt hours} first and then assign the result of invoking {\tt getCurrentHour} to the variable {\tt hours}.
 
-\item We modify the code in Listing~\ref{lst:complexexpress} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
-protected void onClick() {  
-    ...
-    Dialog d = builder.create();
-    d.show();
-    Context c = getContext();
-    int i = android.R.style.TextAppearance_Small;
-    TextView t = ((TextView) d.findViewById
-        (android.R.id.message)); 
-    t.setTextAppearance(c, i);
-    ...
-}
-\end{lstlisting}
-In the above listing, rather than invoking {\tt setTextAppearance} deprecated method directly from the object returned by invoking {\tt findViewById} method, the returned object is first assigned to a variable named {\tt t} of type {\tt TextView}. {\tt setTextAppearance} method is then invoked from the variable {\tt t}.
+\item We refactor the code in the left hand of Listing 5 in  Table~\ref{tab:mitigatesucc} into the code in its right hand side. In this refactored code, rather than invoking {\tt setTextAppearance} deprecated method directly from the object returned by invoking {\tt findViewById} method, the returned object is first assigned to a variable named {\tt t} of type {\tt TextView}. {\tt setTextAppearance} method is then invoked from the variable {\tt t}.
 
 \end{enumerate}
 
