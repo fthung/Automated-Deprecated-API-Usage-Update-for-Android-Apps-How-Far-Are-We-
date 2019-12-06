@@ -57,7 +57,32 @@ corresponding uses of their replacement methods.
 
 \subsection{Replication Studies}
 
-There are a lot of works which conduct a replication study in software domain \cite{Chen:2017:CLP:3042021.3042046, Greiler:2015:COS:2820518.2820522, Akbarinasaji:2018:PBT:3174380.3174639, Dinh-Trong:2005:FPR:1079843.1080069, howdopython}. Chen and Jack~\cite{Chen:2017:CLP:3042021.3042046} conducted a replication study characterizing logging practices which was previously done by Yuan et al~\cite{Yuan:2012:CLP:2337223.2337236}. They found a contradicting result in which bug reports without log messages take a shorter time to resolve than bug reports with log. Greiler et al.~\cite{Greiler:2015:COS:2820518.2820522} replicated the finding of Bird et al.~\cite{Bird:2011:DTM:2025113.2025119}. which analyze the correlation between code ownership and software quality using new and refined code ownership metrics and prediction models. Akbarinasaji et al.~\cite{Akbarinasaji:2018:PBT:3174380.3174639} replicated and reinforced the finding on the bug fixing time estimation model by showing similar result with the previous work. Replication study on open source development by Trong et al.~\cite{Dinh-Trong:2005:FPR:1079843.1080069} found new findings from the previous work by Mockus et al.~\cite{Mockus:2002:TCS:567793.567795}. They supported some hypotheses and proposed some revisions for hypotheses related to formal arrangement and core developers. Replication study by Orru et al.~\cite{howdopython} conducted an analysis of the use of inheritance in Python systems which was previously done on Java. Their result shows that compared on the previous findings on Java, more classes are inherited from but less classes inherit from other classes.
+There have been a number of replication studies in the software engineering
+domain \cite{Chen:2017:CLP:3042021.3042046,
+  Greiler:2015:COS:2820518.2820522, Akbarinasaji:2018:PBT:3174380.3174639,
+  Dinh-Trong:2005:FPR:1079843.1080069, howdopython} that have not always
+confirmed the original results. Chen and
+Jiang~\cite{Chen:2017:CLP:3042021.3042046} replicated a study by Yuan et
+al.~\cite{Yuan:2012:CLP:2337223.2337236} of logging practices.  In contrast
+to the observations of Yuan et al., Chen and Jiang found that bug reports
+without a log message take a shorter time to resolve than bug reports that
+include a log.  Greiler et al.~\cite{Greiler:2015:COS:2820518.2820522}
+replicated the work of Bird et al.~\cite{Bird:2011:DTM:2025113.2025119} on
+the correlation between code ownership and software quality.  Greiler et
+al. used new and refined code ownership metrics and prediction
+models. Akbarinasaji et al.~\cite{Akbarinasaji:2018:PBT:3174380.3174639}
+replicated and reinforced the finding on the bug fixing time estimation
+model by showing similar result with the previous work. A replication study
+on open source development by Trong et
+al.~\cite{Dinh-Trong:2005:FPR:1079843.1080069} found new findings from the
+previous work by Mockus et al.~\cite{Mockus:2002:TCS:567793.567795}. They
+supported some hypotheses and proposed some revisions for hypotheses
+related to formal arrangement \jl{means what?} and core developers. A
+replication study by Orru et al.~\cite{howdopython} conducted an analysis
+of the use of inheritance in Python systems that was previously done on
+Java. Their result shows that compared on the previous findings on Java,
+more classes are inherited from but fewer classes inherit from other
+classes.
 
 %Among the API migration work above, Lamonthe et al.'s work is the closest to our work. Our work also deals with API migration, particularly replacing deprecated APIs. However, different than their work, our work focuses on the scenario in which there are no examples. 
 
