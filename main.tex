@@ -11,6 +11,7 @@
 \usepackage{url}
 \usepackage{array}
 \usepackage{multirow}
+\usepackage{amssymb}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
     
@@ -42,6 +43,21 @@
         keepspaces=true,
 	identifierstyle=\color{black},
   }
+
+% Very convenient to add comments on the paper. Just set the boolean
+% to false before sending the paper:
+\usepackage{ifthen}
+\newboolean{showcomments}
+\setboolean{showcomments}{true}
+%\setboolean{showcomments}{false}
+\ifthenelse{\boolean{showcomments}}
+{ \newcommand{\mynote}[2]{\textcolor{red}{
+    \fbox{\bfseries\sffamily\scriptsize#1}
+    {\small$\blacktriangleright$\textsf{\emph{#2}}$\blacktriangleleft$}}}}
+{ \newcommand{\mynote}[2]{}}
+
+\newcommand{\jl}[1]{\mynote{Julia}{#1}}
+
 \begin{document}
 
 \def \toolname {AppEvolve}
