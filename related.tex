@@ -5,13 +5,52 @@ There are a lot of works that focus on studying API deprecation~\cite{zhou2016ap
 
 All of the above studies aim to understand API deprecation. In this work, we aim to understand the extent of a state-of-the-art approach for automatic update of Android apps, which essentially update deprecated methods to their replacement methods.
 
-\subsection{API Evolution}
-There are many works that focus on supporting API evolution~\cite{henkel2005catchup,schafer2008mining,wu2010aura,dagenais2009semdiff,dagenais2011recommending,meng2012history,yu2017api}. Henkel et al.~\cite{henkel2005catchup} created a tool named CatchUp! that records developers' refactoring actions when evolving uses of an API within an Integrated Development Editor (IDE) and can replay them afterwards. Xing et al.~\cite{xing2007api} proposed Diff-CatchUp!, a tool that recommends plausible replacements for obsolete API usages following example changes in the API change history.  Sch{\"a}fer et al.~\cite{schafer2008mining} proposed to mine API replacement rules for API evolution by analyzing client code that has performed the replacements. Dagenais and Robillard~\cite{dagenais2009semdiff,dagenais2011recommending} proposed an approach named SemDiff that learns how an API adapts to its own changes and uses this information to recommend a set of method replacements to client programs. Wu et al.~\cite{wu2010aura} developed a tool named AURA to mine API replacement rules using a combination of method call dependency analysis and text similarity. Meng et al.~\cite{meng2012history} proposed HiMA, a tool that infers API replacement rules between two versions of a framework by aggregating API replacement rules for each pair of consecutive revisions in the framework history between the two versions. Yu et al.~\cite{yu2017api} develop an approach named AUC-Miner, which mines API replacement rules by employing context information to refine method call dependency analysis.
+%% \subsection{API Evolution}
 
-%In this work, given the API replacement rules, our approach generates transformation rules, in the form of semantic patches, that can be used to perform the API replacement. Thus, our approach complements approaches that mine API replacement rules.
+%% There are many works that focus on supporting API
+%% evolution~\cite{henkel2005catchup,schafer2008mining,wu2010aura,dagenais2009semdiff,dagenais2011recommending,meng2012history,yu2017api}. Henkel
+%% et al.~\cite{henkel2005catchup} created a tool named CatchUp! that records
+%% developers' refactoring actions when evolving uses of an API within an
+%% Integrated Development Editor (IDE) and can replay them afterwards. Xing et
+%% al.~\cite{xing2007api} proposed Diff-CatchUp!, a tool that recommends
+%% plausible replacements for obsolete API usages following example changes in
+%% the API change history.  Sch{\"a}fer et al.~\cite{schafer2008mining}
+%% proposed to mine API replacement rules for API evolution by analyzing
+%% client code that has performed the replacements. Dagenais and
+%% Robillard~\cite{dagenais2009semdiff,dagenais2011recommending} proposed an
+%% approach named SemDiff that learns how an API adapts to its own changes and
+%% uses this information to recommend a set of method replacements to client
+%% programs. Wu et al.~\cite{wu2010aura} developed a tool named AURA to mine
+%% API replacement rules using a combination of method call dependency
+%% analysis and text similarity. Meng et al.~\cite{meng2012history} proposed
+%% HiMA, a tool that infers API replacement rules between two versions of a
+%% framework by aggregating API replacement rules for each pair of consecutive
+%% revisions in the framework history between the two versions. Yu et
+%% al.~\cite{yu2017api} develop an approach named AUC-Miner, which mines API
+%% replacement rules by employing context information to refine method call
+%% dependency analysis.
 
-\subsection{API Migration}
-Many works have been proposed to support API migration in varying situations~\cite{hora2015apiwave,zhou2016api,nguyen2010graph,nguyen2014statistical,nita2010using,lamothe2018a4}. Nita and Notkin~\cite{nita2010using} proposed the use of twinning (i.e., a technique to specify program changes without modifying the program directly) to migrate a program to use alternative APIs. Hora and Valente~\cite{hora2015apiwave} proposed Apiwave, a tool for tracking API popularity and migration. Zhong et al.~\cite{zhou2016api} developed a tool called MAM, which mines API mappings for language migration from programs with two versions in two programming languages. Nguyen et al.~\cite{nguyen2010graph} developed LIBSYNC, which employs a graph based approach to migrate API usage in client code to the new version of the API by learning from clients that have performed the adaptations. Nguyen et al.~\cite{nguyen2014statistical} proposed StaMiner, a statistical model based approach to mine API mappings for migrating programs from one language to another. Lamonthe et al.~\cite{lamothe2018a4} proposed an approach that learns API migration patterns from code examples and can apply these patterns to migrate deprecated APIs.
+%% %In this work, given the API replacement rules, our approach generates transformation rules, in the form of semantic patches, that can be used to perform the API replacement. Thus, our approach complements approaches that mine API replacement rules.
+
+%% \subsection{API Migration}
+
+%% Many works have been proposed to support API migration in varying
+%% situations~\cite{hora2015apiwave,zhou2016api,nguyen2010graph,nguyen2014statistical,nita2010using,lamothe2018a4}. Nita
+%% and Notkin~\cite{nita2010using} proposed the use of twinning (i.e., a
+%% technique to specify program changes without modifying the program
+%% directly) to migrate a program to use alternative APIs. Hora and
+%% Valente~\cite{hora2015apiwave} proposed Apiwave, a tool for tracking API
+%% popularity and migration. Zhong et al.~\cite{zhou2016api} developed a tool
+%% called MAM, which mines API mappings for language migration from programs
+%% with two versions in two programming languages. Nguyen et
+%% al.~\cite{nguyen2010graph} developed LIBSYNC, which employs a graph based
+%% approach to migrate API usage in client code to the new version of the API
+%% by learning from clients that have performed the adaptations. Nguyen et
+%% al.~\cite{nguyen2014statistical} proposed StaMiner, a statistical model
+%% based approach to mine API mappings for migrating programs from one
+%% language to another. Lamonthe et al.~\cite{lamothe2018a4} proposed an
+%% approach that learns API migration patterns from code examples and can
+%% apply these patterns to migrate deprecated APIs.
 
 \subsection{Replication Studies}
 
