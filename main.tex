@@ -68,11 +68,22 @@
 \maketitle
 
 \begin{abstract}
-Over time, Android apps may be out-of-date. Some APIs may be deprecated and eventually removed. App developers need to make their apps up-to-date to ensure that the apps work in both older and newer versions of Android. %However, updating apps correctly is not always easy as developers need to understand how to properly update the deprecated APIs. The APIs may also be used in multiple locations so updating them could be cumbersome and time consuming. 
-To date, AppEvolve is the state-of-the-art approach to automate such updates, especially for the case of deprecated API methods. AppEvolve has been shown to be quite effective. %by producing applicable updates for 85\% of target API changes in 90.24\% of their usage locations. 
-In this work, we replicate AppEvolve experiment and evaluate whether its effectiveness is generalizable. We use the same set of APIs from AppEvolve and find other mobile apps that use these APIs. Our experiments show that AppEvolve fails to generate applicable updates for 81.48\% of our dataset, even though the relevant knowledge is available in the examples. We categorize AppEvolve limitations that lead to these failures. %One of the limitations is its incapability to apply edits to target app code that only has minor syntactical difference with the example the edits are learned from. 
-We propose a mitigation that solves 81.82\% of these failures by performing simple refactoring on the app code to resemble the code in the example.
-Based on these findings, we propose some promising future directions.
+As the Android API evolves, some API methods may be deprecated, to be
+eventually removed.  App developers thus need to keep their apps up-to-date
+to ensure that the apps work in both older and newer Android versions.
+Currently, AppEvolve is the state-of-the-art approach to automate such
+updates, and it has been shown to be quite effective.  Still, the number of
+experiments performed is moderate. In this work, we replicate the
+evaluation of AppEvolve and assess whether its effectiveness is
+generalizable. Given the set of APIs on which AppEvolve has been evaluated,
+we test AppEvolve on other mobile apps using the same APIs. Our experiments
+show that AppEvolve fails to generate applicable updates for 81.48\% of our
+dataset, even though the relevant knowledge is available in the
+examples. We first categorize the limitations of AppEvolve that lead to
+these failures.  We then propose a mitigation that solves 81.82\% of these
+failures by performing simple refactoring on the app code to resemble the
+code in the example.  Based on these findings, we propose some promising
+future directions.
 
 \end{abstract}
 
