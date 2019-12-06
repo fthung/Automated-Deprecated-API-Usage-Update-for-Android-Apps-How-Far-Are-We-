@@ -52,14 +52,13 @@ the number of occurrences of each of these issues.
 \label{table:data_statistic}
 \end{table}
 
-\begin{enumerate}
-\item {\em The statements in the examples and at the target location are
+\vspace{0.25\baselineskip}\noindent\textbf{1) The statements in the examples and at the target location are
  structurally different.} AppEvolve infers edit operations at the statement
  level (insert of a statement, move of a statement, etc).  Accordingly,
- AppEvolve is not able to apply changes inferred about a method call found
+ AppEvolve is not able to apply changes inferred about method uses found
  in one kind of statement to a method use found in another kind of
- statement.  In the training set used in the evaluation of AppEvolve, it
- often occurs that the invocation of the deprecated API method invocation
+ statement.  In the examples used in the evaluation of AppEvolve, it
+ often occurs that the invocation of the deprecated API method
  is used as the right hand side of an assignment, while in our dataset the
  API method invocations occur in a variety of expression contexts.  We now
  present some examples:
@@ -92,13 +91,23 @@ string {\tt ":"}.
 In the code shown on the left side of Listing 5 in
 Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
 getCurrentHour} appears as the initial value of a declared variable.  Even
-though it involves an assignment, such code does not match examples where
+though this case involves an assignment, such code does not match examples where
 the assignment involves a previously declared variable.
 \end{itemize}
 
-\item {\em Object and arguments of the deprecated API method are in the form of complex expressions.} The invocation of a deprecated method in the example that AppEvolve may learn from may use variables for the object and arguments of the method. These edits do not work when the object and arguments use complex expresssions. AppEvolve is not flexible enough to apply the edits correctly by treating these expressions as variables. The code in the left hand side of Listing 6 in Table~\ref{tab:mitigatesucc} shows an example of this case. The deprecated API method in this listing is {\tt setTextAppearance}.
+\vspace{0.25\baselineskip}\noindent\textbf{2) Object and arguments of the
+deprecated API method are in the form of complex expressions.} 
+In creating edits, AppEvolve only abstracts over variables.  Accordingly,
+when examples always contain variables for the object or the arguments, the
+generated edits are not sufficient to update code in which these subterms
+are expressed as more complex expressions.
 
-\item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
+In the code shown on the left side of Listing 5 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+setTextAppearance} involves expressions that do not have the form
+of a simple variable for both the object and arguments.
+
+\vspace{0.25\baselineskip}\noindent\textbf{3) Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
 \begin{lstlisting}[language=diff,numbers=none,caption=Edits that add imports and a private field,captionpos=b]
 18a19
 + import android.location.GnssStatus;
@@ -118,7 +127,7 @@ the assignment involves a previously declared variable.
 \end{lstlisting}
 The deprecated API in the above example is {\tt addGpsStatusListener}. Updating this API requires adding a private field named {\tt callback} of type {\em GnssStatus.Callback}. Unfortunately, since AppEvolve only learn edits inside a method containing the deprecated API usage, it misses this necessary addition.
 
-\item {\em Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
+\vspace{0.25\baselineskip}\noindent\textbf{4) Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
 \begin{itemize}
 \item Inheritance: The code in the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method is {\tt setAudioStreamType} of the class {\tt Media Player.} In the above snippet, {\tt TestMediaPlayer} extends {\tt MediaPlayer} and thus it inherits the {\tt setAudioStreamType} method. This method should be updated but AppEvolve does not seem to recognize it due to the use of inheritance.
 \item Static modifier:  The code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which is a static field.
@@ -127,11 +136,9 @@ The deprecated API in the above example is {\tt addGpsStatusListener}. Updating 
 
 \end{itemize}
 
-\item {\em No examples.} There is no example for such API update that can be found in GitHub. 
+\vspace{0.25\baselineskip}\noindent\textbf{5) No examples.} There is no example for such API update that can be found in GitHub. 
 
-\item {\em Others.} These include cases that cannot be put to any category above.
-\end{enumerate}
-
+\vspace{0.25\baselineskip}\noindent\textbf{6) Others.} These include cases that cannot be put to any category above.
 
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 
