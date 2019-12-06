@@ -3,32 +3,32 @@ effectiveness of AppEvolve generalizes to a wider range of apps.
 
 \subsection{Dataset}
 Our replication study focuses on the same set of deprecated methods as the
-original evaluation of AppEvolve and relies on the same training data, but
-considers a larger set of mobile apps that use these deprecated methods.
-We find the additional mobile apps by querying GitHub Code
-Search\footnote{\url{https://github.com/search}} using the names of the
-APIs. GitHub Code Search returns a list of ranked files matching the
-query. Since Github Code Search only supports textual queries, it returns
-many false positives, i.e., files that do not actually use the API methods
-that were queried for.  Thus, we manually check that the considered files
-contain the usages of the desired deprecated APIs.  We additionally check
-that the considered files do not use the replacement APIs. Finally, we
-randomly select 54 API usages, each from a different app as our
-dataset.  %These usages are shown in Table~\ref{TODO}.
+original evaluation of AppEvolve and relies on the same set of change
+examples, but considers a different and larger set of mobile apps that use
+these deprecated methods.  We find the mobile apps for our dataset by
+querying GitHub Code Search\footnote{\url{https://github.com/search}} using
+the names of the APIs. GitHub Code Search returns a list of ranked files
+matching the query. Since Github Code Search only supports textual queries,
+it returns many false positives, i.e., files that do not actually use the
+API methods that were queried for.  Thus, we manually check that the
+considered files contain the usages of the desired deprecated APIs.  We
+additionally check that the considered files do not use the replacement
+APIs. From the files that pass these checks, we randomly select 54 API
+usages, each from a different app, as our dataset.
 
-We note that although the AppEvolve training data also comes from GitHub,
-there is no overlap with our dataset.  GitHub Code Search only
-indexes the latest version of each repository.  The training data consists
-of apps where the latest version uses the replacement API, while our test
-data consists of apps that do not use the replacement API.  Thus, no
-overlap is possible.
+We note that although the AppEvolve change examples also come from GitHub,
+there is no overlap with our dataset.  GitHub Code Search only indexes the
+latest version of each repository.  The change examples consist of apps
+where the latest version uses the replacement API, while our dataset
+consists of apps that do not use the replacement API.  Thus, no overlap is
+possible.
 
 \subsection{Procedure}
 For each app in our dataset, we must create an AppEvolve configuration. To
-do so, we carefully read and understand the existing AppEvolve
-configurations that were used in the original AppEvolve experiments. We
-also asked the first author of AppEvolve to confirm how to configure
-AppEvolve correctly. Finally, we ran our experiments in the virtual machine
+do so, we first carefully studied the existing AppEvolve configurations
+that were used in the original AppEvolve experiments. We also asked the
+first author of AppEvolve to confirm how to configure AppEvolve
+correctly. Finally, we ran our experiments in the virtual machine
 environment provided by the AppEvolve
 authors.\footnote{\url{https://sites.google.com/view/appevolve}}
 

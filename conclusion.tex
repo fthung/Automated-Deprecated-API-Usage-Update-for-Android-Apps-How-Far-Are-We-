@@ -1,11 +1,26 @@
-AppEvolve is the state-of-the-art approach for automatic update of deprecated-API usage in Android apps. Experiments in AppEvolve's paper has shown that AppEvolve can generate applicable updates for 85\% of these API changes and 90.24\% of their usage locations on mobile apps in AppEvolve dataset. In this work, we evaluate whether AppEvolve effectiveness is generalizable. We add 54 additional mobile apps that contains API usage from the set of APIs in AppEvolve dataset. We run AppEvolve on these mobile apps and found that AppEvolve fails to generate applicable updates for 81.48\% of the mobile apps. We categorize these failed cases and found that they failed mainly due to:
+AppEvolve is the state-of-the-art approach for automatic update of
+deprecated-API usage in Android apps. Experiments previously reported for
+AppEvolve have shown that it can generate applicable updates for
+85\% \jl{Why is this number less precise than the others?} of these API
+changes and 90.24\% of their usage locations on mobile apps in the
+AppEvolve dataset.
+
+In this work, we evaluate whether this observed effectiveness is
+generalizable. We add 54 additional mobile apps that use the APIs contained
+in the AppEvolve dataset. Running AppEvolve on these mobile apps shows that
+AppEvolve fails to generate applicable updates for 81.48\% of the mobile
+apps. By analyzing these failed cases, we found that they failed mainly
+due to:
 \begin{enumerate}
     \item Statements in the examples and at the target location are structurally different.
     \item Object and arguments of the deprecated API method are in the form of complex expressions.
-    \item Edits beyond method boundaries.
+    \item Edits are required beyond method boundaries.
     \item Incomplete support of programming language features.
     \item No examples found in GitHub.
 \end{enumerate}
-We mitigate the first and the second categories above by performing simple refactoring that modifies the code containing API usage in the target app to resemble the one in the example. Our mitigations successfully make AppEvolve generate applicable updates for 81.82\% of the failed cases. 
+We mitigate the first and the second categories by performing a simple
+refactoring that modifies the code containing API usage in the target app
+to resemble the one in the example. Our mitigations enable AppEvolve
+to generate applicable updates for 81.82\% of the failed cases.
 
 Based on our findings, we propose future directions for automatic update of deprecated-API usage in Android apps, which include code normalization to ensure that both the example of API usage and the target app code are in the same standard form to minimize the variety of ways that the code is written. Using this technique, simple refactoring that we use to mitigate the failed cases may not be necessary. We also propose the usage of identifier name recommendation to name new variables that may have been introduced due to code normalization.

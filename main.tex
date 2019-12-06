@@ -70,21 +70,20 @@
 
 \begin{abstract}
 As the Android API evolves, some API methods may be deprecated, to be
-eventually removed.  App developers face the challenge to keep their apps up-to-date
-to ensure that the apps work in both older and newer Android versions.
-Currently, AppEvolve is the state-of-the-art approach to automate such
-updates, and it has been shown to be quite effective.  Still, the number of
-experiments performed is moderate. In this work, we replicate the
-evaluation of AppEvolve and assess whether its effectiveness is
-generalizable. Given the set of APIs on which AppEvolve has been evaluated,
-we test AppEvolve on other mobile apps using the same APIs. Our experiments
-show that AppEvolve fails to generate applicable updates for 81.48\% of our
-dataset, even though the relevant knowledge for correct API updates is available in the
-examples. We first categorize the limitations of AppEvolve that lead to
-these failures.  We then propose a mitigation strategy that solves 81.82\% of these
-failures by performing
-% simple 
-refactoring on the app code to resemble the
+eventually removed.  App developers face the challenge of keeping their
+apps up-to-date, to ensure that the apps work in both older and newer
+Android versions.  Currently, AppEvolve is the state-of-the-art approach to
+automate such updates, and it has been shown to be quite effective.  Still,
+the number of experiments reported is moderate. In this work, we replicate
+the evaluation of AppEvolve and assess whether its effectiveness is
+generalizable. Leaving fixed the set of APIs on which AppEvolve has been
+evaluated, we test AppEvolve on other mobile apps that use the same
+APIs. Our experiments show that AppEvolve fails to generate applicable
+updates for 81.48\% of our dataset, even though the relevant knowledge for
+correct API updates is available in the examples. We first categorize the
+limitations of AppEvolve that lead to these failures.  We then propose a
+mitigation strategy that solves 81.82\% of these failures by \jl{I think we
+  could have kept simple} refactoring the app code to better resemble the
 code in the examples.  Based on these findings, we propose some promising
 future directions.
 

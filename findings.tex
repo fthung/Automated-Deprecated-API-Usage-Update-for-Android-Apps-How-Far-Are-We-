@@ -54,14 +54,13 @@ the number of occurrences of each of these issues.
 
 \vspace{0.25\baselineskip}\noindent\textbf{1) The statements in the examples and at the target location are
  structurally different.} AppEvolve infers edit operations at the statement
- level (insert of a statement, move of a statement, etc).  Accordingly,
- AppEvolve is not able to apply changes inferred about method uses found
- in one kind of statement to a method use found in another kind of
- statement.  In the examples used in the evaluation of AppEvolve, it
- often occurs that the invocation of the deprecated API method
- is used as the right hand side of an assignment, while in our dataset the
- API method invocations occur in a variety of expression contexts.  We now
- present some examples:
+ level (insert a statement, move a statement, etc).  Accordingly, AppEvolve
+ is not able to apply changes inferred about method uses found in one kind
+ of statement to a method use found in another kind of statement.  In the
+ examples used in the evaluation of AppEvolve, it often occurs that the
+ invocation of the deprecated API method is used as the right hand side of
+ an assignment, while in our dataset the API method invocations occur in a
+ variety of expression contexts.  We now present some examples:
 \begin{itemize}
 \item Return statement: 
 In the code shown on the left side of Listing 1 in
