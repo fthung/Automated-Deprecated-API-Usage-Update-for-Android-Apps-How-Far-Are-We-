@@ -3,44 +3,42 @@ effectiveness of AppEvolve generalizes to a wider range of apps.
 
 \subsection{Dataset}
 Our replication study focuses on the same set of deprecated methods as the
-original evaluation of AppEvolve and the same training data, but considers
-a larger set of apps that use these deprecated methods.  Specifically, we
-include additional mobile apps that use the same deprecated APIs as in the
-original AppEvolve dataset and that do not use the APIs that are suggested
-to replace the deprecated APIs.  We find the new mobile apps by querying
-GitHub Code Search\footnote{\url{https://github.com/search}} using the
-names of the APIs. GitHub Code Search returns a list of ranked files
-matching the query. Since Github Code Search only supports textual queries,
-it returns many files that do not actually use the API methods that were
-queried for (false positives).  Thus, we manually check the returned files
-to confirm that they actually contain the usages of the desired deprecated
-APIs and do not contain usages of their replacement APIs. Finally, we
-randomly selected 54 API usages each from a different app in as our
-dataset.  The usages are shown in Table~\ref{TODO}.
+original evaluation of AppEvolve and relies on the same training data, but
+considers a larger set of mobile apps that use these deprecated methods.
+We find the additional mobile apps by querying GitHub Code
+Search\footnote{\url{https://github.com/search}} using the names of the
+APIs. GitHub Code Search returns a list of ranked files matching the
+query. Since Github Code Search only supports textual queries, it returns
+many false positives, i.e., files that do not actually use the API methods
+that were queried for.  Thus, we manually check that the considered files
+contain the usages of the desired deprecated APIs.  We additionally check
+that the considered files do not use the replacement APIs. Finally, we
+randomly select 54 API usages, each from a different app in as our
+dataset.  These usages are shown in Table~\ref{TODO}.
 
 We note that although the AppEvolve training data also comes from GitHub,
-there is no possible overlap with our test set.  GitHub Code Search only
+there is no possible overlap with our dataset.  GitHub Code Search only
 indexes the latest version of each repository.  The training data consists
 of apps where the latest version uses the replacement API, while our test
-data consists of apps that do not use the replacement API, so no overlap is
-possible.
+data consists of apps that do not use the replacement API.  Thus, no
+overlap is possible.
 
 \subsection{Procedure}
-We need to create an AppEvolve configuration for each app in our
-dataset. To do so, we carefully read and understand the existing AppEvolve
+For each app in our dataset, we must create an AppEvolve configuration. To
+do so, we carefully read and understand the existing AppEvolve
 configurations that were used in the original AppEvolve experiments. We
 also asked the first author of AppEvolve to confirm how to configure
-AppEvolve for the various apps correctly. Finally, we ran our experiments
-in the virtual machine environment provided by the AppEvolve
+AppEvolve correctly. Finally, we ran our experiments in the virtual machine
+environment provided by the AppEvolve
 authors.\footnote{\url{https://sites.google.com/view/appevolve}}
 
 After configuring AppEvolve for the apps, we ran AppEvolve on them. We
-recorded the number of applicable and failed updates. For the failed
-updates, we categorized them using card sorting\cite{...}. In card sorting,
-we perform multiple passes on the failed update data. For the first pass,
-we put each of the failed updates into a category created based on our
-understanding of the reason for the failed update. For subsequent passes,
-we reevaluated the categories. We might rename a category to be more
-descriptive of the problem that occurs in the set of updates belonging to
-the category or merge related categories into one. These steps were
-repeated until there were no more changes to the categories.
+recorded the number of applicable and failed updates. We then categorized
+the failed updates using card sorting\cite{...}. For this, we performed
+multiple passes on the failed update data. In the first pass, we put each
+of the failed updates into a category created based on our understanding of
+the reason for the failure. In the subsequent passes, we reevaluated the
+categories. We might rename a category to be more descriptive of the
+problem that occurs in the set of updates belonging to the category, or
+merge related categories into one. These steps were repeated until there
+were no more changes to the categories.
