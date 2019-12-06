@@ -1,4 +1,8 @@
-Running AppEvolve on our dataset results in 10 applicable updates and 44 failed updates. AppEvolve dataset itself has 4 failed updates. After investigating the 48 failed updates from both AppEvolve dataset and ours, we found that the failed updates occur due to the reasons below. Table~\ref{table:data_statistic} shows the occurrence statistics of these reasons. 
+On our dataset, AppEvolve produces 10 applicable updates and 44 failed
+updates. The original AppEvolve evaluation also showed 4 failed updates.
+After investigating the 48 failed updates, we found some common reasons for
+the failures, as described below. Table~\ref{table:data_statistic} shows
+the number of occurrences of each of these issues.
 
 % \begin{table}
 % \caption{Update findings statistic}
@@ -21,7 +25,7 @@ Running AppEvolve on our dataset results in 10 applicable updates and 44 failed 
 % \end{table}
 
 \begin{table}
-\caption{Update findings statistic}
+\caption{Update findings statistics}
 \begin{center}
 \begin{tabular}{ | p{8em} |c|c| } 
  \hline
@@ -49,7 +53,11 @@ Running AppEvolve on our dataset results in 10 applicable updates and 44 failed 
 \end{table}
 
 \begin{enumerate}
-\item {\em Statements in the examples and at the target location are structurally different.} In our dataset, it often occurs that the result of the deprecated API method invocation is assigned to another variable in the example code while the target location has the deprecated API invocation in the following locations:
+\item {\em The statements in the examples and at the target location are
+ structurally different.} In our dataset, it often occurs that the result
+ of the deprecated API method invocation is assigned to another variable in
+ the example code while the target location invokes the deprecated API
+ invocation at the following locations:
 \begin{itemize}
 \item Return statement:
 \begin{lstlisting}[language=text,numbers=none,caption=Invocation of a deprecated method in a return statement,captionpos=b, label=lst:invokeret]
@@ -121,6 +129,8 @@ protected void onClick() {
 }
 \end{lstlisting}
 The deprecated API method in the above snippet is {\tt setTextAppearance}.
+
+\jl{There are two occurrences of the label lst:complexexpress}
 
 \item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
 \begin{lstlisting}[language=diff,numbers=none,caption=Edits that add imports and a private field,captionpos=b, label=lst:complexexpress]
