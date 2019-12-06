@@ -54,26 +54,49 @@ the number of occurrences of each of these issues.
 
 \begin{enumerate}
 \item {\em The statements in the examples and at the target location are
- structurally different.} In our dataset, it often occurs that the result
- of the deprecated API method invocation is assigned to another variable in
- the example code while the target location invokes the deprecated API
- invocation at the following locations:
+ structurally different.} AppEvolve infers edit operations at the statement
+ level (insert of a statement, move of a statement, etc).  Accordingly,
+ AppEvolve is not able to apply changes inferred about a method call found
+ in one kind of statement to a method use found in another kind of
+ statement.  In the training set used in the evaluation of AppEvolve, it
+ often occurs that the invocation of the deprecated API method invocation
+ is used as the right hand side of an assignment, while in our dataset the
+ API method invocations occur in a variety of expression contexts.  We now
+ present some examples:
 \begin{itemize}
-\item Return statement: The code in the left hand side of Listing 1 in Table~\ref{tab:mitigatesucc} shows an example of this case. The result of {\tt fromHtml} deprecated method is directly assigned as the return value of the {\tt getTitle} method. 
+\item Return statement: 
+In the code shown on the left side of Listing 1 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+fromHtml} appears as part of a return statement of the {\tt getTitle}
+method.
 
-\item If statement test:  The code in the left hand side of Listing 2 in Table~\ref{tab:mitigatesucc} shows an example of this case.  The result of {\tt requestAudioFocus} deprecated method invocation is used as a condition on whether {\tt play} method should return.
+\item If statement test:
+In the code shown on the left side of Listing 2 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+requestAudioFocus} appears as a subexpression of the test expression of a
+conditional.
 
-\item Method argument: The code in the left hand side of Listing 3 in Table~\ref{tab:mitigatesucc} shows an example of this case. The result of {\tt getCurrentHour} deprecated method invocation is directly put as the second argument of {\tt String.format} method.
+\item Method argument:
+In the code shown on the left side of Listing 3 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+getCurrentHour} appears as the second argument of the method {\tt
+String.format}.
 
-\item Arithmetic operand: The code in the  left hand side of Listing 4 in Table~\ref{tab:mitigatesucc} shows an example of this case. The result of {\tt getCurrentHour} deprecated method invocation is concatenated with ":" string.
+\item Arithmetic operand:
+In the code shown on the left side of Listing 4 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+getCurrentHour} appears as the left argument of a concatenation with the
+string {\tt ":"}.
+
+\item Declared variable:
+In the code shown on the left side of Listing 5 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+getCurrentHour} appears as the initial value of a declared variable.  Even
+though it involves an assignment, such code does not match examples where
+the assignment involves a previously declared variable.
 \end{itemize}
 
-There are also cases where the example involve assigning the result of the deprecated API method invocation to a variable that has been declared before. The target app declares the variable and directly assigns the result of the deprecated API method invocation. We name this case as {\em declared variable}. 
-The code in the left hand side of Listing 5 in Table~\ref{tab:mitigatesucc} shows an example of this case. In this listing, the result of {\tt getCurrentHour} deprecated method invocation is assigned directly when variable {\tt hours} is declared. 
-
 \item {\em Object and arguments of the deprecated API method are in the form of complex expressions.} The invocation of a deprecated method in the example that AppEvolve may learn from may use variables for the object and arguments of the method. These edits do not work when the object and arguments use complex expresssions. AppEvolve is not flexible enough to apply the edits correctly by treating these expressions as variables. The code in the left hand side of Listing 6 in Table~\ref{tab:mitigatesucc} shows an example of this case. The deprecated API method in this listing is {\tt setTextAppearance}.
-
-%\jl{There are two occurrences of the label lst:complexexpress}
 
 \item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
 \begin{lstlisting}[language=diff,numbers=none,caption=Edits that add imports and a private field,captionpos=b]
