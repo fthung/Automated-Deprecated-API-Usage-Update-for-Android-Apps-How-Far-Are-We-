@@ -25,7 +25,7 @@ method \texttt{getHour()} was suggested as its replacement.
 Figure~\ref{fig:deprecated_api_update_example} shows an example of an API
 usage change that modifies a usage of method \texttt{getCurrentHour()} to
 its replacement method \texttt{getHour()}. Given this example, one can
-learn abstracted relevant edits as shown in
+learn a generic patch as shown in
 Figure~\ref{fig:deprecated_api_update_edits}. These edits update a
 deprecated method usage to a replacement method usage. In these edits,
 backward compatibility is achieved by checking the version number of the
@@ -68,14 +68,13 @@ private long addEventToGCal() {
 +  $T = $T.getCurrentHour();
 + }
 \end{lstlisting}
-\caption{Abstracted relevant edits for updating deprecated method \texttt{getCurrentHour()}}
+\caption{A generic patch for updating deprecated method \texttt{getCurrentHour()}}
 \label{fig:deprecated_api_update_edits}
 \end{figure}
 
 \subsection{Approach}
-\toolname\ takes as input a target app to update and a mapping from a
-deprecated API method \jl{Only one?  If so, maybe the first paragraph of
-  Section 2A should reflect this.} to its replacement API method(s). The
+\toolname\ takes as input a target app to update and a mapping from 
+deprecated API method(s)  to the corresponding replacement API method(s). The
 framework of \toolname\ is shown in Figure~\ref{fig:framework}. The
 framework is divided into four phases: {\em API-Usage Analysis}, {\em
   Update Example Search}, {\em Update Example Analysis} and {\em API-Usage
@@ -83,10 +82,8 @@ framework is divided into four phases: {\em API-Usage Analysis}, {\em
 
 In the {\em API-Usage Analysis} phase, \toolname\ accepts as input an {\em
   API Usage Change} and a {\em Target App}. An {\em API Usage Change}
-describes the mapping from a deprecated API method to its corresponding
-replacement API method \jl{Now there is only one replacement method as
-  well.  This should be consistent.} \jl{Should we say that the usage
-  change may come eg from the documentation?}. A {\em Target App} is an app
+describes the mapping from deprecated API method(s) to the corresponding
+replacement API method(s)  This API Usage Change may come from the documentation of the API itself. A {\em Target App} is an app
 that contains a usage of the deprecated API method and requires updates to
 make use of the replacement API method. Given these two inputs,
 \toolname\ pinpoints the location of the deprecated API usage in the {\em
@@ -94,8 +91,7 @@ make use of the replacement API method. Given these two inputs,
 \toolname\ searches GitHub for examples of API usage updates that modify
 the usage of the deprecated API method to include the usage of the
 replacement API methods. In the {\em Update Example Analysis} phase,
-\toolname\ generates generic patches \jl{The same as an abstracted relevant
-  edit?} from the examples of API usage updates and ranks these patches. In
+\toolname\ generates generic patches from the examples of API usage updates and ranks these patches. In
 the {\em API Usage Update} phase, \toolname\ tries to apply the ranked
 patches one by one and returns the {\em Evolved Target App} if any of the
 edits is successful and validated.
@@ -123,13 +119,7 @@ method \texttt{getCurrentHour()}.
 replacement API methods in their latest versions.  For each such app,
 AppEvolve looks through the app history to find the commit where the uses
 of the replacement API methods are added. This is intended to find examples
-that produce a backward compatible Android app. We need both methods in an
-example since the Android app might be run in devices with either an older
-version of the Android OS (in which possibly only the deprecated method
-exists) or a newer version of the Android OS (in which possibly only the
-replacement method exists) \jl{I suggest to remove this sentence.  We have
-  already made it clear that backward compatibility is what is
-  wanted.}. Given these apps, \toolname\ finds changes that add the
+that produce a backward compatible Android app.  Given these apps, \toolname\ finds changes that add the
 replacement API method to the app code that already contains the deprecated
 API method. These changes are the examples that can be used to update
 deprecated API method usages in other apps.
