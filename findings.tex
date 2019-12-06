@@ -52,30 +52,62 @@ the number of occurrences of each of these issues.
 \label{table:data_statistic}
 \end{table}
 
-\begin{enumerate}
-\item {\em The statements in the examples and at the target location are
- structurally different.} In our dataset, it often occurs that the result
- of the deprecated API method invocation is assigned to another variable in
- the example code while the target location invokes the deprecated API
- invocation at the following locations:
+\vspace{0.25\baselineskip}\noindent\textbf{1) The statements in the examples and at the target location are
+ structurally different.} AppEvolve infers edit operations at the statement
+ level (insert of a statement, move of a statement, etc).  Accordingly,
+ AppEvolve is not able to apply changes inferred about method uses found
+ in one kind of statement to a method use found in another kind of
+ statement.  In the examples used in the evaluation of AppEvolve, it
+ often occurs that the invocation of the deprecated API method
+ is used as the right hand side of an assignment, while in our dataset the
+ API method invocations occur in a variety of expression contexts.  We now
+ present some examples:
 \begin{itemize}
-\item Return statement: The code in the left hand side of Listing 1 in Table~\ref{tab:mitigatesucc} shows an example of this case. The result of {\tt fromHtml} deprecated method is directly assigned as the return value of the {\tt getTitle} method. 
+\item Return statement: 
+In the code shown on the left side of Listing 1 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+fromHtml} appears as part of a return statement of the {\tt getTitle}
+method.
 
-\item If statement test:  The code in the left hand side of Listing 2 in Table~\ref{tab:mitigatesucc} shows an example of this case.  The result of {\tt requestAudioFocus} deprecated method invocation is used as a condition on whether {\tt play} method should return.
+\item If statement test:
+In the code shown on the left side of Listing 2 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+requestAudioFocus} appears as a subexpression of the test expression of a
+conditional.
 
-\item Method argument: The code in the left hand side of Listing 3 in Table~\ref{tab:mitigatesucc} shows an example of this case. The result of {\tt getCurrentHour} deprecated method invocation is directly put as the second argument of {\tt String.format} method.
+\item Method argument:
+In the code shown on the left side of Listing 3 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+getCurrentHour} appears as the second argument of the method {\tt
+String.format}.
 
-\item Arithmetic operand: The code in the  left hand side of Listing 4 in Table~\ref{tab:mitigatesucc} shows an example of this case. The result of {\tt getCurrentHour} deprecated method invocation is concatenated with ":" string.
+\item Arithmetic operand:
+In the code shown on the left side of Listing 4 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+getCurrentHour} appears as the left argument of a concatenation with the
+string {\tt ":"}.
+
+\item Declared variable:
+In the code shown on the left side of Listing 5 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+getCurrentHour} appears as the initial value of a declared variable.  Even
+though this case involves an assignment, such code does not match examples where
+the assignment involves a previously declared variable.
 \end{itemize}
 
-There are also cases where the example involve assigning the result of the deprecated API method invocation to a variable that has been declared before. The target app declares the variable and directly assigns the result of the deprecated API method invocation. We name this case as {\em declared variable}. 
-The code in the left hand side of Listing 5 in Table~\ref{tab:mitigatesucc} shows an example of this case. In this listing, the result of {\tt getCurrentHour} deprecated method invocation is assigned directly when variable {\tt hours} is declared. 
+\vspace{0.25\baselineskip}\noindent\textbf{2) Object and arguments of the
+deprecated API method are in the form of complex expressions.} 
+In creating edits, AppEvolve only abstracts over variables.  Accordingly,
+when examples always contain variables for the object or the arguments, the
+generated edits are not sufficient to update code in which these subterms
+are expressed as more complex expressions.
 
-\item {\em Object and arguments of the deprecated API method are in the form of complex expressions.} The invocation of a deprecated method in the example that AppEvolve may learn from may use variables for the object and arguments of the method. These edits do not work when the object and arguments use complex expresssions. AppEvolve is not flexible enough to apply the edits correctly by treating these expressions as variables. The code in the left hand side of Listing 6 in Table~\ref{tab:mitigatesucc} shows an example of this case. The deprecated API method in this listing is {\tt setTextAppearance}.
+In the code shown on the left side of Listing 5 in
+Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+setTextAppearance} involves expressions that do not have the form
+of a simple variable for both the object and arguments.
 
-%\jl{There are two occurrences of the label lst:complexexpress}
-
-\item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
+\vspace{0.25\baselineskip}\noindent\textbf{3) Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
 \begin{lstlisting}[language=diff,numbers=none]
 18a19
 + import android.location.GnssStatus;
@@ -93,22 +125,26 @@ The code in the left hand side of Listing 5 in Table~\ref{tab:mitigatesucc} show
 +   locationManager.addGpsStatusListener(listener);
 + }
 \end{lstlisting}
-The deprecated API in the above example is {\tt addGpsStatusListener}. Updating this API requires adding a private field named {\tt callback} of type {\em GnssStatus.Callback}. Unfortunately, since AppEvolve only learn edits inside a method containing the deprecated API usage, it misses this necessary addition.
+The above example involves a use of the deprecated API {\tt
+addGpsStatusListener}. Updating a use of this API requires adding a private
+field {\tt callback} of type {\em GnssStatus.Callback}.
+since AppEvolve only learn edits inside a method containing the deprecated
+API usage, it misses this necessary addition.
 
-\item {\em Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
+\vspace{0.25\baselineskip}\noindent\textbf{4) Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
 \begin{itemize}
 \item Inheritance: The code in the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method is {\tt setAudioStreamType} of the class {\tt Media Player.} In the above snippet, {\tt TestMediaPlayer} extends {\tt MediaPlayer} and thus it inherits the {\tt setAudioStreamType} method. This method should be updated but AppEvolve does not seem to recognize it due to the use of inheritance.
 \item Static modifier:  The code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which is a static field.
 
-\item Final modifier: The code in the left hand side of Listing 9 in Table~\ref{tab:mitigatefail} shows an example of this case.  Variable {\tt paint} that is used as the deprecated API method {\tt saveLayer} fourth argument is a final field.
+\item Final modifier: The code in the left hand side of Listing 9 in
+Table~\ref{tab:mitigatefail} shows an example of this case.  Variable {\tt
+paint} that is used as the fourth argument to the deprecated API method {\tt saveLayer} is a final field.
 
 \end{itemize}
 
-\item {\em No examples.} There is no example for such API update that can be found in GitHub. 
+\vspace{0.25\baselineskip}\noindent\textbf{5) No examples.} No example for such API update that can be found in GitHub. 
 
-\item {\em Others.} These include cases that cannot be put to any category above.
-\end{enumerate}
-
+\vspace{0.25\baselineskip}\noindent\textbf{6) Others.} These include cases that cannot be put to any category above.
 
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 
@@ -140,10 +176,10 @@ Spanned getTitle(){
 &
 \begin{lstlisting}[language=diff]
 Spanned getTitle(){
-	+ Spanned a;
-	+ a = Html.fromHtml(title);
-	- return Html.fromHtml(title);
-	+ return a;
++   Spanned a;
++   a = Html.fromHtml(title);
+-   return Html.fromHtml(title);
++   return a;
 }
 \end{lstlisting}
 \\ \hline
@@ -162,22 +198,21 @@ public void play() {
 &
 \begin{lstlisting}[language=diff]
 public void play() {
-	- if (mAudioManager.requestAudioFocus
-	-   (mAudioFocusListener,
-	-   AudioManager.STREAM_MUSIC,
-	-   AudioManager.AUDIOFOCUS_GAIN) !=
-	-   AudioManager.
-	-   AUDIOFOCUS_REQUEST_GRANTED) {
-	-   return;
-	- }
-	+ int res;
-	+ int arg1=AudioManager.STREAM_MUSIC;
-	+ int arg2=AudioManager.AUDIOFOCUS_GAIN;
-	+ res = mAudioManager.requestAudioFocus (mAudioFocusListener, arg1, arg2);
-	+ if (res != AudioManager
-	+   .AUDIOFOCUS_REQUEST_GRANTED) {
-	+   return;
-	+ }
+-   if (mAudioManager.requestAudioFocus
+-     (mAudioFocusListener, AudioManager.
+-           STREAM_MUSIC,
+-     AudioManager.AUDIOFOCUS_GAIN) !=
+-     AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+-     return;
+-   }
++   int res;
++   int arg1=AudioManager.STREAM_MUSIC;
++   int arg2=AudioManager.AUDIOFOCUS_GAIN;
++   res = mAudioManager.requestAudioFocus (mAudioFocusListener, arg1, arg2);
++   if (res != AudioManager
++     .AUDIOFOCUS_REQUEST_GRANTED) {
++     return;
++   }
 }
 \end{lstlisting}
 \\ \hline
@@ -193,13 +228,13 @@ protected String getInputDataString() {
 &
 \begin{lstlisting}[language=diff]
 protected String getInputDataString() {
-	+ int hour;
-	+ hour = timePicker.getCurrentHour();
-	+ return String.format("%02d:%02d", hour,
-	+ timePicker.getCurrentMInute());
-	- return String.format("\%02d:\%02d", 
-	- timePicker.getCurrentHour(), 
-	- timePicker.getCurrentMinute());
++   int hour;
++   hour = timePicker.getCurrentHour();
++   return String.format("%02d:%02d", hour,
++   timePicker.getCurrentMInute());
+-   return String.format("\%02d:\%02d", 
+-   timePicker.getCurrentHour(), 
+-   timePicker.getCurrentMinute());
 }
 \end{lstlisting}
 \\ \hline
@@ -216,15 +251,14 @@ public void displayTime(View view) {
 &
 \begin{lstlisting}[language=diff]
 public void displayTime(View view) {
-	+ int hour;
-	+ hour = timePicker.getCurrentHour();
-	+ String time = hour + ":" +
-	+   timePicker.getCurrentMinute();
-	- String time = timePicker.
-	-   getCurrentHour() + ":" +
-	-   timePicker.getCurrentMinute();
-          Toast.makeText(this, time, 
-            Toast.LENGTH_SHORT).show();
++   int hour;
++   hour = timePicker.getCurrentHour();
++   String time = hour + ":" +
++     timePicker.getCurrentMinute();
+-   String time = timePicker.getCurrentHour()
+-      + ":" + timePicker.getCurrentMinute();
+    Toast.makeText(this, time, 
+        Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
 \\ \hline
@@ -247,9 +281,9 @@ public Schedule generate() {
 public Schedule generate() {
     TimePicker timePicker = (TimePicker) activity
         .findViewById(R.id.timePicker);
-	+ int hours;
-	+ hours = timePicker.getCurrentHour();
-	- int hours = timePicker.getCurrentHour();
++   int hours;
++   hours = timePicker.getCurrentHour();
+-   int hours = timePicker.getCurrentHour();
     int minutes = timePicker.getCurrentMinute();
     SeekBar seekBar = (SeekBar) activity
         .findViewById(R.id.setLuminosity);
@@ -277,16 +311,16 @@ protected void onClick() {
     ...
     Dialog d = builder.create();
     d.show();
-	- ((TextView) d.findViewById(
-	-   android.R.id.message))
-	- .setTextAppearance(getContext(), 
-	-  android.R.style.TextAppearance_Small);
-	+ Context c = getContext();
-	+ int i = android.R.style.
-	+       TextAppearance_Small;
-	+ TextView t = ((TextView) d.findViewById
-	+   (android.R.id.message)); 
-	+ t.setTextAppearance(c, i);
+-   ((TextView) d.findViewById(android.R.id.
+-     message))
+-   .setTextAppearance(getContext(), 
+-    android.R.style.TextAppearance_Small);
++   Context c = getContext();
++   int i = android.R.style.
++         TextAppearance_Small;
++   TextView t = ((TextView) d.findViewById
++     (android.R.id.message)); 
++   t.setTextAppearance(c, i);
     ...
 }
 \end{lstlisting}
@@ -331,6 +365,7 @@ public class TestMediaPlayer extends MediaPlayer {
 &
 \begin{lstlisting}
 private static AudioManager mAudioManager;
+private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
     (Context context) {
     if(mAudioManager == null){

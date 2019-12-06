@@ -23,6 +23,7 @@ AppEvolve can successfully apply the learned edits. We show these two cases belo
 For one case, we modified the code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to the one below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
 \begin{lstlisting}[language=text,numbers=none]
 private static AudioManager mAudioManager;
+private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
     (Context context) {
     if(mAudioManager == null){
@@ -30,13 +31,17 @@ public static void requestAudioFocus
             .getApplicationContext()
             .getSystemService(Context.AUDIO_SERVICE);
     }
-    int res;
-    int a = AudioManager.STREAM_MUSIC;
-    int b = AudioManager.AUDIOFOCUS_GAIN;
-    AudioManager am = mAudioManager;
-    AudioManager.OnAudioFocusChangeListener
-        af = afChangeListener;
-    res = am.requestAudioFocus(af,a,b);
+-   mAudioManager.requestAudioFocus(
+-       afChangeListener,
+-       AudioManager.STREAM_MUSIC,
+-       AudioManager.AUDIOFOCUS_GAI
++   int res;
++   int a = AudioManager.STREAM_MUSIC;
++   int b = AudioManager.AUDIOFOCUS_GAIN;
++   AudioManager am = mAudioManager;
++   AudioManager.OnAudioFocusChangeListener
++        af = afChangeListener;
++    res = am.requestAudioFocus(af,a,b);
 }
 
 \end{lstlisting}
@@ -48,12 +53,15 @@ private Paint paint;
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     canvas.drawColor(Color.GREEN);
-    float a = 0;
-    float b = 0;
-    float c = getWidth();
-    float d = getHeight();
-    int flag = Canvas.CLIP_SAVE_FLAG;
-    canvas.saveLayer(a,b,c,d, paint, flag);
++   float a = 0;
++   float b = 0;
++   float c = getWidth();
++   float d = getHeight();
++   int flag = Canvas.CLIP_SAVE_FLAG;
++   canvas.saveLayer(a,b,c,d, paint, flag);
+-   canvas.saveLayer(0, 0, canvas.getWidth(),
+-       canvas.getHeight(), paint,
+-       Canvas.ALL_SAVE_FLAG);
     canvas.restore();
   }
 \end{lstlisting}
@@ -92,13 +100,21 @@ asked a software engineer with ... years of Java experience and who is not an au
 \vspace{0.2cm}\noindent {\bf AppEvolve's Update}
 \begin{lstlisting}[language=text,numbers=none]
 public void displayTime(View view){
-  int time;
+  int varInt1;
+  int varInt2;
   if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-    time=timePicker.getHour();
+    varInt1=timePicker.getHour();
   }
-  else {
-    time=timePicker.getCurrentHour();
+ else {
+    varInt1=timePicker.getCurrentHour();
   }
+  if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+    varInt2=timePicker.getMinute();
+  }
+ else {
+    varInt2=timePicker.getCurrentMinute();
+  }
+  String time=varInt1 + ":" + varInt2;
   Toast.makeText(this,time,Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
@@ -107,14 +123,14 @@ public void displayTime(View view){
 \vspace{0.2cm}\noindent {\bf Engineer's Update}
 \begin{lstlisting}[language=text,numbers=none]
 public void displayTime(View view) {
-    // function to display the current time
-    int currentHour;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-        currentHour = timePicker.getHour();
+    String time;
+    if (android.os.Build.VERSION.SDK_INT >= 23) {
+        // only for gingerbread and newer versions
+        time = timePicker.getHour() + ":" + timePicker.getMinute();
     } else {
-        currentHour = timePicker.getCurrentHour();
+        time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
     }
-    Toast.makeText(this, currentHour, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
 
