@@ -27,7 +27,7 @@ AppEvolve can successfully apply the learned edits. The goal is to
 understand the cause of the failure.
 
 \begin{enumerate}
-\item We modify the code in Listing~\ref{lst:static} to the one below.
+\item We modify the code in the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to the one below.
 \begin{lstlisting}[language=text,numbers=none]
 private static AudioManager mAudioManager;
 public static void requestAudioFocus
@@ -46,9 +46,9 @@ public static void requestAudioFocus
     res = am.requestAudioFocus(af,a,b);
 }
 \end{lstlisting}
-In Listing~\ref{lst:static}, {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af} as above, AppEvolve can generate an applicable update.
+In the above listing, {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af} as above, AppEvolve can generate an applicable update.
 
-\item We modify the code in Listing~\ref{lst:final} to the one below.
+\item We modify the code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} to the one below.
 \begin{lstlisting}[language=text,numbers=none]
 private Paint paint;
   @Override protected void onDraw(Canvas canvas) {
@@ -63,7 +63,7 @@ private Paint paint;
     canvas.restore();
   }
 \end{lstlisting}
-In Listing~\ref{lst:final}, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
+In the above listing, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
 \end{enumerate}
 
 
