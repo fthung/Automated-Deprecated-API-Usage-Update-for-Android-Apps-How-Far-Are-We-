@@ -1,0 +1,206 @@
+Running AppEvolve on our dataset results in 10 applicable updates and 44 failed updates. AppEvolve dataset itself has 4 failed updates. After investigating the 48 failed updates from both AppEvolve dataset and ours, we found that the failed updates occur due to the reasons below. Table~\ref{table:data_statistic} shows the occurrence statistics of these reasons. 
+
+% \begin{table}
+% \caption{Update findings statistic}
+% \begin{center}
+% \begin{tabular}{ | p{8em} |c|c| } 
+%  \hline
+%  \textbf{Test Case Type} & \textbf{Detail of Cases} & \textbf{Number of Cases} \\ 
+%  \hline
+%  Work in AppEvolve & - & 10 \\ 
+%  \hline
+%  \multirow{7}{8em}{Fixed with simple refactor} & Total cases & 36 \\\cline{2-3} & Return statement & 6 \\\cline{2-3} & If statement & 1 \\\cline{2-3} & Method argument & 4 \\\cline{2-3} & Arithmetic operand & 3 \\\cline{2-3}  & Variable declaration & 12 \\\cline{2-3} & Complex expression & 20 \\\cline{2-3} 
+%  \hline
+%  \multirow{3}{8em}{Incomplete support of programming language features} & Inheritance & 2\\\cline{2-3} & Static modifier & 1 \\\cline{2-3} & Final modifier & 1\\\cline{2-3}
+%  \hline
+%  Unknown error & - & 4\\
+%  \hline
+% \end{tabular}
+% \end{center}
+% \label{table:data_statistic}
+% \end{table}
+
+\begin{table}
+\caption{Update findings statistic}
+\begin{center}
+\begin{tabular}{ | p{8em} |c|c| } 
+ \hline
+ \textbf{Test Case Type} & \textbf{Detail of Cases} & \textbf{Number of Cases} \\ 
+ %\hline
+ %Work in AppEvolve & - & 10 \\ 
+ \hline
+ \multirow{5}{8em}{Statements in the examples and at the target location are structurally different} & Return statement & 6 \\\cline{2-3} & If statement & 1 \\\cline{2-3} & Method argument & 4 \\\cline{2-3} & Arithmetic operand & 3 \\\cline{2-3}  & Declared variable & 12 \\\cline{2-3} 
+ \hline
+  Object and arguments of the deprecated API method are in the form of complex expressions & - & 20\\
+ \hline
+ Edits beyond method boundaries & - & 3\\
+\hline
+ \multirow{3}{8em}{Incomplete support of programming language features} & Inheritance & 2\\\cline{2-3} & Static modifier & 1 \\\cline{2-3} & Final modifier & 1\\\cline{2-3}
+ \hline
+ No examples & - & 1\\
+ \hline
+ Others & - & 4\\
+ \hline
+ \multicolumn{2}{|c|}{\bf Total} & 48\\
+ \hline
+\end{tabular}
+\end{center}
+\label{table:data_statistic}
+\end{table}
+
+\begin{enumerate}
+\item {\em Statements in the examples and at the target location are structurally different.} In our dataset, it often occurs that the result of the deprecated API method invocation is assigned to another variable in the example code while the target location has the deprecated API invocation in the following locations:
+\begin{itemize}
+\item Return statement:
+\begin{lstlisting}[language=text,numbers=none,caption=Invocation of a deprecated method in a return statement,captionpos=b, label=lst:invokeret]
+Spanned getTitle(){
+    return Html.fromHtml(title);
+}
+\end{lstlisting}
+In the above listing, the result of {\tt fromHtml} deprecated method is directly assigned as the return value of the {\tt getTitle} method. 
+
+\item If statement test:
+\begin{lstlisting}[language=text,numbers=none,caption=Invocation of a deprecated method in an if statement,captionpos=b, label=lst:invokeif]
+public void play() {
+    if (mAudioManager.requestAudioFocus(
+    mAudioFocusListener, AudioManager.STREAM_MUSIC,
+    AudioManager.AUDIOFOCUS_GAIN) != 
+    AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+        return;
+    }
+}
+\end{lstlisting}
+In the above listing, the result of {\tt requestAudioFocus} deprecated method invocation is used as a condition on whether {\tt play} method should return.
+\item Method argument:
+\begin{lstlisting}[language=text,numbers=none,caption=Invocation of a deprecated method in an method argument,captionpos=b, label=lst:invokemarg]
+protected String getInputDataString() {
+    return String.format("\%02d:\%02d", 
+    timePicker.getCurrentHour(), 
+    timePicker.getCurrentMinute());
+}
+\end{lstlisting}
+In the above listing, the result of {\tt getCurrentHour} deprecated method invocation is directly put as the second argument of {\tt String.format} method.
+
+\item Arithmetic operand:
+\begin{lstlisting}[language=text,numbers=none,caption=Invocation of a deprecated method in an arithmetic operand,captionpos=b, label=lst:invokearit]
+public void displayTime(View view) {
+    String time = timePicker.getCurrentHour() 
+	    + ":" + timePicker.getCurrentMinute();
+    Toast.makeText(this, time, Toast.LENGTH_SHORT)
+        .show();
+}
+\end{lstlisting}
+In the above listing, the result of {\tt getCurrentHour} deprecated method invocation is concatenated with ":" string.
+\end{itemize}
+
+There are also cases where the example involve assigning the result of the deprecated API method invocation to a variable that has been declared before. The target app declares the variable and directly assigns the result of the deprecated API method invocation. We name this case as {\em declared variable}. Below is an example of such cases.
+\begin{lstlisting}[language=text,numbers=none,caption=The result of a deprecated method is assigned directly to a variable,captionpos=b, label=lst:indirectassign]
+public Schedule generate() {
+    TimePicker timePicker = (TimePicker) activity
+        .findViewById(R.id.timePicker);
+    int hours = timePicker.getCurrentHour();
+    int minutes = timePicker.getCurrentMinute();
+    SeekBar seekBar = (SeekBar) activity
+        .findViewById(R.id.setLuminosity);
+    int luminosity = seekBar.getProgress();
+    return new Schedule(hours, minutes, luminosity);
+}
+\end{lstlisting}
+In the above listing, the result of {\tt getCurrentHour} deprecated method invocation is assigned directly when variable {\tt hours} is declared. 
+
+\item {\em Object and arguments of the deprecated API method are in the form of complex expressions.} The invocation of a deprecated method in the example that AppEvolve may learn from may use variables for the object and arguments of the method. These edits do not work when the object and arguments use complex expresssions. AppEvolve is not flexible enough to apply the edits correctly by treating these expressions as variables. Below is an example code snippet for this case.
+\begin{lstlisting}[language=text,numbers=none,caption=Complex expressions representing an object that is calling the deprecated method,captionpos=b, label=lst:complexexpress]
+protected void onClick() {
+    ...
+    Dialog d = builder.create();
+    d.show();
+    ((TextView) d.findViewById(android.R.id.message))
+        .setTextAppearance(getContext(), 
+        android.R.style.TextAppearance_Small);
+    ...
+}
+\end{lstlisting}
+The deprecated API method in the above snippet is {\tt setTextAppearance}.
+
+\item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
+\begin{lstlisting}[language=diff,numbers=none,caption=Edits that add imports and a private field,captionpos=b, label=lst:complexexpress]
+18a19
++ import android.location.GnssStatus;
+22a24
++ import android.os.Build;
+33a36,37
++ private GnssStatus.Callback callback;
+41c45,51
+- locationManager.addGpsStatusListener(listener);
++ if (android.os.Build.VERSION.SDK_INT >= 
+            android.os.Build.VERSION_CODES.N) {
++   locationManager.registerGnssStatusCallback(callback);
++ }
++ else{
++   locationManager.addGpsStatusListener(listener);
++ }
+\end{lstlisting}
+The deprecated API in the above example is {\tt addGpsStatusListener}. Updating this API requires adding a private field named {\tt callback} of type {\em GnssStatus.Callback}. Unfortunately, since AppEvolve only learn edits inside a method containing the deprecated API usage, it misses this necessary addition.
+
+\item {\em Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
+\begin{itemize}
+\item Inheritance:
+\begin{lstlisting}[language=text,numbers=none,caption=Inherited deprecated method,captionpos=b, label=lst:inheritance]
+public class TestMediaPlayer extends MediaPlayer {
+    public TestMediaPlayer() {
+        setAudioStreamType(AudioManager.STREAM_MUSIC);
+    }
+    public TestMediaPlayer(Context testContext, 
+        int withResource) throws Exception {
+        this();
+        AssetFileDescriptor afd = 
+            testContext.getResources()
+            .openRawResourceFd(withResource);
+        assertNotNull(afd);
+        setDataSource(afd.getFileDescriptor()
+            , afd.getStartOffset(), afd.getLength());
+        afd.close();
+        prepare();
+    }
+}
+\end{lstlisting}
+The deprecated API method is {\tt setAudioStreamType} of the class {\tt Media Player.} In the above snippet, {\tt TestMediaPlayer} extends {\tt MediaPlayer} and thus it inherits the {\tt setAudioStreamType} method. This method should be updated but AppEvolve does not seem to recognize it due to the use of inheritance.
+\item Static modifier:
+\begin{lstlisting}[language=text,numbers=none,caption=The object the deprecated method belongs to is a static field,captionpos=b, label=lst:static]
+private static AudioManager mAudioManager;
+public static void requestAudioFocus
+    (Context context) {
+    if(mAudioManager == null){
+        mAudioManager = (AudioManager) 
+            context.getApplicationContext()
+            .getSystemService
+            (Context.AUDIO_SERVICE);
+    }
+    mAudioManager.requestAudioFocus(
+        afChangeListener,
+        AudioManager.STREAM_MUSIC,
+        AudioManager.AUDIOFOCUS_GAIN);
+}
+\end{lstlisting}
+The deprecated API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which is a static field.
+
+\item Final modifier:
+\begin{lstlisting}[language=text,numbers=none,caption=The variable that is put as an argument of the deprecated method is a field with final modifier,captionpos=b, label=lst:final]
+private final Paint paint;
+@Override protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    canvas.drawColor(Color.GREEN);
+    canvas.saveLayer(0, 0, canvas.getWidth(),
+        canvas.getHeight(), paint, 
+        Canvas.ALL_SAVE_FLAG);
+    canvas.restore();
+}
+\end{lstlisting}
+Variable {\tt paint} that is used as the deprecated API method {\tt saveLayer} fourth argument is a final field.
+
+\end{itemize}
+
+\item {\em No examples.} There is no example for such API update that can be found in GitHub. 
+
+\item {\em Others.} These include cases that cannot be put to any category above.
+\end{enumerate}
