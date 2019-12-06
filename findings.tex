@@ -140,10 +140,10 @@ Spanned getTitle(){
 &
 \begin{lstlisting}[language=diff]
 Spanned getTitle(){
-	+ Spanned a;
-	+ a = Html.fromHtml(title);
-	- return Html.fromHtml(title);
-	+ return a;
++   Spanned a;
++   a = Html.fromHtml(title);
+-   return Html.fromHtml(title);
++   return a;
 }
 \end{lstlisting}
 \\ \hline
@@ -162,22 +162,21 @@ public void play() {
 &
 \begin{lstlisting}[language=diff]
 public void play() {
-	- if (mAudioManager.requestAudioFocus
-	-   (mAudioFocusListener,
-	-   AudioManager.STREAM_MUSIC,
-	-   AudioManager.AUDIOFOCUS_GAIN) !=
-	-   AudioManager.
-	-   AUDIOFOCUS_REQUEST_GRANTED) {
-	-   return;
-	- }
-	+ int res;
-	+ int arg1=AudioManager.STREAM_MUSIC;
-	+ int arg2=AudioManager.AUDIOFOCUS_GAIN;
-	+ res = mAudioManager.requestAudioFocus (mAudioFocusListener, arg1, arg2);
-	+ if (res != AudioManager
-	+   .AUDIOFOCUS_REQUEST_GRANTED) {
-	+   return;
-	+ }
+-   if (mAudioManager.requestAudioFocus
+-     (mAudioFocusListener, AudioManager.
+-           STREAM_MUSIC,
+-     AudioManager.AUDIOFOCUS_GAIN) !=
+-     AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+-     return;
+-   }
++   int res;
++   int arg1=AudioManager.STREAM_MUSIC;
++   int arg2=AudioManager.AUDIOFOCUS_GAIN;
++   res = mAudioManager.requestAudioFocus (mAudioFocusListener, arg1, arg2);
++   if (res != AudioManager
++     .AUDIOFOCUS_REQUEST_GRANTED) {
++     return;
++   }
 }
 \end{lstlisting}
 \\ \hline
@@ -193,13 +192,13 @@ protected String getInputDataString() {
 &
 \begin{lstlisting}[language=diff]
 protected String getInputDataString() {
-	+ int hour;
-	+ hour = timePicker.getCurrentHour();
-	+ return String.format("%02d:%02d", hour,
-	+ timePicker.getCurrentMInute());
-	- return String.format("\%02d:\%02d", 
-	- timePicker.getCurrentHour(), 
-	- timePicker.getCurrentMinute());
++   int hour;
++   hour = timePicker.getCurrentHour();
++   return String.format("%02d:%02d", hour,
++   timePicker.getCurrentMInute());
+-   return String.format("\%02d:\%02d", 
+-   timePicker.getCurrentHour(), 
+-   timePicker.getCurrentMinute());
 }
 \end{lstlisting}
 \\ \hline
@@ -216,15 +215,14 @@ public void displayTime(View view) {
 &
 \begin{lstlisting}[language=diff]
 public void displayTime(View view) {
-	+ int hour;
-	+ hour = timePicker.getCurrentHour();
-	+ String time = hour + ":" +
-	+   timePicker.getCurrentMinute();
-	- String time = timePicker.
-	-   getCurrentHour() + ":" +
-	-   timePicker.getCurrentMinute();
-          Toast.makeText(this, time, 
-            Toast.LENGTH_SHORT).show();
++   int hour;
++   hour = timePicker.getCurrentHour();
++   String time = hour + ":" +
++     timePicker.getCurrentMinute();
+-   String time = timePicker.getCurrentHour()
+-      + ":" + timePicker.getCurrentMinute();
+    Toast.makeText(this, time, 
+        Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
 \\ \hline
@@ -247,9 +245,9 @@ public Schedule generate() {
 public Schedule generate() {
     TimePicker timePicker = (TimePicker) activity
         .findViewById(R.id.timePicker);
-	+ int hours;
-	+ hours = timePicker.getCurrentHour();
-	- int hours = timePicker.getCurrentHour();
++   int hours;
++   hours = timePicker.getCurrentHour();
+-   int hours = timePicker.getCurrentHour();
     int minutes = timePicker.getCurrentMinute();
     SeekBar seekBar = (SeekBar) activity
         .findViewById(R.id.setLuminosity);
@@ -277,16 +275,16 @@ protected void onClick() {
     ...
     Dialog d = builder.create();
     d.show();
-	- ((TextView) d.findViewById(
-	-   android.R.id.message))
-	- .setTextAppearance(getContext(), 
-	-  android.R.style.TextAppearance_Small);
-	+ Context c = getContext();
-	+ int i = android.R.style.
-	+       TextAppearance_Small;
-	+ TextView t = ((TextView) d.findViewById
-	+   (android.R.id.message)); 
-	+ t.setTextAppearance(c, i);
+-   ((TextView) d.findViewById(android.R.id.
+-     message))
+-   .setTextAppearance(getContext(), 
+-    android.R.style.TextAppearance_Small);
++   Context c = getContext();
++   int i = android.R.style.
++         TextAppearance_Small;
++   TextView t = ((TextView) d.findViewById
++     (android.R.id.message)); 
++   t.setTextAppearance(c, i);
     ...
 }
 \end{lstlisting}
