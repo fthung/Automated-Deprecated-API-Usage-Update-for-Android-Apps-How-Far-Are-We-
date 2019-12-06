@@ -76,7 +76,7 @@ The code in the left hand side of Listing 5 in Table~\ref{tab:mitigatesucc} show
 %\jl{There are two occurrences of the label lst:complexexpress}
 
 \item {\em Edits beyond method boundaries.} AppEvolve cannot learn edits that modify program elements that reside outside the boundaries of the method containing the API usage to be updated. These edits include operations such as adding imports and adding fields to a class. Below is a snippet of an update example that involves edits beyond method boundaries.
-\begin{lstlisting}[language=diff,numbers=none,caption=Edits that add imports and a private field,captionpos=b]
+\begin{lstlisting}[language=diff,numbers=none]
 18a19
 + import android.location.GnssStatus;
 22a24

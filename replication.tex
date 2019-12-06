@@ -13,11 +13,11 @@ many false positives, i.e., files that do not actually use the API methods
 that were queried for.  Thus, we manually check that the considered files
 contain the usages of the desired deprecated APIs.  We additionally check
 that the considered files do not use the replacement APIs. Finally, we
-randomly select 54 API usages, each from a different app in as our
-dataset.  These usages are shown in Table~\ref{TODO}.
+randomly select 54 API usages, each from a different app as our
+dataset.  %These usages are shown in Table~\ref{TODO}.
 
 We note that although the AppEvolve training data also comes from GitHub,
-there is no possible overlap with our dataset.  GitHub Code Search only
+there is no overlap with our dataset.  GitHub Code Search only
 indexes the latest version of each repository.  The training data consists
 of apps where the latest version uses the replacement API, while our test
 data consists of apps that do not use the replacement API.  Thus, no
@@ -35,7 +35,7 @@ authors.\footnote{\url{https://sites.google.com/view/appevolve}}
 After configuring AppEvolve for the apps, we ran AppEvolve on them. We
 recorded the number of applicable and failed updates. We then categorized
 the failed updates using card sorting\cite{...}. For this, we performed
-multiple passes on the failed update data. In the first pass, we put each
+multiple passes on the failed updates. In the first pass, we put each
 of the failed updates into a category created based on our understanding of
 the reason for the failure. In the subsequent passes, we reevaluated the
 categories. We might rename a category to be more descriptive of the

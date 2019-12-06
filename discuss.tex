@@ -4,30 +4,23 @@ approach to updating deprecated API usage in Android apps.
 
 \subsection{Threats to Validity}
 
-We have tried our best to run AppEvolve following the instructions given by
-the authors in the AppEvolve documentation. We have also asked the first
-author how to configure AppEvolve correctly for new mobile
-applications. Still, we might have made wrong configurations
-unintentionally. We tried to minimize the chance of this happening by
-manually rechecking our configurations.
+One threat is related to whether we have configured AppEvolve correctly. To mitigate this threat, we have tried our best to run AppEvolve following the instructions given by the authors in the AppEvolve documentation. We have also asked AppEvolve's first author on how to configure AppEvolve correctly for new mobile apps. We can replicate all of the results on the original dataset, even when we try to redo the configurations from scratch.  We have also rechecked our configurations several times. Also, we have released a replication package\footnote{\url{...}} for others to check and validate.
 
-We have added 54 new applications to evaluate the effectiveness of
+Another threat is related to generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
 AppEvolve in generating applicable updates. This translates to 54 API usage
 locations on top of the 41 API usage locations in AppEvolve dataset, thus
-more than doubling the size of the dataset used in the original work. We
+more than doubling the number of API usage locations and more than triple the number of apps as compared to the dataset used in the original work. We
 believe this is sufficient to understand the capabilities of AppEvolve, as
 44 of the 54 API usages that we have added uncover limitations of
 AppEvolve. There might be other cases that AppEvolve cannot handle, but we
 believe that we have found many of them.
 
 
-\subsection{Cases Outside Our Mitigations}
-For cases where our mitigations do not work, we alter the target code until
-AppEvolve can successfully apply the learned edits. The goal is to
-understand the cause of the failure.
+\subsection{Cases Unhandled by Our Mitigation Strategy}
+There are 8 cases in which our mitigation strategy was not successful. For two cases where our mitigations do not work, we manage to manually alter the target code such that
+AppEvolve can successfully apply the learned edits. We show these two cases below.
 
-\begin{enumerate}
-\item We modify the code in the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to the one below.
+For one case, we modified the code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to the one below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
 \begin{lstlisting}[language=text,numbers=none]
 private static AudioManager mAudioManager;
 public static void requestAudioFocus
@@ -45,10 +38,11 @@ public static void requestAudioFocus
         af = afChangeListener;
     res = am.requestAudioFocus(af,a,b);
 }
-\end{lstlisting}
-In the above listing, {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af} as above, AppEvolve can generate an applicable update.
 
-\item We modify the code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} to the one below.
+\end{lstlisting}
+
+
+We modify the code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} to the one below.
 \begin{lstlisting}[language=text,numbers=none]
 private Paint paint;
   @Override protected void onDraw(Canvas canvas) {
@@ -64,7 +58,7 @@ private Paint paint;
   }
 \end{lstlisting}
 In the above listing, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
-\end{enumerate}
+
 
 
 \subsection{Future Directions}
@@ -76,30 +70,26 @@ code into a standard form. Edits can then be learned from this standard
 form. When the edit is applied to a new piece of code, that target code
 should also be normalized, which should minimize the variations in the code
 due to simple refactorings. If the edits are successfully applied, the
-resulting code can then be denormalized following the original coding
-style.  Our mitigations represent a subset of the normalizations that are
+resulting code can then be refactored again to follow the coding
+style of the developers.  Our mitigations represent a subset of the normalizations that are
 possible.
 
-If perfect denormalization is not possible, it is necessary to consider the
-impact of normalization on readability. We first normalize the app code
-using our mitigations to make the edits learned by AppEvolve applicable. We
-then take the resulting code as the code generated by AppEvolve. We then
-ask a research engineer who is not an author of this paper to generate an
-update to the same application. We take the resulting updated code as the
-code generated by human. We compare the code readability of these two cases.
+Related to the last point on refactoring resultant code to follow the coding style of developers, we perform a simple experiment to compare the output of AppEvolve after our simple refactoring with code that are manually updated to deal with a set of deprecated API.  We
+asked a software engineer with ... years of Java experience and who is not an author of this paper to update the code shown on the left hand side of Listing ... in Table~\ref{tab:mitigatesucc}. The code generated by AppEvolve and by the engineer are shown below.
 
-Buse and Weimer~\cite{Buse:2008:MSR:1390630.1390647} propose a metric of
-software readability that are based on a set of simple local features. They
-also provide an automatic readability measure model that is built on 12,000
-code readability judgments. We run this model and compare the readability
-measure of the API update created by AppEvolve against that of the update
-created by the human.  Scores range from 0 to 1 where, 0 is least and 1 is
-most readable.
+%Buse and Weimer~\cite{Buse:2008:MSR:1390630.1390647} propose a metric of
+%software readability that are based on a set of simple local features. They
+%also provide an automatic readability measure model that is built on 12,000
+%code readability judgments. We run this model and compare the readability
+%measure of the API update created by AppEvolve against that of the update
+%created by the human.  Scores range from 0 to 1 where, 0 is least and 1 is
+%most readable.
 
-\jl{We need to know what was the original code.}
+%\jl{We need to know what was the original code.}
 
-\begin{itemize}
-\item AppEvolve Update:
+
+
+\vspace{0.2cm}\noindent {\bf AppEvolve's Update}
 \begin{lstlisting}[language=text,numbers=none]
 public void displayTime(View view){
   int time;
@@ -112,10 +102,9 @@ public void displayTime(View view){
   Toast.makeText(this,time,Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
-Readability score: 0.006027444265782833
 
 
-\item Human Update:
+\vspace{0.2cm}\noindent {\bf Engineer's Update}
 \begin{lstlisting}[language=text,numbers=none]
 public void displayTime(View view) {
     // function to display the current time
@@ -128,14 +117,15 @@ public void displayTime(View view) {
     Toast.makeText(this, currentHour, Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
-Readability score: 0.0067915963008999825
-\end{itemize}
 
-The difference in readability is very small. Indeed, the human developer
-also implicitly performed the normalization, and the differences between
-the variants are due to the choice of variable names, the spacing around
-function arguments and the degree of indentation.  Recent research has
-proposed strategies to automate the selection of new variable
-names~\cite{...}.  The other issues can be addressed by tools such as
-\jl{indent?  Apparently it only targets C programs} that are
-parameterizable according to the desired coding style.
+As you can see, the code made by engineer is different that AppEvolve. Developers may prefer the code made the engineer. Future work may want investigate methods that can effectively refactor AppEvolve generated code to better fit into the coding style of developers. One future work that can be done is to design methods to infer good names to newly introduced variables. There have been a number of studies that use deep learning and mining software repository approaches to recommend method and class names~\cite{...}. These work can potentially be extended for inferring good variable names.
+
+Moreover, in this work, we have assumed it is safe to move a method invocation from a location to another earlier location. Theoretically, it is possible that this may have unintended consequences. For example, suppose we are moving a method invocation $M_1$ that appear as a third argument of another method invocation $M_2$. For this case, if the evaluation of the first and the second arguments of $M_2$  influence the internal state of the program that affects the outcome of $M_1$, the simple refactoring that we did may lead to an erroneous program state. In the future, we may want to extend the line of work on side effect analysis and purity inference, e.g.,  to deal with this issue. Note that, in our dataset, we do not have such a case. 
+%The difference in readability is very small. Indeed, the human developer
+%also implicitly performed the normalization, and the differences between
+%the variants are due to the choice of variable names, the spacing around
+%function arguments and the degree of indentation.  Recent research has
+%proposed strategies to automate the selection of new variable
+%names~\cite{...}.  The other issues can be addressed by tools such as
+%\jl{indent?  Apparently it only targets C programs} that are
+%parameterizable according to the desired coding style.
