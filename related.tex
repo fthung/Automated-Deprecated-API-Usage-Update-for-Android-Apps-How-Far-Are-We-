@@ -55,6 +55,9 @@ corresponding uses of their replacement methods.
 %% approach that learns API migration patterns from code examples and can
 %% apply these patterns to migrate deprecated APIs.
 
+\subsection{Program Transformation}
+Research on program transformation have been done in multiple works~\cite{Visser:2001:SLP:647200.718711, Meng:2013:LLA:2486788.2486855, Rolim:2017:LSP:3097368.3097417,Long:2017:AIC:3106237.3106253, Bavishi:2019:PAD:3338906.3338952, Andersen:2012:SPI:2351676.2351753}. Visser~\cite{Visser:2001:SLP:647200.718711} proposed Stratego, a language for program transformation that is based on rewriting strategies. Stratego aims to make reusable transformation rules that can be used in multiple transformations by separating the strategies from the transformation rules. Meng et al.~\cite{Meng:2013:LLA:2486788.2486855} developed LASE, a tool that can create edit script from examples, locate the edit locations, and do the code transformation automatically. Rolim et al.~\cite{Rolim:2017:LSP:3097368.3097417} proposed REFAZER, a technique for automatic program transformation generation which is build based on code edits performed by developers as input-output examples. Long et al.~\cite{Long:2017:AIC:3106237.3106253} proposed Genesis which can automatically infer patch generation transforms from previous successful patches. Bavishi et al.~\cite{Bavishi:2019:PAD:3338906.3338952} developed PHOENIX, a fully automated pipeline system that mines and clean patches from examples and learns generalized executable repair strategies by leveraging a novel Domain Specific Language (DSL). Andersen et al.~\cite{Andersen:2012:SPI:2351676.2351753} proposed the tool spdiff that can infer transformation specifications from examples of both original and updated code.
+
 \subsection{Replication Studies}
 
 There have been a number of replication studies in the software engineering
@@ -76,12 +79,11 @@ model by showing similar result with the previous work. A replication study
 on open source development by Trong et
 al.~\cite{Dinh-Trong:2005:FPR:1079843.1080069} found new findings from the
 previous work by Mockus et al.~\cite{Mockus:2002:TCS:567793.567795}. They
-supported some hypotheses and proposed some revisions for hypotheses
-related to formal arrangement \jl{means what?} and core developers. A
+supported some of the previous hypotheses and proposed revisions on hypothesis related to the need of formal arrangement for work coordination and on hypothesis regarding the number of core developers on open source project. A
 replication study by Orru et al.~\cite{howdopython} conducted an analysis
 of the use of inheritance in Python systems that was previously done on
 Java. Their result shows that compared on the previous findings on Java,
-more classes are inherited from but fewer classes inherit from other
+Python has more classes that are inherited from but fewer classes that inherit from other
 classes.
 
 %Among the API migration work above, Lamonthe et al.'s work is the closest to our work. Our work also deals with API migration, particularly replacing deprecated APIs. However, different than their work, our work focuses on the scenario in which there are no examples. 
