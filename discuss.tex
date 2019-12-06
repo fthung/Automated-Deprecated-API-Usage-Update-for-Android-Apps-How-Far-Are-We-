@@ -107,36 +107,65 @@ most readable.
 \jl{We need to know what was the original code.}
 
 \begin{itemize}
-\item AppEvolve Update:
+
+\item Original code:
+\begin{lstlisting}[language=text,numbers=none]
+public void displayTime(View view) {
+    String time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
+
+    Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+}
+\end{lstlisting}
+
+\item Refactored code for mitigation:
+\begin{lstlisting}[language=text,numbers=none]
+public void displayTime(View view) {
+    int varInt1;
+    int varInt2;
+    varInt1 = timePicker.getCurrentHour();
+    varInt2 = timePicker.getCurrentMinute();
+    String time = varInt1 + ":" + varInt2;
+
+    Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+}
+\end{lstlisting}
+
+
+\item Code updated by AppEvolve:
 \begin{lstlisting}[language=text,numbers=none]
 public void displayTime(View view){
-  int time;
+  int varInt1;
+  int varInt2;
   if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-    time=timePicker.getHour();
+    varInt1=timePicker.getHour();
   }
-  else {
-    time=timePicker.getCurrentHour();
+ else {
+    varInt1=timePicker.getCurrentHour();
   }
+  if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+    varInt2=timePicker.getMinute();
+  }
+ else {
+    varInt2=timePicker.getCurrentMinute();
+  }
+  String time=varInt1 + ":" + varInt2;
   Toast.makeText(this,time,Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
-Readability score: 0.006027444265782833
 
-
-\item Human Update:
+\item Code updated by human:
 \begin{lstlisting}[language=text,numbers=none]
 public void displayTime(View view) {
-    // function to display the current time
-    int currentHour;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-        currentHour = timePicker.getHour();
+    String time;
+    if (android.os.Build.VERSION.SDK_INT >= 23) {
+        // only for gingerbread and newer versions
+        time = timePicker.getHour() + ":" + timePicker.getMinute();
     } else {
-        currentHour = timePicker.getCurrentHour();
+        time = timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
     }
-    Toast.makeText(this, currentHour, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
-Readability score: 0.0067915963008999825
 \end{itemize}
 
 The difference in readability is very small. Indeed, the human developer
