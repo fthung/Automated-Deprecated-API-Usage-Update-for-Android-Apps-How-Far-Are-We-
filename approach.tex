@@ -1,4 +1,4 @@
-We describe the problem statement, the approach, the dataset, and the main experimental results of AppEvolve.
+%We describe the problem statement, the approach, the dataset, and the main experimental results of AppEvolve.
 
 \subsection{Problem Statement}\label{sec:problem}
 %Consider two Android API versions: $oldAPIs = [m_1, m_2, ..., m_k]$ and $newAPIs = [m_1', m_2', ..., m_l']$. An API usage may involve one or more methods from either $oldAPIs$ or $newAPIs$. An API usage change from the $oldAPIs$ to the $newAPIs$ can be defined as a change from one or more methods from the $oldAPIs$ to one or more methods from the $newAPIs$, which can be written as $[m_1, m_2, ..., m_p] \rightarrow [m_1', m_2', ..., m_q']$. The goal of automatic update of Android apps is to update usages of $oldAPIs$ to $newAPIs$ based on the API usage change while also maintaining backward compatibility.
@@ -17,7 +17,10 @@ the new methods, while retaining backwards compatability.
 %	\label{fig:deprecated_api_example}
 %\end{figure*}
 
-To illustrate the API usage update problem, consider a change in the Android API version 23: the method \texttt{getCurrentHour()}, which returns the currently selected hour, was deprecated in version 23 of the Android API and the method \texttt{getHour()} was suggested as its replacement. 
+To illustrate the API usage update problem, consider a change in the
+Android API version 23: the method \texttt{getCurrentHour()}, which returns
+the current hour, was deprecated in version 23 of the Android API and the
+method \texttt{getHour()} was suggested as its replacement.
 
 Figure~\ref{fig:deprecated_api_update_example} shows an example of an API
 usage change that modifies a usage of method \texttt{getCurrentHour()} to
@@ -65,7 +68,7 @@ private long addEventToGCal() {
 +  $T = $T.getCurrentHour();
 + }
 \end{lstlisting}
-\caption{Edits for updating deprecated method \texttt{getCurrentHour()}}
+\caption{Abstracted relevant edits for updating deprecated method \texttt{getCurrentHour()}}
 \label{fig:deprecated_api_update_edits}
 \end{figure}
 
@@ -136,15 +139,16 @@ Section~\ref{sec:problem}.  In this case, the {\em API Usage Change} is the repl
 \toolname\ searches for apps in GitHub that use both the deprecated and the replacement API methods in their latest versions.  For each such app, AppEvolve looks through the app history to find the commit where the replacement API methods are added. This is intended to find examples that produce a backward compatible Android app. We need both methods in an example since the Android app might be run in devices with either an older version of the Android OS (in which possibly only the deprecated method exists) or a newer version of the Android OS (in which possibly only the replacement method exists). Given these apps, \toolname\ finds changes that add the replacement API method to the app code that already contains the deprecated API method. These changes are the examples that can be used to update deprecated API method usages in other apps.
 
 \subsubsection{Update Example Analysis}
-Given the examples found in GitHub, AppEvolve translates each example to a generic patch. It does so by identifying edits related to the API usage via intraprocedural forward and backward dependency analysis on the variables involved in the API usage. Variables that are used in statement affected by the edits but not defined by the edits themselves are considered as context variables. All variables in the edits are then abstracted. Given the generic patches, AppEvolve computes the the common core of these generic patches. The common core is defined as the longest subsequence of edits that are shared across the patches. The patches are then ranked based on their distance to the core.
+Given the examples found in GitHub, AppEvolve translates each example to a generic patch. It does so by identifying edits related to the API usage via intraprocedural forward and backward dependency analysis on the variables involved in the API usage. Variables that are used in statement affected by the edits but not defined by the edits themselves are considered as context variables. All variables in the edits are then abstracted. Given the generic patches, AppEvolve computes  the common core of these generic patches. The common core is defined as the longest subsequence of edits that are shared across the patches. The patches are then ranked based on their distance to the core.
 
 \subsubsection{API-Usage Update}
 Given a {\em Target App}, AppEvolve applies the generic patches according to their computed rank in the previous phase. When applying a patch, AppEvolve first finds mappings of context variables to variables in the {\em Target App}. For each such mapping, AppEvolve tries to apply the patch. If the edits are successfully applied, AppEvolve returns the {\em Evolved Target App}.
 
-\subsection{Dataset}
-For the target apps, the AppEvolve paper used 15 real-world apps from the F-droid repository.\footnote{\url{https://fdroid.org}} These  apps cover 20 API usages in 41 locations. AppEvolve authors selected five apps each for Android API versions 22, 23, and 25. For each API version, the API change is manually identified by reading the API
-documentation. Using the API change, the API usage in each app is guaranteed to be: (1) different from the ones in the other apps and (2)
-updated in the subsequent API version. 
+%\subsection{Dataset}
+%For the target apps, the AppEvolve paper used 15 real-world apps from the F-droid repository.\footnote{\url{https://fdroid.org}} These  apps cover 20 API usages in 41 locations. AppEvolve authors selected five apps each for Android API versions 22, 23, and 25. For each API version, the API change is manually identified by reading the API
+%documentation. Using the API change, the API usage in each app is guaranteed to be: (1) different from the ones in the other apps and (2)
+%updated in the subsequent API version. 
+%
+%\subsection{Results}
+%When applied to the 15 apps considered, AppEvolve was able to update 17 out of 20 API usages (85\% success rate) and 37 out of 41 of their occurrences across the apps.
 
-\subsection{Results}
-When applied to the 15 apps considered, AppEvolve was able to update 17 out of 20 API usages (85\% success rate) and 37 out of 41 of their occurrences across the apps.
