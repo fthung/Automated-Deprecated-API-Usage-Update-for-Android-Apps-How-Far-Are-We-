@@ -342,21 +342,21 @@ protected void onClick() {
 &
 \begin{lstlisting}
 public class TestMediaPlayer extends MediaPlayer {
-    public TestMediaPlayer() {
-        setAudioStreamType(AudioManager.STREAM_MUSIC);
-    }
-    public TestMediaPlayer(Context testContext, 
-        int withResource) throws Exception {
-        this();
-        AssetFileDescriptor afd = 
-            testContext.getResources()
-            .openRawResourceFd(withResource);
-        assertNotNull(afd);
-        setDataSource(afd.getFileDescriptor()
-            , afd.getStartOffset(), afd.getLength());
-        afd.close();
-        prepare();
-    }
+  public TestMediaPlayer() {
+    setAudioStreamType(AudioManager.STREAM_MUSIC);
+  }
+  public TestMediaPlayer(Context testContext, 
+    int withResource) throws Exception {
+    this();
+    AssetFileDescriptor afd = 
+      testContext.getResources()
+      .openRawResourceFd(withResource);
+    assertNotNull(afd);
+    setDataSource(afd.getFileDescriptor()
+      , afd.getStartOffset(), afd.getLength());
+    afd.close();
+    prepare();
+  }
 }
 \end{lstlisting}
 \\ \hline
@@ -366,17 +366,17 @@ public class TestMediaPlayer extends MediaPlayer {
 private static AudioManager mAudioManager;
 private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
-    (Context context) {
-    if(mAudioManager == null){
-        mAudioManager = (AudioManager) 
-            context.getApplicationContext()
-            .getSystemService
-            (Context.AUDIO_SERVICE);
-    }
-    mAudioManager.requestAudioFocus(
-        afChangeListener,
-        AudioManager.STREAM_MUSIC,
-        AudioManager.AUDIOFOCUS_GAIN);
+  (Context context) {
+  if(mAudioManager == null){
+    mAudioManager = (AudioManager) 
+      context.getApplicationContext()
+      .getSystemService
+      (Context.AUDIO_SERVICE);
+  }
+  mAudioManager.requestAudioFocus(
+    afChangeListener,
+    AudioManager.STREAM_MUSIC,
+    AudioManager.AUDIOFOCUS_GAIN);
 }
 \end{lstlisting}
 \\ \hline
@@ -385,12 +385,12 @@ public static void requestAudioFocus
 \begin{lstlisting}
 private final Paint paint;
 @Override protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
-    canvas.drawColor(Color.GREEN);
-    canvas.saveLayer(0, 0, canvas.getWidth(),
-        canvas.getHeight(), paint, 
-        Canvas.ALL_SAVE_FLAG);
-    canvas.restore();
+  super.onDraw(canvas);
+  canvas.drawColor(Color.GREEN);
+  canvas.saveLayer(0, 0, canvas.getWidth(),
+    canvas.getHeight(), paint, 
+    Canvas.ALL_SAVE_FLAG);
+  canvas.restore();
 }
 \end{lstlisting}
 \\ \hline
