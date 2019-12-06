@@ -30,7 +30,7 @@ understand the cause of the failure.
 \item We modify the code in the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to the one below.
 \begin{lstlisting}[language=diff,numbers=none]
 private static AudioManager mAudioManager;
-private static afChangeListener;
+private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
     (Context context) {
     if(mAudioManager == null){

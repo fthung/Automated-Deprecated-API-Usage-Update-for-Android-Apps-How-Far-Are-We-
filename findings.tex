@@ -331,6 +331,7 @@ public class TestMediaPlayer extends MediaPlayer {
 &
 \begin{lstlisting}
 private static AudioManager mAudioManager;
+private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
     (Context context) {
     if(mAudioManager == null){
