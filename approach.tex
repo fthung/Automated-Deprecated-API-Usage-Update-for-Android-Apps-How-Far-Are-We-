@@ -112,34 +112,39 @@ We next describe each of the above phases in detail.
 \toolname\ finds the location where the deprecated API method specified in
 the {\em API Usage Change} is used inside the {\em Target App}. Consider
 the deprecated API method \texttt{getCurrentHour()} mentioned in
-Section~\ref{sec:problem}.  In this case, the {\em API Usage Change} is the replacement of the deprecated method \texttt{getCurrentHour()} with method \texttt{getHour()}. Given this information, \toolname\ finds the location in the {\em Target App} that calls deprecated method \texttt{getCurrentHour()}. %Suppose
-                                                                                                                                                                                                                                                                                                                 %that
-                                                                                                                                                                                                                                                                                                                 %the
-                                                                                                                                                                                                                                                                                                                 %{\em
-                                                                                                                                                                                                                                                                                                                 %Target
-                                                                                                                                                                                                                                                                                                                 %App}'s
-                                                                                                                                                                                                                                                                                                                 %update
-                                                                                                                                                                                                                                                                                                                 %location
-                                                                                                                                                                                                                                                                                                                 %is
-                                                                                                                                                                                                                                                                                                                 %as
-                                                                                                                                                                                                                                                                                                                 %shown
-                                                                                                                                                                                                                                                                                                                 %in
-                                                                                                                                                                                                                                                                                                                 %Figure~\ref{fig:deprecated_api_update_target},
-                                                                                                                                                                                                                                                                                                                 %\toolname\ records
-                                                                                                                                                                                                                                                                                                                 %this
-                                                                                                                                                                                                                                                                                                                 %location
-                                                                                                                                                                                                                                                                                                                 %for
-                                                                                                                                                                                                                                                                                                                 %applying
-                                                                                                                                                                                                                                                                                                                 %the
-                                                                                                                                                                                                                                                                                                                 %updates
-                                                                                                                                                                                                                                                                                                                 %later
-                                                                                                                                                                                                                                                                                                                 %on.
+Section~\ref{sec:problem}.  In this case, the {\em API Usage Change} is the
+replacement of a use of the deprecated method \texttt{getCurrentHour()}
+with a use of the method \texttt{getHour()}. Given this information,
+\toolname\ finds the location in the {\em Target App} that calls deprecated
+method \texttt{getCurrentHour()}.
 
 \subsubsection{Update Example Search}
-\toolname\ searches for apps in GitHub that use both the deprecated and the replacement API methods in their latest versions.  For each such app, AppEvolve looks through the app history to find the commit where the replacement API methods are added. This is intended to find examples that produce a backward compatible Android app. We need both methods in an example since the Android app might be run in devices with either an older version of the Android OS (in which possibly only the deprecated method exists) or a newer version of the Android OS (in which possibly only the replacement method exists). Given these apps, \toolname\ finds changes that add the replacement API method to the app code that already contains the deprecated API method. These changes are the examples that can be used to update deprecated API method usages in other apps.
+\toolname\ searches for apps in GitHub that use both the deprecated and the
+replacement API methods in their latest versions.  For each such app,
+AppEvolve looks through the app history to find the commit where the uses
+of the replacement API methods are added. This is intended to find examples
+that produce a backward compatible Android app. We need both methods in an
+example since the Android app might be run in devices with either an older
+version of the Android OS (in which possibly only the deprecated method
+exists) or a newer version of the Android OS (in which possibly only the
+replacement method exists) \jl{I suggest to remove this sentence.  We have
+  already made it clear that backward compatibility is what is
+  wanted.}. Given these apps, \toolname\ finds changes that add the
+replacement API method to the app code that already contains the deprecated
+API method. These changes are the examples that can be used to update
+deprecated API method usages in other apps.
 
 \subsubsection{Update Example Analysis}
-Given the examples found in GitHub, AppEvolve translates each example to a generic patch. It does so by identifying edits related to the API usage via intraprocedural forward and backward dependency analysis on the variables involved in the API usage. Variables that are used in statement affected by the edits but not defined by the edits themselves are considered as context variables. All variables in the edits are then abstracted. Given the generic patches, AppEvolve computes  the common core of these generic patches. The common core is defined as the longest subsequence of edits that are shared across the patches. The patches are then ranked based on their distance to the core.
+Given the examples found in GitHub, AppEvolve translates each example to a
+generic patch. It does so by identifying edits related to the API usage via
+intraprocedural forward and backward dependency analysis on the variables
+involved in the API usage. Variables that are used in statements affected
+by the edits but not defined by the edits themselves are considered as
+context variables. All variables in the edits are then abstracted. Given
+the generic patches, AppEvolve computes the common core of these generic
+patches, defined as the longest subsequence of edits that are shared across
+the patches. The generic patches are then ranked based on their distance to
+the core.
 
 \subsubsection{API-Usage Update}
 Given a {\em Target App}, AppEvolve applies the generic patches according to their computed rank in the previous phase. When applying a patch, AppEvolve first finds mappings of context variables to variables in the {\em Target App}. For each such mapping, AppEvolve tries to apply the patch. If the edits are successfully applied, AppEvolve returns the {\em Evolved Target App}.
