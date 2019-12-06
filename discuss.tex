@@ -9,21 +9,22 @@ the authors in the AppEvolve documentation. We have also asked the first
 author how to configure AppEvolve correctly for new mobile
 applications. Still, we might have made wrong configurations
 unintentionally. We tried to minimize the chance of this happening by
-manually checking the resulting configurations.
+manually rechecking our configurations.
 
 We have added 54 new applications to evaluate the effectiveness of
 AppEvolve in generating applicable updates. This translates to 54 API usage
 locations on top of the 41 API usage locations in AppEvolve dataset, thus
 more than doubling the size of the dataset used in the original work. We
-believe this is sufficient as 44 of the API usages that we have added
-uncover limitations of AppEvolve. There might be other cases that AppEvolve
-cannot handle, but we believe that we have found many of them.
+believe this is sufficient to understand the capabilities of AppEvolve, as
+44 of the 54 API usages that we have added uncover limitations of
+AppEvolve. There might be other cases that AppEvolve cannot handle, but we
+believe that we have found many of them.
 
 
 \subsection{Cases Outside Our Mitigations}
-For cases where our mitigations do not work, we alter the code until the
-learned edits can be successfully applied by AppEvolve. The goal is to
-understand the cause of the failed update.
+For cases where our mitigations do not work, we alter the target code until
+AppEvolve can successfully apply the learned edits. The goal is to
+understand the cause of the failure.
 
 \begin{enumerate}
 \item We modify the code in Listing~\ref{lst:static} to the one below.
@@ -68,8 +69,8 @@ In Listing~\ref{lst:final}, a field named {\tt paint} of type {\tt Paint} has a 
 
 \subsection{Future Directions}
 Our mitigations can fix 81.82\% of the failed updates that we found,
-showing that even simple modifications of the target apps can ensure that
-edits that are learned from examples of API usage can be applied
+showing that even simple modifications of the target apps can allow
+edits that are learned from examples of API usage to be applied
 successfully. This technique can possibly be generalized by normalizing the
 code into a standard form. Edits can then be learned from this standard
 form. When the edit is applied to a new piece of code, that target code
@@ -137,4 +138,4 @@ function arguments and the degree of indentation.  Recent research has
 proposed strategies to automate the selection of new variable
 names~\cite{...}.  The other issues can be addressed by tools such as
 \jl{indent?  Apparently it only targets C programs} that are
-parameterizable according to the desire coding style.
+parameterizable according to the desired coding style.
