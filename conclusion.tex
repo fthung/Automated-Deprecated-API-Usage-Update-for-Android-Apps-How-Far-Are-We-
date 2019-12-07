@@ -1,7 +1,7 @@
 AppEvolve is the state-of-the-art approach for automatic update of
 deprecated-API usage in Android apps. Experiments previously reported for
 AppEvolve have shown that it can generate applicable updates for
-85\% \jl{Why is this number less precise than the others?} of these API
+85.00\% of these API
 changes and 90.24\% of their usage locations on mobile apps in the
 AppEvolve dataset.
 
@@ -23,4 +23,7 @@ refactoring that modifies the code containing API usage in the target app
 to resemble the one in the example. Our mitigations enable AppEvolve
 to generate applicable updates for 81.82\% of the failed cases.
 
+To try to resolve the discrepancy in the findings, \jl{David: Maybe add something here ...}
+
 Based on our findings, we propose future directions for automatic update of deprecated-API usage in Android apps, which include code normalization to ensure that both the example of API usage and the target app code are in the same standard form to minimize the variety of ways that the code is written. Using this technique, simple refactoring that we use to mitigate the failed cases may not be necessary. We also propose the usage of identifier name recommendation to name new variables that may have been introduced due to code normalization.
+
