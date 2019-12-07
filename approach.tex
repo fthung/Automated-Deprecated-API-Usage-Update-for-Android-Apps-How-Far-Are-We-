@@ -25,9 +25,9 @@ method \texttt{getHour()} was suggested as its replacement.
 
 Figure~\ref{fig:deprecated_api_update_example} shows an example of an API
 usage change that modifies a usage of method \texttt{getCurrentHour()} to
-its replacement method \texttt{getHour()}. Given this example, one\lx{should this "one" be AppEvolve, or it really means someone?} can
+its replacement method \texttt{getHour()}. Given this example, one can possibly
 learn a generic patch as shown in
-Figure~\ref{fig:deprecated_api_update_edits}. These edits update a
+Figure~\ref{fig:deprecated_api_update_edits}. The generic patch updates a
 deprecated method usage to a replacement method usage.
 Backward compatibility is achieved by checking the version number of the
 mobile OS running the app. If the version is greater than or equal to a
@@ -61,15 +61,14 @@ private long addEventToGCal() {
 \begin{figure}[htb]
 \centering
 \begin{lstlisting}[language=diff,numbers=none]
-- $T = $T.getCurrentHour();
+- $T2 = $T1.getCurrentHour();
 + if (android.os.Build.VERSION.SDK_INT >=
 +       android.os.Build.VERSION_CODES.M) {
-+  $T = $T.getHour();
++  $T2 = $T1.getHour();
 + } else {
-+  $T = $T.getCurrentHour();
++  $T2 = $T1.getCurrentHour();
 + }
 \end{lstlisting}
-\lx{better to use different symbols to differentiate the \$T on the left and right of '='?}
 \caption{A generic patch for updating uses of \texttt{getCurrentHour()}}
 \label{fig:deprecated_api_update_edits}
 \end{figure}
