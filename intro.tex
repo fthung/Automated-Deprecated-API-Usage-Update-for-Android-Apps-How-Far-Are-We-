@@ -2,7 +2,7 @@ In recent years, each release of Android has seen the deprecation of some
 APIs and the introduction of new ones.  Due to the fragmentation of the
 Android user base~\cite{he2018understanding,li2018cid}, app developers must update their apps to use the new
 APIs, while maintaining backward compatibility.  Unfortunately, updating
-APIs is not always trivial.  While API changes are described in the
+API uses is not always trivial.  While API changes are described in the
 documentation, these descriptions are not always accompanied by concrete
 examples.  Moreover, an API may be used at many places in the app source
 code, and thus updating its uses may be tedious and error prone.
@@ -23,39 +23,47 @@ phases. The first phase identifies code fragments in the target app that
 are affected by the API change. The second phase searches existing
 codebases for examples of the API change. The third phase generalizes each
 example into a form of generic code patch. These code patches are then
-ranked. Finally, in the fourth phase, AppEvolve applies the generic code
-patches one at a time according to their ranking. A successful application
-means that AppEvolve can produce an applicable update. The applicable
-update is validated if testing the updated app results in no failure. AppEvolve has been evaluated on a dataset involving 15 real-world
-apps and 20 real API changes. The dataset contains 41 usage locations of
-these real API changes. AppEvolve successfully produced applicable updates
-for 85.00\% of these API changes and 90.24\% of their usage locations.
+ranked. Finally, the fourth phase applies the generic code patches one at a
+time according to their ranking. A successful application means that
+AppEvolve can produce an applicable update. The applicable update is
+validated if testing the updated app results in no failure. AppEvolve has
+been evaluated on a dataset involving 15 real-world apps and 20 real API
+changes. The dataset contains 41 usage locations of these real API
+changes. AppEvolve successfully produced applicable updates for 85.00\% of
+these API changes and 90.24\% of their usage locations.  The paper on
+AppEvolve is accompanied by a replication package, containing the tool and
+the dataset.\footnote{\url{https://sites.google.com/view/appevolve}}
 
 In this work, our goal is to assess the effectiveness of AppEvolve to see
-how generalizable it is, and analyze the characteristics of the apps for
+how generalizable it is, and to analyze the characteristics of the apps for
 which AppEvolve cannot generate applicable updates.  Given the original
-dataset made available by AppEvolve
-authors,\footnote{\url{https://sites.google.com/view/appevolve}} we
-searched for additional mobile apps that use the same deprecated APIs. We
-found 54 mobile apps that are entirely distinct from the original data set,
-involving 14 of the 20 real API changes and 54 usage locations.
+dataset made available by AppEvolve authors, we searched for additional
+mobile apps that use the same deprecated APIs. We found 54 mobile apps that
+are entirely distinct from the original data set, involving 14 of the 20
+real API changes and 54 usage locations.
 
 We applied AppEvolve to update the deprecated-API usages in these mobile
 apps and analyzed the cases where it fails to update the apps. Running
-AppEvolve on our dataset generates applicable updates on 10 usage locations
-and only failed updates on 44 usage locations. Our analysis shows that
-AppEvolve produces applicable updates for a mobile app in cases where the
-API usage closely matches an API change example.  On the other hand,
-AppEvolve often fails to update a mobile app when there are minor
+AppEvolve on our dataset generates applicable updates for 10 usage
+locations and only failed updates for 44 usage locations. Our analysis
+shows that AppEvolve produces applicable updates for a mobile app in cases
+where the API usage closely matches an API change example.  On the other
+hand, AppEvolve often fails to update a mobile app when there are minor
 syntactical differences between the invocations of the deprecated API in
 the target app and the change example.  It also fails when facing
-unsupported programming language features, and (as noted in the AppEvolve
-paper) when encountering edits that require modifications beyond method
-boundaries or finding no relevant change examples in GitHub.
+unsupported \jl{not really convinced about this} programming language
+features, and (as noted in the AppEvolve paper) when encountering edits
+that require modifications beyond method boundaries or finding no relevant
+change examples in GitHub.
 
-We mitigate cases of minor syntactical differences by performing refactoring in order to convert the target app code to resemble the change examples from which AppEvolve learns the edits.
-After refactoring, we found that AppEvolve can generate applicable updates for 81.82\% of cases where it previously failed to do so.
-Based on the discovered limitations in AppEvolve and our mitigation results, we propose future directions, such as normalizing code to a standard form coupled with identifier-name recommendation, to improve existing work on automated deprecated-API usage updates for Android apps.
+We mitigate cases of minor syntactical differences by refactoring the
+target app code so that it resembles the change examples from which
+AppEvolve learns the edits.  After refactoring, we found that AppEvolve can
+generate applicable updates for 81.82\% of the cases where it previously failed
+to do so.  Based on the discovered limitations in AppEvolve and our
+mitigation results, we propose future directions, such as normalizing code
+to a standard form coupled with identifier-name recommendation, to improve
+existing work on automated deprecated-API usage updates for Android apps.
 
 The main contributions of this paper are as follows:
 \begin{itemize}

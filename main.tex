@@ -71,14 +71,17 @@
 Ferdian Thung\IEEEauthorrefmark{1},
 Stefanus A. Haryono\IEEEauthorrefmark{1},
 Lucas Serrano\IEEEauthorrefmark{2},
-Julia Lawall\IEEEauthorrefmark{2},
+Gilles Muller\IEEEauthorrefmark{3},
+Julia Lawall\IEEEauthorrefmark{3},
 David Lo\IEEEauthorrefmark{1} and
 Lingxiao Jiang\IEEEauthorrefmark{1}}
 
 \IEEEauthorblockA{\IEEEauthorrefmark{1}School of Information Systems, Singapore Management University\\
 Email: \{ferdianthung,stefanusah,davidlo,lxjiang\}@smu.edu.sg}
 \IEEEauthorblockA{\IEEEauthorrefmark{2}Sorbonne University/Inria/LIP6\\
-Email: \{julia.lawall,lucas.serrano\}@lip6.fr}
+Email: lucas.serrano@lip6.fr}
+\IEEEauthorblockA{\IEEEauthorrefmark{3}Inria\\
+Email: \{Gilles.Muller,Julia.Lawall\}@inria.fr}
 }
 
 \maketitle
@@ -89,18 +92,25 @@ eventually removed.  App developers face the challenge of keeping their
 apps up-to-date, to ensure that the apps work in both older and newer
 Android versions.  Currently, AppEvolve is the state-of-the-art approach to
 automate such updates, and it has been shown to be quite effective.  Still,
-the number of experiments reported is moderate. In this work, we replicate
-the evaluation of AppEvolve and assess whether its effectiveness is
-generalizable. Leaving fixed the set of APIs on which AppEvolve has been
+the number of experiments reported is moderate \jl{Do we like this
+  sentence?  I felt that some transition was needed.}. In this work, we
+replicate the evaluation of AppEvolve and assess whether its effectiveness
+is generalizable. Given the set of APIs on which AppEvolve has been
 evaluated, we test AppEvolve on other mobile apps that use the same
 APIs. Our experiments show that AppEvolve fails to generate applicable
 updates for 81.48\% of our dataset, even though the relevant knowledge for
 correct API updates is available in the examples. We first categorize the
 limitations of AppEvolve that lead to these failures.  We then propose a
-mitigation strategy that solves 81.82\% of these failures by simple refactoring
-the app code to better resemble the code in the examples, which usually involves assigning a target API method invocation and arguments of the target API method into variables.
-Based on these findings, we propose some promising
-future directions.
+mitigation strategy that solves 81.82\% of these failures by a simple
+refactoring of the app code to better resemble the code in the examples,
+which usually involves assigning a target API method invocation and
+arguments of the target API method into variables \jl{I suggest to drop
+  this detail.  The sentence is long.  If we need this in the abstract, it
+  can be a separate senetnce.}.  Indeed, we have also seen such
+transformations in the dataset distributed with the AppEvolve replication
+package, as compared to the original source code from which this dataset is
+derived.  Based on these findings, we propose some promising future
+directions.
 
 \end{abstract}
 

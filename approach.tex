@@ -1,14 +1,13 @@
 %We describe the problem statement, the approach, the dataset, and the main experimental results of AppEvolve.
 
 \subsection{Problem Statement}\label{sec:problem}
-%Consider two Android API versions: $oldAPIs = [m_1, m_2, ..., m_k]$ and $newAPIs = [m_1', m_2', ..., m_l']$. An API usage may involve one or more methods from either $oldAPIs$ or $newAPIs$. An API usage change from the $oldAPIs$ to the $newAPIs$ can be defined as a change from one or more methods from the $oldAPIs$ to one or more methods from the $newAPIs$, which can be written as $[m_1, m_2, ..., m_p] \rightarrow [m_1', m_2', ..., m_q']$. The goal of automatic update of Android apps is to update usages of $oldAPIs$ to $newAPIs$ based on the API usage change while also maintaining backward compatibility.
 
-AppEvolve targets the case where a set of one or more API methods of
-the Android framework are deprecated by another set of one or more
-API methods in a new version of the framework and the Android apps that use the old APIs need to be updated.
-The goal of AppEvolve is to
-automatically update such Android apps so that they use
-the new APIs, while maintaining backward compatibility.
+AppEvolve targets the case where a set of one or more API methods of the
+Android framework are deprecated and replaced by another set of one or more
+API methods in a new version of the framework, and where the Android apps
+that use the old APIs need to be updated.  The goal of AppEvolve is to
+automatically update such Android apps so that they use the new APIs, while
+maintaining backward compatibility.
 
 %\begin{figure*}[htb]
 %	\centering
