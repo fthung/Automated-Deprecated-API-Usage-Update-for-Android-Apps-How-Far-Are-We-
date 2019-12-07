@@ -7,13 +7,13 @@ the number of occurrences of each of these issues.
 % \begin{table}
 % \caption{Update findings statistic}
 % \begin{center}
-% \begin{tabular}{ | p{8em} |c|c| } 
+% \begin{tabular}{ | p{8em} |c|c| }
 %  \hline
-%  \textbf{Test Case Type} & \textbf{Detail of Cases} & \textbf{Number of Cases} \\ 
+%  \textbf{Test Case Type} & \textbf{Detail of Cases} & \textbf{Number of Cases} \\
 %  \hline
-%  Work in AppEvolve & - & 10 \\ 
+%  Work in AppEvolve & - & 10 \\
 %  \hline
-%  \multirow{7}{8em}{Fixed with simple refactor} & Total cases & 36 \\\cline{2-3} & Return statement & 6 \\\cline{2-3} & If statement & 1 \\\cline{2-3} & Method argument & 4 \\\cline{2-3} & Arithmetic operand & 3 \\\cline{2-3}  & Variable declaration & 12 \\\cline{2-3} & Complex expression & 20 \\\cline{2-3} 
+%  \multirow{7}{8em}{Fixed with simple refactor} & Total cases & 36 \\\cline{2-3} & Return statement & 6 \\\cline{2-3} & If statement & 1 \\\cline{2-3} & Method argument & 4 \\\cline{2-3} & Arithmetic operand & 3 \\\cline{2-3}  & Variable declaration & 12 \\\cline{2-3} & Complex expression & 20 \\\cline{2-3}
 %  \hline
 %  \multirow{3}{8em}{Incomplete support of programming language features} & Inheritance & 2\\\cline{2-3} & Static modifier & 1 \\\cline{2-3} & Final modifier & 1\\\cline{2-3}
 %  \hline
@@ -27,13 +27,13 @@ the number of occurrences of each of these issues.
 \begin{table}
 \caption{Update findings statistics}
 \begin{center}
-\begin{tabular}{ | p{12em} |c|c| } 
+\begin{tabular}{ | p{12em} |c|c| }
  \hline
- \textbf{Test Case Type} & \textbf{Subcategory} & \textbf{Occurrences} \\ 
+ \textbf{Category} & \textbf{Subcategory} & \textbf{Occurrences} \\
  %\hline
- %Work in AppEvolve & - & 10 \\ 
+ %Work in AppEvolve & - & 10 \\
  \hline
- \multirow{5}{12em}{Statements in the examples and at the target location are structurally different} & Return statement & 6 \\\cline{2-3} & If statement & 1 \\\cline{2-3} & Method argument & 4 \\\cline{2-3} & Arithmetic operand & 3 \\\cline{2-3}  & Declared variable & 12 \\\cline{2-3} 
+ \multirow{5}{12em}{Statements in the examples and at the target location are structurally different} & Return statement & 6 \\\cline{2-3} & If statement & 1 \\\cline{2-3} & Method argument & 4 \\\cline{2-3} & Arithmetic operand & 3 \\\cline{2-3}  & Declared variable & 12 \\\cline{2-3}
  \hline
   \multirow{4}{12em}{Object and arguments of the deprecated API method are in the form of complex expressions} & - & 20\\&&\\&&\\&&\\
  \hline
@@ -62,7 +62,7 @@ the number of occurrences of each of these issues.
  an assignment, while in our dataset the API method invocations occur in a
  variety of expression contexts.  We now present some examples:
 \begin{itemize}
-\item Return statement: 
+\item Return statement:
 In the code shown on the left side of Listing 1 in
 Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
 fromHtml} appears as part of a return statement of the {\tt getTitle}
@@ -77,10 +77,10 @@ conditional.
 \item Method argument:
 In the code shown on the left side of Listing 3 in
 Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
-getCurrentHour} appears as the second argument of the method {\tt
+getCurrentHour} appears as the second argument of the invocation of method {\tt
 String.format}.
 
-\item Arithmetic operand:
+\item Binary operator:
 In the code shown on the left side of Listing 4 in
 Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
 getCurrentHour} appears as the left argument of a concatenation with the
@@ -95,7 +95,7 @@ the assignment involves a previously declared variable.
 \end{itemize}
 
 \vspace{0.25\baselineskip}\noindent\textbf{2) Object and arguments of the
-deprecated API method are in the form of complex expressions.} 
+deprecated API method are in the form of complex expressions.}
 In creating edits, AppEvolve only abstracts over variables.  Accordingly,
 when examples always contain variables for the object or the arguments, the
 generated edits are not sufficient to update code in which these subterms
@@ -116,7 +116,7 @@ of a simple variable for both the object and arguments.
 + private GnssStatus.Callback callback;
 41c45,51
 - locationManager.addGpsStatusListener(listener);
-+ if (android.os.Build.VERSION.SDK_INT >= 
++ if (android.os.Build.VERSION.SDK_INT >=
             android.os.Build.VERSION_CODES.N) {
 +   locationManager.registerGnssStatusCallback(callback);
 + }
@@ -127,12 +127,12 @@ of a simple variable for both the object and arguments.
 The above example involves a use of the deprecated API {\tt
 addGpsStatusListener}. Updating a use of this API requires adding a private
 field {\tt callback} of type {\em GnssStatus.Callback}.
-since AppEvolve only learn edits inside a method containing the deprecated
+Since AppEvolve only learns edits inside a method containing the deprecated
 API usage, it misses this necessary addition.
 
 \vspace{0.25\baselineskip}\noindent\textbf{4) Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
 \begin{itemize}
-\item Inheritance: The code in the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method is {\tt setAudioStreamType} of the class {\tt Media Player.} In the above snippet, {\tt TestMediaPlayer} extends {\tt MediaPlayer} and thus it inherits the {\tt setAudioStreamType} method. This method should be updated but AppEvolve does not seem to recognize it due to the use of inheritance.
+\item Inheritance: The code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method is {\tt setAudioStreamType} of the class {\tt Media Player.} In the above snippet, {\tt TestMediaPlayer} extends {\tt MediaPlayer} and thus it inherits the {\tt setAudioStreamType} method. This method should be updated but AppEvolve does not seem to recognize it due to the use of inheritance.
 \item Static modifier:  The code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which is a static field.
 
 \item Final modifier: The code in the left hand side of Listing 9 in
@@ -141,7 +141,7 @@ paint} that is used as the fourth argument to the deprecated API method {\tt sav
 
 \end{itemize}
 
-\vspace{0.25\baselineskip}\noindent\textbf{5) No examples.} No example for such API update that can be found in GitHub. 
+\vspace{0.25\baselineskip}\noindent\textbf{5) No examples.} No example for such API update can be found in GitHub.
 
 \vspace{0.25\baselineskip}\noindent\textbf{6) Others.} These include cases that cannot be put to any category above.
 
@@ -188,7 +188,7 @@ Spanned getTitle(){
 public void play() {
     if (mAudioManager.requestAudioFocus(
     mAudioFocusListener, AudioManager.STREAM_MUSIC,
-    AudioManager.AUDIOFOCUS_GAIN) != 
+    AudioManager.AUDIOFOCUS_GAIN) !=
     AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
         return;
     }
@@ -219,8 +219,8 @@ public void play() {
 &
 \begin{lstlisting}
 protected String getInputDataString() {
-    return String.format("\%02d:\%02d", 
-    timePicker.getCurrentHour(), 
+    return String.format("\%02d:\%02d",
+    timePicker.getCurrentHour(),
     timePicker.getCurrentMinute());
 }
 \end{lstlisting}
@@ -231,8 +231,8 @@ protected String getInputDataString() {
 +   hour = timePicker.getCurrentHour();
 +   return String.format("%02d:%02d", hour,
 +   timePicker.getCurrentMInute());
--   return String.format("\%02d:\%02d", 
--   timePicker.getCurrentHour(), 
+-   return String.format("\%02d:\%02d",
+-   timePicker.getCurrentHour(),
 -   timePicker.getCurrentMinute());
 }
 \end{lstlisting}
@@ -241,9 +241,9 @@ protected String getInputDataString() {
 &
 \begin{lstlisting}
 public void displayTime(View view) {
-    String time = timePicker.getCurrentHour() 
+    String time = timePicker.getCurrentHour()
 	    + ":" + timePicker.getCurrentMinute();
-    Toast.makeText(this, time, 
+    Toast.makeText(this, time,
         Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
@@ -256,7 +256,7 @@ public void displayTime(View view) {
 +     timePicker.getCurrentMinute();
 -   String time = timePicker.getCurrentHour()
 -      + ":" + timePicker.getCurrentMinute();
-    Toast.makeText(this, time, 
+    Toast.makeText(this, time,
         Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
@@ -299,26 +299,26 @@ protected void onClick() {
     Dialog d = builder.create();
     d.show();
     ((TextView) d.findViewById(android.R.id.message))
-        .setTextAppearance(getContext(), 
+        .setTextAppearance(getContext(),
         android.R.style.TextAppearance_Small);
     ...
 }
 \end{lstlisting}
 &
 \begin{lstlisting}[language=diff]
-protected void onClick() {  
+protected void onClick() {
     ...
     Dialog d = builder.create();
     d.show();
 -   ((TextView) d.findViewById(android.R.id.
 -     message))
--   .setTextAppearance(getContext(), 
+-   .setTextAppearance(getContext(),
 -    android.R.style.TextAppearance_Small);
 +   Context c = getContext();
 +   int i = android.R.style.
 +         TextAppearance_Small;
 +   TextView t = ((TextView) d.findViewById
-+     (android.R.id.message)); 
++     (android.R.id.message));
 +   t.setTextAppearance(c, i);
     ...
 }
@@ -326,7 +326,7 @@ protected void onClick() {
 \\ \hline
 
 
-\end{tabular} 
+\end{tabular}
 \end{table*}
 
 \begin{table}
@@ -345,10 +345,10 @@ public class TestMediaPlayer extends MediaPlayer {
   public TestMediaPlayer() {
     setAudioStreamType(AudioManager.STREAM_MUSIC);
   }
-  public TestMediaPlayer(Context testContext, 
+  public TestMediaPlayer(Context testContext,
     int withResource) throws Exception {
     this();
-    AssetFileDescriptor afd = 
+    AssetFileDescriptor afd =
       testContext.getResources()
       .openRawResourceFd(withResource);
     assertNotNull(afd);
@@ -368,7 +368,7 @@ private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
   (Context context) {
   if(mAudioManager == null){
-    mAudioManager = (AudioManager) 
+    mAudioManager = (AudioManager)
       context.getApplicationContext()
       .getSystemService
       (Context.AUDIO_SERVICE);
@@ -388,7 +388,7 @@ private final Paint paint;
   super.onDraw(canvas);
   canvas.drawColor(Color.GREEN);
   canvas.saveLayer(0, 0, canvas.getWidth(),
-    canvas.getHeight(), paint, 
+    canvas.getHeight(), paint,
     Canvas.ALL_SAVE_FLAG);
   canvas.restore();
 }
