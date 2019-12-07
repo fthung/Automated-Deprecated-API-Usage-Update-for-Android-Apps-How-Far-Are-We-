@@ -1,7 +1,7 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
-\usepackage{cite}
+\usepackage{cite, balance}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{algorithm2e}
@@ -82,9 +82,9 @@ APIs. Our experiments show that AppEvolve fails to generate applicable
 updates for 81.48\% of our dataset, even though the relevant knowledge for
 correct API updates is available in the examples. We first categorize the
 limitations of AppEvolve that lead to these failures.  We then propose a
-mitigation strategy that solves 81.82\% of these failures by \jl{I think we
-  could have kept simple} refactoring the app code to better resemble the
-code in the examples.  Based on these findings, we propose some promising
+mitigation strategy that solves 81.82\% of these failures by simple refactoring 
+the app code to better resemble the code in the examples.  
+Based on these findings, we propose some promising
 future directions.
 
 \end{abstract}
@@ -117,6 +117,8 @@ API usage, program transformation, Android, mobile apps
 \section{Conclusion and Future Work}\label{sec:conclusion}
 \input{conclusion.tex}
 
+
+\balance
 
 \bibliography{references}
 \bibliographystyle{plain}
