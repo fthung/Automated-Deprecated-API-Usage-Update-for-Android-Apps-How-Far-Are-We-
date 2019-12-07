@@ -4,7 +4,7 @@ approach to updating deprecated API usage in Android apps.
 
 \subsection{Threats to Validity}
 
-One threat is related to whether we have configured AppEvolve correctly. To mitigate this threat, we have tried our best to run AppEvolve following the instructions given by the authors in the AppEvolve documentation. We have also asked AppEvolve's first author on how to configure AppEvolve correctly for new mobile apps. We can replicate all of the results on the original dataset, even when we try to redo the configurations from scratch.  We have also rechecked our configurations several times. Also, we have released a replication package\footnote{\url{...}} for others to check and validate.
+One threat is related to whether we have configured AppEvolve correctly. To mitigate this threat, we have tried our best to run AppEvolve following the instructions given by the authors in the AppEvolve documentation. We have also asked AppEvolve's first author on how to configure AppEvolve correctly for new mobile apps. We can replicate all of the results on the original dataset, even when we try to redo the configurations from scratch.  We have also rechecked our configurations several times. Also, we have released a replication package\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}} for others to check and validate.
 
 Another threat is related to generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
 AppEvolve in generating applicable updates. This translates to 54 API usage
@@ -17,11 +17,13 @@ believe that we have found many of them.
 
 
 \subsection{Cases Unhandled by Our Mitigation Strategy}
+
 There are 8 cases in which our mitigation strategy was not successful. For two cases where our mitigations do not work, we manage to manually alter the target code such that
 AppEvolve can successfully apply the learned edits. We show these two cases below.
 
-For one case, we modified the code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to the one below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
-\begin{lstlisting}[language=text,numbers=none]
+For one case, we modified the code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
+
+\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
 private static AudioManager mAudioManager;
 private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
@@ -43,14 +45,14 @@ public static void requestAudioFocus
 +        af = afChangeListener;
 +    res = am.requestAudioFocus(af,a,b);
 }
-
 \end{lstlisting}
 
 
-We modify the code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} to the one below.
-\begin{lstlisting}[language=text,numbers=none]
+\vspace{0.5cm} For another case, we modify the code on the left hand of Listing 8 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below.
+
+\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
 private Paint paint;
-  @Override protected void onDraw(Canvas canvas) {
+@Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     canvas.drawColor(Color.GREEN);
 +   float a = 0;
@@ -65,11 +67,11 @@ private Paint paint;
     canvas.restore();
   }
 \end{lstlisting}
-In the above listing, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
 
-
+\vspace{0.5cm}In the above listing, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
 
 \subsection{Future Directions}
+
 Our mitigations can fix 81.82\% of the failed updates that we found,
 showing that even simple modifications of the target apps can allow
 edits that are learned from examples of API usage to be applied
@@ -94,7 +96,7 @@ asked a software engineer with ... years of Java experience and who is not an au
 %most readable.
 
 \vspace{0.2cm}\noindent {\bf AppEvolve's Update}
-\begin{lstlisting}[language=text,numbers=none]
+\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view){
   int varInt1;
   int varInt2;
@@ -116,8 +118,8 @@ public void displayTime(View view){
 \end{lstlisting}
 
 
-\vspace{0.2cm}\noindent {\bf Engineer's Update}
-\begin{lstlisting}[language=text,numbers=none]
+\vspace{0.7cm}\noindent {\bf Engineer's Update}
+\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view) {
     String time;
     if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -138,7 +140,7 @@ refactor AppEvolve generated code to better fit into the coding style of
 developers. One step would be to choose good names for the newly introduced
 variables. A number of recent studies use approaches based on deep learning
 and mining software repositories to recommend method and class
-names~\cite{...}. These approaches can potentially be extended for inferring good
+names~\cite{allamanis2015suggesting}. These approaches can potentially be extended for inferring good
 variable names in our context.
 
 As you can see, the code made by the engineer is different than AppEvolve's. Developers may prefer the code made by the engineer. Future work may want to investigate methods that can effectively refactor AppEvolve generated code to better fit into the coding style of developers. One future work that can be done is to design methods to infer good names to newly introduced variables. There have been a number of studies that use deep learning and mining software repository approaches to recommend method and class names~\cite{allamanis2015suggesting}. These work can potentially be extended for inferring good variable names.
