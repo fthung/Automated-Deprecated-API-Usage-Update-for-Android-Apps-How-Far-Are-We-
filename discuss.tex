@@ -130,6 +130,7 @@ public void displayTime(View view) {
 }
 \end{lstlisting}
 
+\jl{the following two paragraphs have to be merged.}
 The code made manually by the engineer is different from the code produced
 by AppEvolve. Indeed, developers may prefer the code made the
 engineer. Future work may want investigate methods that can effectively
@@ -140,6 +141,10 @@ and mining software repositories to recommend method and class
 names~\cite{...}. These approaches can potentially be extended for inferring good
 variable names in our context.
 
+As you can see, the code made by the engineer is different than AppEvolve's. Developers may prefer the code made by the engineer. Future work may want to investigate methods that can effectively refactor AppEvolve generated code to better fit into the coding style of developers. One future work that can be done is to design methods to infer good names to newly introduced variables. There have been a number of studies that use deep learning and mining software repository approaches to recommend method and class names~\cite{allamanis2015suggesting}. These work can potentially be extended for inferring good variable names.
+
+
+\jl{why was this paragraph removed?}
 Moreover, in this work, we have assumed it is safe to move a method
 invocation from a location to another earlier location. Such a rewriting
 may have unintended consequences in the presence of side effects, if the
@@ -153,6 +158,10 @@ the line of work on side effect analysis and purity inference, e.g., to
 deal with this issue. Note that, in our dataset, we do not have such a
 case.  Indeed, it is typically not considered to be good programming style
 to rely on the order of evaluation of function arguments.
+
+
+
+
 
 %The difference in readability is very small. Indeed, the human developer
 %also implicitly performed the normalization, and the differences between
