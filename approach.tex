@@ -43,7 +43,7 @@ private long addEventToGCal() {
   int minInt;
 - hourInt = timepicker.getCurrentHour();
 - minInt = timepicker.getCurrentMinute();
-+ if (android.os.Build.VERSION.SDK_INT >= 
++ if (android.os.Build.VERSION.SDK_INT >=
 +       android.os.Build.VERSION_CODES.M) {
 +  hourInt = timepicker.getHour();
 +  minInt = timepicker.getMinute();
@@ -62,14 +62,14 @@ private long addEventToGCal() {
 \centering
 \begin{lstlisting}[language=diff,numbers=none]
 - $T = $T.getCurrentHour();
-+ if (android.os.Build.VERSION.SDK_INT >= 
++ if (android.os.Build.VERSION.SDK_INT >=
 +       android.os.Build.VERSION_CODES.M) {
 +  $T = $T.getHour();
 + } else {
 +  $T = $T.getCurrentHour();
 + }
 \end{lstlisting}
-\lx{better to use different symbols to differentiate the \$T on the left and right of '='?} 
+\lx{better to use different symbols to differentiate the \$T on the left and right of '='?}
 \caption{A generic patch for updating uses of \texttt{getCurrentHour()}}
 \label{fig:deprecated_api_update_edits}
 \end{figure}
@@ -159,6 +159,6 @@ identified by reading the API documentation. Using the API change, the API
 usage in each app is guaranteed to be: (1) different from the ones in the
 other apps and (2) updated in the subsequent API version.  When applied to
 the 15 apps considered, AppEvolve was able to update 17 out of 20 API
-usages (85\% success rate) and 37 out of 41 of their occurrences across the
+usages (85.00\% success rate) and 37 out of 41 of their occurrences across the
 apps.
 
