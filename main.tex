@@ -66,6 +66,22 @@
 \def \toolname {AppEvolve}
 \title{Automated Deprecated-API Usage Update for Android Apps: How Far Are We?}
 
+
+\author{
+\IEEEauthorblockN{
+Ferdian Thung\IEEEauthorrefmark{1},
+Stefanus A. Haryono\IEEEauthorrefmark{1},
+Lucas Serrano\IEEEauthorrefmark{2},
+Julia Lawall\IEEEauthorrefmark{2}, 
+David Lo\IEEEauthorrefmark{1} and
+Lingxiao Jiang\IEEEauthorrefmark{1}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Information Systems\\
+Singapore Management University\\
+Email: \{ferdianthung,stefanusah,davidlo,lxjiang\}@smu.edu.sg}
+\IEEEauthorblockA{\IEEEauthorrefmark{2}Sorbonne University/Inria/LIP6\\
+Email: \{julia.lawall,lucas.serrano\}@lip6.fr}
+}
+
 \maketitle
 
 \begin{abstract}
@@ -83,7 +99,7 @@ updates for 81.48\% of our dataset, even though the relevant knowledge for
 correct API updates is available in the examples. We first categorize the
 limitations of AppEvolve that lead to these failures.  We then propose a
 mitigation strategy that solves 81.82\% of these failures by simple refactoring 
-the app code to better resemble the code in the examples.  
+the app code to better resemble the code in the examples, which \jl{David: say something about the manual study of data}
 Based on these findings, we propose some promising
 future directions.
 
