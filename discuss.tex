@@ -67,6 +67,48 @@ private Paint paint;
 \end{lstlisting}
 In the above listing, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
 
+\subsection{Result assessment}
+
+We were surprised at the large difference between the results on our data
+set, where we obtained an accuracy \jl{right word?} of \jl{what}\%, and the
+results reported by the authors of AppEvolve, who obtained an accuracy of
+\jl{what}\%, even though our dataset was constructed randomly, without
+taking into account the strengths or weaknesses of AppEvolve.  Likewise,
+given that AppEvolve relies on matching statements, abstracting only over
+variables, between the examples and the target, it is surprising that
+AppEvolve could achieve such high accuracy on simple getter functions such
+as \jl{getCurrentHour()}, that in our dataset are often used as
+subexpressions of arbitrary possibly application-specific statement, and on
+method calls that have arbitrary, again project-specific, arguments, such
+as our example in Listing \jl{which?}.
+
+To understand better how AppEvolve overcomes these challenges, we
+investigate the examples and target programs used in the original AppEvolve
+evaluation.  Given the difficulty of finding the original files for the
+examples, for which no origin information is provided, we focus on a single
+example, the call to \jl{getCurrentHour()} in \jl{what project} in F-Droid
+version \jl{which} (\jl{what code} in the AppEvolve paper).  In F-Droid, we
+find that the call to \jl{getCurrentHour()} is found in the argument list
+of a call to \jl{what?}, a code structure similar to our Listing
+\jl{which}.  In the AppEvolve dataset, this call is extracted into a
+separate statement, analogous to our mitigation shown on the right hand
+side of Listing \jl{which}.  We have furthermore looked at one of the
+examples provided for this API, and have found the original on GitHub i the
+file \jl{fill in}.  Again, we find that in the original example, the call
+appears in an argument list, which the corresponding example in the
+AppEvolve example set has been transformed analogous to our mitigation.
+This change converts invocations that occur in differing contexts to
+invocations that can be matched by AppEvolve.
+
+A solution, to retain the spirit of AppEvolve, could be to apply our
+mitigation systematically to the occurrences of the deprecated API in the
+examples and in the target code.  Such normalizations may, however,
+introduce readability issues.  We leave this to future work.
+
+\jl{The last paragraph could be adjusted to fit better with the context.
+It is important to make clear that it doesn't matter what is the form of
+the target program and the examples.  What is important is that they all
+have the same form.}
 
 
 \subsection{Future Directions}
