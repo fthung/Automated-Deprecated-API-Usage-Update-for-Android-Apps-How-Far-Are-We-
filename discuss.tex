@@ -18,10 +18,10 @@ believe that we have found many of them.
 
 \subsection{Cases Unhandled by Our Mitigation Strategy}
 
-There are 8 cases in which our mitigation strategy was not successful. For two cases where our mitigations do not work, we manage to manually alter the target code such that
+There are 8 failed updates in which our mitigation strategy was not successful. For two failed updates where our mitigations do not work, we manage to manually alter the target code such that
 AppEvolve can successfully apply the learned edits. We show these two cases below.
 
-For one case, we modified the code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
+For one case, we modified the code on the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
 
 \vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
 private static AudioManager mAudioManager;
@@ -48,10 +48,11 @@ public static void requestAudioFocus
 \end{lstlisting}
 
 
-\vspace{0.5cm} For another case, we modify the code on the left hand of Listing 8 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below.
+\vspace{0.5cm} For another case, we modify the code on the left hand of Listing 9 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below.
 
 \vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
-private Paint paint;
+-private final Paint paint;
++private Paint paint;
 @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     canvas.drawColor(Color.GREEN);
@@ -69,6 +70,7 @@ private Paint paint;
 \end{lstlisting}
 
 \vspace{0.5cm}In the above listing, a field named {\tt paint} of type {\tt Paint} has a {\tt final} modifier. Removing this modifier results in an applicable update. It suggests that AppEvolve does not support {\tt final} modifier.
+
 
 \subsection{Future Directions}
 
