@@ -2,7 +2,7 @@ The goal of our replication study is to determine whether the observed
 effectiveness of AppEvolve generalizes to a wider range of apps.
 
 \subsection{Dataset}
-Our replication study focuses on the same set of deprecated methods as the
+Our replication study focuses on the same set of deprecated API methods as the
 original evaluation of AppEvolve and relies on the same set of change
 examples, but considers a different and larger set of mobile apps that use
 these deprecated methods.  We find the mobile apps for our dataset by
@@ -11,7 +11,7 @@ the names of the APIs. GitHub Code Search returns a list of ranked files
 matching the query. Since Github Code Search only supports textual queries,
 it returns many false positives, i.e., files that do not actually use the
 API methods that were queried for.  Thus, we manually check that the
-considered files contain the usages of the desired deprecated APIs.  We
+considered files contain usages of the desired deprecated APIs.  We
 additionally check that the considered files do not use the replacement
 APIs. From the files that pass these checks, we randomly select 54 API
 usages, each from a different app, as our dataset.
@@ -25,11 +25,10 @@ possible.
 
 \subsection{Procedure}
 For each app in our dataset, we must create an AppEvolve configuration. To
-do so, we first carefully studied the existing AppEvolve configurations
-that were used in the original AppEvolve experiments. We also asked the
-first author of AppEvolve to confirm how to configure AppEvolve
-correctly. Finally, we ran our experiments in the virtual machine
-environment provided by the AppEvolve
+do so, we first carefully studied the configurations that were used in the
+original AppEvolve experiments. We also asked the first author of AppEvolve
+to confirm how to configure AppEvolve correctly. Finally, we ran our
+experiments in the virtual machine environment provided by the AppEvolve
 authors.\footnote{\url{https://sites.google.com/view/appevolve}}
 
 After configuring AppEvolve for the apps, we ran AppEvolve on them. We

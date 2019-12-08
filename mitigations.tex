@@ -1,12 +1,13 @@
 We tried to modify the target location in the app's source code so that
-AppEvolve can produce an applicable update. For most cases that AppEvolve
-fails to update the apps, we notice that simple refactoring of the target
-app might suffice to allow edits learned from examples to be applied
-successfully in the target app. We show these successful modifications on
-cases presented in Section~\ref{sec:findings}. In each case, we apply a
-mitigation with respect to a specific use of a specific deprecated API
-method, and then run AppEvolve on the code resulting from applying the
-mitigation.
+AppEvolve can produce an applicable update. To simplify the usages of the
+deprecated apps, we refactored these usages such that each deprecated API
+method invocation appears as the right hand side of an assignment
+statement, and such that each argument of the deprecated method is a simple
+variable, reminiscent of the three address code used in compiler
+intermediate repreentations \cite{compiler}.  The right side of
+Table~\ref{tab:mitigatesucc} shows the result of applying these mitigations
+on the cases presented in Section~\ref{sec:findings} where running
+AppEvolve on the transformed code produces applicable updates.
 
 \begin{enumerate}
 \item We refactor the code on the left hand of Listing 1 in Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than directly returning the result of {\tt fromHtml} deprecated method invocation, we first assign it to a variable named {\tt a} of type {\tt Spanned}. %This allows AppEvolve to generate an applicable update to this piece of code.

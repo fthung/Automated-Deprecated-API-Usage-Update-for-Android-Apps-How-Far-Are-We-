@@ -56,46 +56,41 @@ the number of occurrences of each of these issues.
  structurally different.} AppEvolve infers edit operations at the statement
  level (insert a statement, move a statement, etc).  Accordingly, AppEvolve
  is not able to apply changes inferred about method uses found in one kind
- of statement to a method use found in another kind of statement.  In the
- examples used in the evaluation of AppEvolve, it often occurs that the
- invocation of the deprecated API method is used as the right hand side of
- an assignment, while in our dataset the API method invocations occur in a
- variety of expression contexts.  We now present some examples:
+ of statement to a method use found in another kind of statement.  We have
+ observed that in the examples used in the evaluation of AppEvolve, it
+ often occurs that the invocation of the deprecated API method is used as
+ the right hand side of an assignment, while in our dataset the API method
+ invocations occur in a variety of expression contexts.  We now present
+ some examples:
 \begin{itemize}
-\item Return statement:
-In the code shown on the left side of Listing 1 in
-Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+\item Return statement (left side of Listing 1 in
+Table~\ref{tab:mitigatesucc}): An invocation of the deprecated method {\tt
 fromHtml} appears as part of a return statement of the {\tt getTitle}
 method.
 
-\item If statement test:
-In the code shown on the left side of Listing 2 in
-Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
-requestAudioFocus} appears as a subexpression of the test expression of a
+\item If statement test (left side of Listing 2 in
+Table~\ref{tab:mitigatesucc}): An invocation of the deprecated method {\tt
+request\-Audio\-Focus} appears as a subexpression of the test expression of a
 conditional.
 
-\item Method argument:
-In the code shown on the left side of Listing 3 in
-Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
-getCurrentHour} appears as the second argument of the invocation of method {\tt
-String.format}.
+\item Method argument (left side of Listing 3 in
+Table~\ref{tab:mitigatesucc}): An invocation of the deprecated method {\tt
+getCurrentHour} appears as the second argument of the invocation of method
+{\tt String.format}.
 
-\item Binary operator:
-In the code shown on the left side of Listing 4 in
-Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
-getCurrentHour} appears as the left argument of a concatenation with the
-string {\tt ":"}.
+\item Binary operator (left side of Listing 4 in
+Table~\ref{tab:mitigatesucc}): An invocation of the deprecated method {\tt
+getCurrentHour} appears as the left argument of a concatenation with {\tt ":"}.
 
-\item Declared variable:
-In the code shown on the left side of Listing 5 in
-Table~\ref{tab:mitigatesucc}, an invocation of the deprecated method {\tt
+\item Declared variable (left side of Listing 5 in
+Table~\ref{tab:mitigatesucc}): An invocation of the deprecated method {\tt
 getCurrentHour} appears as the initial value of a declared variable.  Even
-though this case involves an assignment, such code does not match examples where
-the assignment involves a previously declared variable.
+though this case involves an assignment, such code does not match examples
+where the assignment involves a previously declared variable.
 \end{itemize}
 
 \vspace{0.25\baselineskip}\noindent\textbf{2) Object and arguments of the
-deprecated API method are in the form of complex expressions.}
+deprecated API method are complex expressions.}
 In creating edits, AppEvolve only abstracts over variables.  Accordingly,
 when examples always contain variables for the object or the arguments, the
 generated edits are not sufficient to update code in which these subterms
@@ -130,31 +125,41 @@ field {\tt callback} of type {\em GnssStatus.Callback}.
 Since AppEvolve only learns edits inside a method containing the deprecated
 API usage, it misses this necessary addition.
 
-\vspace{0.25\baselineskip}\noindent\textbf{4) Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involve programming language features such as:
+\vspace{0.25\baselineskip}\noindent\textbf{4) Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involves programming language features such as:
 \begin{itemize}
-\item Inheritance: The code on the left hand side of Listing 7 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method is {\tt setAudioStreamType} of the class {\tt Media Player.} In the above snippet, {\tt TestMediaPlayer} extends {\tt MediaPlayer} and thus it inherits the {\tt setAudioStreamType} method. This method should be updated but AppEvolve does not seem to recognize it due to the use of inheritance.
-\item Static modifier:  The code in the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which is a static field.
+\item Inheritance: The code on the left hand side of Listing 7 in
+Table~\ref{tab:mitigatefail} uses the deprecated API method {\tt
+set\-Audio\-Stream\-Type} of the class {\tt MediaPlayer}. In the code snippet,
+{\tt Test\-Media\-Player} extends {\tt MediaPlayer} and thus it inherits
+the {\tt setAudioStreamType} method. This method should be updated but
+AppEvolve does not seem to recognize it due to the use of inheritance.
+\item Static modifier:  The code on the left hand side of Listing 8 in
+Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated
+API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which
+is a static field.
 
 \item Final modifier: The code in the left hand side of Listing 9 in
 Table~\ref{tab:mitigatefail} shows an example of this case.  Variable {\tt
-paint} that is used as the fourth argument to the deprecated API method {\tt saveLayer} is a final field.
+paint} that is used as the fourth argument to the deprecated API method
+{\tt saveLayer} is a final field.
 
 \end{itemize}
 
-\vspace{0.25\baselineskip}\noindent\textbf{5) No examples.} No example for such API update can be found in GitHub.
+\vspace{0.25\baselineskip}\noindent\textbf{5) No examples.} No example
+illustrating the API update can be found in GitHub.
 
 \vspace{0.25\baselineskip}\noindent\textbf{6) Others.} These include cases that cannot be put to any category above.
 
-\vspace{0.25\baselineskip}\noindent Note that the categories {\em edits beyond method boundaries} and {\em no examples} are from AppEvolve failure updates. The other categories are uncovered from our  dataset.
+\vspace{0.25\baselineskip}\noindent The categories {\em edits
+beyond method boundaries} and {\em no examples} are from target apps in the
+original AppEvolve dataset and these categories are reported in the
+AppEvolve paper. The other categories are uncovered from our dataset.
 
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 \lstset{
-	language=text,numbers=none,
-	breaklines=true,
-	aboveskip=-7pt,
-	belowskip= -6pt
-}
+	language=text,numbers=none, breaklines=true, aboveskip=-7pt,
+	belowskip= -6pt }
 
 \begin{table*}
 \centering
