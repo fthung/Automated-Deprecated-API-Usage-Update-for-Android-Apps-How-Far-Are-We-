@@ -359,8 +359,8 @@ public class TestMediaPlayer extends MediaPlayer {
       testContext.getResources()
       .openRawResourceFd(withResource);
     assertNotNull(afd);
-    setDataSource(afd.getFileDescriptor()
-      , afd.getStartOffset(), afd.getLength());
+    setDataSource(afd.getFileDescriptor(),
+      afd.getStartOffset(), afd.getLength());
     afd.close();
     prepare();
   }

@@ -1,29 +1,49 @@
-In this section, we discuss some threats to validity, cases that are not
+In this section, we discuss some threats to validity, the relation of our
+results to those originally presented for AppEvolve, cases that are not
 handled by our mitigations, and future directions for improving the
 approach to updating deprecated API usage in Android apps.
 
 \subsection{Threats to Validity}
 
-One threat is related to whether we have configured AppEvolve correctly. To mitigate this threat, we have tried our best to run AppEvolve following the instructions given by the authors in the AppEvolve documentation. We have also asked AppEvolve's first author on how to configure AppEvolve correctly for new mobile apps. We can replicate all of the results on the original dataset, even when we try to redo the configurations from scratch.  We have also rechecked our configurations several times. Also, we have released a replication package\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}} for others to check and validate.
+One threat is related to whether we have configured AppEvolve correctly. To
+mitigate this threat, we have tried our best to run AppEvolve following the
+instructions given by the authors in the AppEvolve documentation. We have
+also asked AppEvolve's first author how to configure AppEvolve correctly
+for new mobile apps. Based on the information obtained, we independently
+reconstructed the configurations for the target apps in the original
+dataset, and using these configurations were able to reproduce the results
+reported for that dataset.  We have also rechecked our configurations for
+the new dataset several times. We have released a replication package for
+others to check and
+validate.\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}}
 
 Another threat is related to generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
 AppEvolve in generating applicable updates. This translates to 54 API usage
 locations on top of the 41 API usage locations in AppEvolve dataset, thus
-more than doubling the number of API usage locations and more than triple the number of apps as compared to the dataset used in the original work. We
+more than doubling the number of API usage locations and more than tripling the number of apps as compared to the dataset used in the original work. We
 believe this is sufficient to understand the capabilities of AppEvolve, as
 44 of the 54 API usages that we have added uncover limitations of
 AppEvolve. There might be other cases that AppEvolve cannot handle, but we
 believe that we have found many of them.
 
+\subsection{Cases Not Handled by Our Mitigation Strategy}
 
-\subsection{Cases Unhandled by Our Mitigation Strategy}
+There are 8 failed updates \jl{in our dataset?} where our mitigation
+strategy is not successful. For the cases of {\tt static} and {\tt final}
+annotations, representing two failed updates where our mitigations do not
+work, we manage to manually alter the target code such that AppEvolve can
+successfully apply the learned edits. We show these cases below.
 
-There are 8 failed updates in which our mitigation strategy was not successful. For two failed updates where our mitigations do not work, we manage to manually alter the target code such that
-AppEvolve can successfully apply the learned edits. We show these two cases below.
+We modified the code on the left hand side of Listing 8 in
+Table~\ref{tab:mitigatefail} following the diff shown below. In the
+original code, a static field {\tt afChangeListener} of type {\tt
+  Audio\-Manager.OnAudioFocusChangeListener} is directly put as the first
+argument of {\tt requestAudioFocus} and AppEvolve cannot generate an
+applicable update. When {\tt afChangeListener} is assigned to a local
+variable named {\tt af} in addition to our mitigation, AppEvolve can
+generate an applicable update.
 
-For one case, we modified the code on the left hand side of Listing 8 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below. In the modified code, a static field {\tt afChangeListener} of type {\tt AudioManager.OnAudioFocusChangeListener} is directly put as the first argument of {\tt requestAudioFocus} and AppEvolve cannot generate an applicable update. When {\tt afChangeListener} is assigned to a local variable named {\tt af}, AppEvolve can generate an applicable update.
-
-\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
+\begin{lstlisting}[language=diff,numbers=none]
 private static AudioManager mAudioManager;
 private static OnAudioFocusChangeListener afChangeListener;
 public static void requestAudioFocus
@@ -47,10 +67,12 @@ public static void requestAudioFocus
 }
 \end{lstlisting}
 
+\vspace{\baselineskip}
 
-\vspace{0.5cm} For another case, we modify the code on the left hand of Listing 9 in Table~\ref{tab:mitigatefail} to an equivalent one following the diff shown below.
+We modified the code on the left hand side of Listing 9 in
+Table~\ref{tab:mitigatefail} following the diff shown below.
 
-\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
+\begin{lstlisting}[language=diff,numbers=none]
 -private final Paint paint;
 +private Paint paint;
 @Override protected void onDraw(Canvas canvas) {
@@ -69,70 +91,80 @@ public static void requestAudioFocus
   }
 \end{lstlisting}
 
-\vspace{0.5cm}In the above listing, a field named {\tt paint} of type {\tt
-  Paint} has a {\tt final} modifier. Removing this modifier results in an
-applicable update. It suggests that AppEvolve does not support {\tt final}
-modifier.
+\vspace{\baselineskip}
+
+In the original code, the field named {\tt paint} of type {\tt Paint} has a
+{\tt final} modifier. Removing this modifier after performing our
+mitigation results in an applicable update. It suggests that AppEvolve does
+not support {\tt final} modifier.
 
 \subsection{Result assessment}
 
-We were surprised at the large difference between the results on our data
-set, where we obtained an accuracy \jl{right word?} of \jl{what}\%, and the
-results reported by the authors of AppEvolve, who obtained an accuracy of
-\jl{what}\%, even though our dataset was constructed randomly, without
-taking into account the strengths or weaknesses of AppEvolve.  Likewise,
-given that AppEvolve relies on matching statements, abstracting only over
-variables, between the examples and the target, it is surprising that
-AppEvolve could achieve such high accuracy on simple getter functions such
-as \jl{getCurrentHour()}, that in our dataset are often used as
-subexpressions of arbitrary possibly application-specific statement, and on
-method calls that have arbitrary, again project-specific, arguments, such
-as our example in Listing \jl{which?}.
+We were initially surprised at the large difference between the results on
+our data set, where we obtained an accuracy \jl{right word?} of
+\jl{what}\%, and the results reported by the authors of AppEvolve, who
+obtained an accuracy of \jl{what}\%, even though our dataset was
+constructed randomly, without taking into account the strengths or
+weaknesses of AppEvolve.  Indeed, given that AppEvolve relies on matching
+statements, abstracting only over variables, it is surprising that
+AppEvolve could achieve such high accuracy on e.g.\ simple getter functions such
+as \jl{getCurrentHour()} (e.g., Listing 3), that in our dataset are often
+used as subexpressions of arbitrarily complex statements, which may contain
+project-specific code.  Likewise, as illustrated by Listing 2, invocations
+of method calls may have arbitrarily complex, possibly project-specific,
+arguments that are not likely to be found in other codebases.
 
-To understand better how AppEvolve overcomes these challenges, we
-investigate the examples and target programs used in the original AppEvolve
-evaluation.  Given the difficulty of finding the original files for the
+To understand better how AppEvolve is able to achieve a high rate of
+success in the reported evaluation, we investigate the examples and target
+programs used.  Given the difficulty of finding the original files for the
 examples, for which no origin information is provided, we focus on a single
-example, the call to \jl{getCurrentHour()} in \jl{what project} in F-Droid
-version \jl{which} (\jl{what code} in the AppEvolve paper).  In F-Droid, we
-find that the call to \jl{getCurrentHour()} is found in the argument list
-of a call to \jl{what?}, a code structure similar to our Listing
-\jl{which}.  In the AppEvolve dataset, this call is extracted into a
-separate statement, analogous to our mitigation shown on the right hand
-side of Listing \jl{which}.  We have furthermore looked at one of the
-examples provided for this API, and have found the original on GitHub i the
-file \jl{fill in}.  Again, we find that in the original example, the call
-appears in an argument list, which the corresponding example in the
-AppEvolve example set has been transformed analogous to our mitigation.
-This change converts invocations that occur in differing contexts to
-invocations that can be matched by AppEvolve.
+example, the call to {\tt getCurrentHour} in the app {\sc Conversations}
+version 1.8.0 in F-Droid (A2-U3 in the AppEvolve paper).  In F-Droid, we
+find that the only invocation of {\tt getCurrentHour} is found in the
+argument list of a call to the {\tt set} method of the {\tt Calendar
+  class}, a code structure similar to our Listing 3.  In the AppEvolve
+dataset, this call is extracted into a separate statement, analogous to our
+mitigation shown on the right hand side of Listing 3.  We have furthermore
+looked at one of the examples provided for this API, and have found the
+original on GitHub in the file \jl{fill in}.  Again, we find that in the
+GitHub code, the call appears in an argument list, while the corresponding
+example in the AppEvolve example set has been transformed analogous to our
+mitigation.  These changes convert invocations that occur in differing
+contexts to invocations that can be exploited by AppEvolve.
 
-A solution, to retain the spirit of AppEvolve, could be to apply our
-mitigation systematically to the occurrences of the deprecated API in the
-examples and in the target code.  Such normalizations may, however,
-introduce readability issues.  We leave this to future work.
-
-\jl{The last paragraph could be adjusted to fit better with the context.
-It is important to make clear that it doesn't matter what is the form of
-the target program and the examples.  What is important is that they all
-have the same form.}
+We note that the observe issue appears to be a direct result of the key
+design decision of AppEvolve, of not merging examples.  Merging could
+motivate discarding irrelevant context of the use of the deprecated method
+and extending the abstraction of subterms beyond variables, but as observed
+by the authors of AppEvolve, could result in discarding some information
+that is necessary to correctly perform the transformation.
 
 \subsection{Future Directions}
 
-Our mitigations can fix 81.82\% of the failed updates that we found,
-showing that even simple modifications of the target apps can allow
-edits that are learned from examples of API usage to be applied
-successfully. This technique can possibly be generalized by normalizing the
-code into a standard form. Edits can then be learned from this standard
-form. When the edit is applied to a new piece of code, that target code
-should also be normalized, which should minimize the variations in the code
-due to simple refactorings. If the edits are successfully applied, the
-resulting code can then be refactored again to restore the coding
-style of the developers.  Our mitigations represent a subset of the normalizations that are
-possible.
+Our above analysis suggests that our mitigation succeeds because the
+AppEvolve authors have already performed such a mitigation in the change
+examples included in the AppEvolve replication package.  To improve the
+results of AppEvolve in the more general case, a solution could be to
+systematically first normalize the change examples to a standard form.
+Edits can then be learned from this standard form. When the edit is applied
+to a new piece of code, that target code should also be normalized, to
+minimize the code variations. If the edits are successfully applied, the
+resulting code can then be refactored again to restore the coding style of
+the developers.  Our mitigations represent a subset of the normalizations
+that may be possible.
 
-Related to the last point on refactoring resulting code to follow the coding style of developers, we perform a simple experiment to compare the output of AppEvolve after our simple refactoring with code that are manually updated to deal with a set of deprecated API.  We
-asked a software engineer who is not a co-author of this paper to update the code shown on the left hand side of Listing 4  in Table~\ref{tab:mitigatesucc}. The code generated by AppEvolve and by the engineer are shown below.
+Any tool that automatically transforms code runs the risk of converting the
+code to a style that is incompatible with the preferences of the given
+app's developers.  In the case of AppEvolve, there is already the risk of
+changing the existing coding style to the coding style found in the app
+providing the change example, and any normalization performed to the target
+code further increases this risk.  To assess the impact of AppEvolve on
+coding style, we perform a simple experiment to compare the output of
+AppEvolve after applying our mitigation with code that is manually updated
+to deal with a set of deprecated APIs.  We asked a software engineer who is
+not an author of this paper to update the code shown on the left hand side
+of Listing 4 in Table~\ref{tab:mitigatesucc}. The code generated by
+AppEvolve and by the engineer are shown below.
 
 %Buse and Weimer~\cite{Buse:2008:MSR:1390630.1390647} propose a metric of
 %software readability that are based on a set of simple local features. They

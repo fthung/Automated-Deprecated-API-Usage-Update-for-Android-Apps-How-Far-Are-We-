@@ -1,27 +1,58 @@
-We tried to modify the target location in the app's source code so that
-AppEvolve can produce an applicable update. To simplify the usages of the
-deprecated apps, we refactored these usages such that each deprecated API
-method invocation appears as the right hand side of an assignment
-statement, and such that each argument of the deprecated method is a simple
-variable, reminiscent of the three address code used in compiler
-intermediate repreentations \cite{compiler}.  The right side of
-Table~\ref{tab:mitigatesucc} shows the result of applying these mitigations
-on the cases presented in Section~\ref{sec:findings} where running
-AppEvolve on the transformed code produces applicable updates.
+To mitigate the observed failures, we tried to modify the deprecated API
+usages in the target app's source code so that AppEvolve could produce an
+applicable update. Specifically, we refactored these usages such that each
+deprecated API method invocation appears as the right hand side of an
+assignment statement, and such that each argument of the deprecated method
+is a simple variable, reminiscent of the three address code used in
+compiler intermediate representations \cite{dragon} \jl{I don't know why we
+did this.  Did we look at the examples?  Did we look at the target apps
+that were successfully updated?  Did we just try to make the code
+simpler?}.  The right side of Table~\ref{tab:mitigatesucc} shows a diff
+that applies these mitigations on the cases presented in
+Section~\ref{sec:findings} where the mitigation allows AppEvolve
+to produce applicable updates.
 
 \begin{enumerate}
-\item We refactor the code on the left hand of Listing 1 in Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than directly returning the result of {\tt fromHtml} deprecated method invocation, we first assign it to a variable named {\tt a} of type {\tt Spanned}. %This allows AppEvolve to generate an applicable update to this piece of code.
+\item After the refactoring described in Listing 1
+Table~\ref{tab:mitigatesucc}, rather than directly returning the result of
+invoking the deprecated method {\tt fromHtml}, we first assign it to a fresh
+variable named {\tt a} of type {\tt Spanned}.
 
-\item We refactor the code on the left hand of Listing 2 in Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than directly inserting {\tt AudioManager.STREAM\_MUSIC} and {\tt AudioManager.AUDIOFOCUS\_GAIN} constants as the second and third arguments of {\tt requestAudioFocus} deprecated method invocation, they are first assigned to variables named {\tt arg1} of type {\tt int} and {\tt arg2} of type {\tt int}, respectively. Moreover, the result of {\tt requestAudioFocus} deprecated method invocation is assigned to a variable  named {\tt res} of type {\tt AudioManager}, which is then used in an if condition.
+\item After the refactoring described in Listing 2 of
+Table~\ref{tab:mitigatesucc}, rather than directly inserting the constants
+{\tt AudioManager.STREAM\_MUSIC} and {\tt AudioManager.AUDIOFOCUS\_GAIN} as
+the second and third arguments of {\tt requestAudioFocus}, we first assign
+them to fresh {\tt int}-typed variables {\tt arg1} and {\tt arg2},
+respectively. Moreover, the result of invoking {\tt requestAudioFocus} is
+assigned to a fresh variable named {\tt res} of type {\tt AudioManager}
+that is then used in the if condition.
 
-\item We refactor the code in the left hand of Listing 3 in  Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than directly inserting the result of invoking {\tt getCurrentHour} deprecated method to {\tt String.format} second argument, the result is first assigned to a variable named {\tt hour} of type {\tt int}.
+\item After the refactoring described in Listing 3 of
+Table~\ref{tab:mitigatesucc}, rather than directly inserting the result of
+invoking {\tt getCurrentHour} as the second argument of {\tt
+String.format}, the result is first assigned to fresh a variable named {\tt hour}
+of type {\tt int}.
 
-\item We refactor the code on the left hand of Listing 4 in  Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than concatenating the result of invoking {\tt getCurrentHour} deprecated method directly with ``:'' string, the result is first assigned to a variable named {\tt hour} of type {\tt int}.
+\item After the refactoring described in Listing 4 of
+Table~\ref{tab:mitigatesucc}, rather than concatenating the result of {\tt
+getCurrentHour} directly to ``:'', the result is first assigned to a fresh
+variable named {\tt hour} of type {\tt int}.
 
-\item We refactor the code on the left hand of Listing 5 in  Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than directly assigning the result of invoking {\tt getCurrentHour} to a variable named {\tt hours} when it is declared, we declare the variable {\tt hours} first and then assign the result of invoking {\tt getCurrentHour} to the variable {\tt hours}.
+\item After the refactoring described in Listing 5 of
+Table~\ref{tab:mitigatesucc}, rather than directly assigning the result of
+invoking {\tt getCurrentHour} to the variable {\tt hours} when it is
+declared, we declare {\tt hours} first and then assign the result of
+invoking {\tt getCurrentHour} to {\tt hours}.
 
-\item We refactor the code on the left hand of Listing 6 in Table~\ref{tab:mitigatesucc} by following the diff shown on the right hand side. In this refactored code, rather than invoking {\tt setTextAppearance} deprecated method directly from the object returned by invoking {\tt findViewById} method, the returned object is first assigned to a variable named {\tt t} of type {\tt TextView}. {\tt setTextAppearance} method is then invoked from the variable {\tt t}.
+\item After the refactoring described in Listing 6 of
+Table~\ref{tab:mitigatesucc}, rather than invoking {\tt setTextAppearance}
+directly from the object returned by invoking {\tt findViewById}, the
+returned object is first assigned to a variable named {\tt t} of type {\tt
+TextView}. {\tt setTextAppearance} is then invoked from {\tt t}.
 
 \end{enumerate}
 
-In essence, our mitigations refactor the deprecated method invocation in the target app to resemble the examples from which AppEvolve learns the edits to be applied to the target app. Our mitigations result in 36 successful updates out of the 44 failed updates (81.82\% success rate).
+In essence, our mitigations refactor the deprecated method invocation in
+the target app to resemble the examples from which AppEvolve learns
+edits. Our mitigations result in 36 successful updates out of the 44 failed
+updates on the apps in our dataset (81.82\% success rate).
