@@ -23,7 +23,13 @@ refactoring that modifies the code containing API usage in the target app
 to resemble the one in the example. Our mitigations enable AppEvolve
 to generate applicable updates for 81.82\% of the failed cases.
 
-To try to resolve the discrepancy in the findings, \jl{David: Maybe add something here ...}
-
-Based on our findings, we propose future directions for automatic update of deprecated-API usage in Android apps, which include code normalization to ensure that both the example of API usage and the target app code are in the same standard form to minimize the variety of ways that the code is written. Using this technique, simple refactoring that we use to mitigate the failed cases may not be necessary. We also propose the usage of identifier name recommendation to name new variables that may have been introduced due to code normalization.
-
+Our results suggest that the results previously obtained with AppEvolve do
+not generalize beyond their dataset.  By studying and example in the
+dataset and one of its corresponing change examples, it appears that the
+developers of AppEvolve normalized the evaluated change examples and target
+apps in a manner analogous to our mitigation, although this normalization
+does not appear to be reported in the AppEvolve paper.  We propose that
+applying such a mitigation systematically, combined with identifier name
+recommendation and refactoring of the generated code to restore the
+original coding style may be worth exploring for the future use of
+AppEvolve.

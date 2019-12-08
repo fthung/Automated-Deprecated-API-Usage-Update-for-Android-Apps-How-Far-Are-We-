@@ -89,42 +89,39 @@ classes.
 % Several approaches have been developed to recommend and explore how an API can be used~\cite{glassman2018visualizing}. Glassman et al.~\cite{glassman2018visualizing} proposed EXAMPLORE, an tool that summarizes hundreds of code examples for an API in a single view.
 
 
-%\subsection{Program Transformation}
-%
-%Normalization of code to improve the results of program transformations has
-%a long history.  It was extensively used in the early 1990s in the context
-%of partial evaluation (specialization of programs to the values of some
-%known inputs), in the form of {\em binding-time improvements}, in order to
-%bring known values closer together, to allow code simplifications
-%\cite{some,things}.  \jl{X} and \jl{Y} have more generally studied and
-%formalized the impact of program transformations on program optimizations
-%\cite{paper_from_david}.
-%
-%AppEvolve is also part of a line of research that has recently been
-%attracting increasing interest on inferring program transformations from
-%one or more examples.  LASE~\cite{Meng:2013:LLA:2486788.2486855} creates an
-%edit script from examples, locate the edit locations \jl{really?}, and do
-%the code transformation
-%automatically. REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} is a technique
-%for automatic program transformation generation that is build based on code
-%edits performed by developers as input-output
-%examples. Genesis~\cite{Long:2017:AIC:3106237.3106253} automatically infers
-%patch generation transforms from previous successful
-%patches. PHOENIX~\cite{Bavishi:2019:PAD:3338906.3338952} is a fully
-%automated pipeline system that mines and cleans patches from examples and
-%learns generalized executable repair strategies by leveraging a novel
-%Domain Specific Language
-%(DSL). Spdiff~\cite{Andersen:2012:SPI:2351676.2351753} infers
-%transformation specifications from examples of both original and updated
-%code.
-%\jl{These descriptions should be improved.  We don't see how the
-%  capabilities of these tools relate to each other, not how they relate to
-%  the capabilities of AppEvolve.}
-
 \subsection{Program Transformation}
 
-%\jl{alternate section, need to merge}
+Normalization of code to improve the results of program transformations has
+a long history.  It was extensively used in the early 1990s in the context
+of partial evaluation (specialization of programs to the values of some
+known inputs), in the form of {\em binding-time improvements}, in order to
+bring known values closer together, to allow code simplifications
+\cite{Jones:PE}.  Namjoshi and Pavlinovic have more generally studied and
+formalized the impact of program transformations on program optimizations
+\cite{Namjoshi:SAS18}.
 
-Research on program transformation have been done in multiple works~\cite{Visser:2001:SLP:647200.718711, Meng:2013:LLA:2486788.2486855, Rolim:2017:LSP:3097368.3097417,Long:2017:AIC:3106237.3106253, Bavishi:2019:PAD:3338906.3338952, Andersen:2012:SPI:2351676.2351753}. Visser~\cite{Visser:2001:SLP:647200.718711, 10.1007/978-3-540-87875-9_13, Lee:2013:DRI:2486788.2486792, Nguyen:2019:GMI:3339505.3339608} proposed Stratego, a language for program transformation that is based on rewriting strategies. Stratego aims to make reusable transformation rules that can be used in multiple transformations by separating the strategies from the transformation rules. Meng et al.~\cite{Meng:2013:LLA:2486788.2486855} developed LASE, a tool that can create edit script from examples, locate the edit locations, and do the code transformation automatically. Rolim et al.~\cite{Rolim:2017:LSP:3097368.3097417} proposed REFAZER, a technique for automatic program transformation generation which is build based on code edits performed by developers as input-output examples. Long et al.~\cite{Long:2017:AIC:3106237.3106253} proposed Genesis which can automatically infer patch generation transformations from previous successful patches. Bavishi et al.~\cite{Bavishi:2019:PAD:3338906.3338952} developed PHOENIX, a fully automated pipeline system that mines and clean patches from examples and learns generalized executable repair strategies by leveraging a novel Domain Specific Language (DSL). Andersen et al.~\cite{Andersen:2012:SPI:2351676.2351753} proposed the tool spdiff that can infer transformation specifications from examples of both original and updated code. Robbes and Lanza~\cite{10.1007/978-3-540-87875-9_13} presented a system that support example-based program transformation. The system takes an example manual change by developer and generalizes it to other application contexts. Lee et al.~\cite{Lee:2013:DRI:2486788.2486792} implemented DNDRefactoring, a tool that streamline the configuration and invocation of refactoring system through the use of direct manipulation via drag-and-drop. Nguyen et al.~\cite{Nguyen:2019:GMI:3339505.3339608} proposed a graph-based mining approach on detecting repetitive code changes called CPatMiner. This approach aims to detect semantic code change patterns from a large corpus and present them as graph.
-
-In this work, we focus on AppEvolve~\cite{fazzini2019automated}, which is the most-recent program transformation solution targeting mobile apps. AppEvolve was demonstrated to work well on updating deprecated-API usages, which is the target task we are interested in.
+AppEvolve is also part of a line of research that has recently been
+attracting increasing interest on inferring program transformations from
+one or more examples.  LASE~\cite{Meng:2013:LLA:2486788.2486855} creates an
+edit script from examples, locate the edit locations \jl{really?}, and do
+the code transformation
+automatically. REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} is a technique
+for automatic program transformation generation that is build based on code
+edits performed by developers as input-output
+examples. Genesis~\cite{Long:2017:AIC:3106237.3106253} automatically infers
+patch generation transforms from previous successful
+patches. PHOENIX~\cite{Bavishi:2019:PAD:3338906.3338952} is a fully
+automated pipeline system that mines and cleans patches from examples and
+learns generalized executable repair strategies by leveraging a novel
+Domain Specific Language
+(DSL). Spdiff~\cite{Andersen:2012:SPI:2351676.2351753} infers
+transformation specifications from examples of both original and updated
+code.  Robbes and Lanza~\cite{10.1007/978-3-540-87875-9_13} presented a
+system that support example-based program transformation. The system takes
+an example manual change by developer and generalizes it to other
+application contexts.  CPatMiner~\cite{Nguyen:2019:GMI:3339505.3339608} is
+a graph-based mining approach for detecting repetitive code changes. This
+approach aims to detect semantic code change patterns from a large corpus
+and present them as graph.  \jl{These descriptions should be improved.  We
+  don't see how the capabilities of these tools relate to each other, not
+  how they relate to the capabilities of AppEvolve.}
