@@ -1,30 +1,7 @@
-In this section, we discuss some threats to validity, the relation of our
+In this section, we discuss the relation of our
 results to those originally presented for AppEvolve, cases that are not
-handled by our mitigations, and future directions for improving the
-approach to updating deprecated API usage in Android apps.
-
-\subsection{Threats to Validity}
-
-One threat is related to whether we have configured AppEvolve correctly. To
-mitigate this threat, we have tried our best to run AppEvolve following the
-instructions given by the authors in the AppEvolve documentation. We have
-also asked AppEvolve's first author how to configure AppEvolve correctly
-for new mobile apps. Based on the information obtained, we independently
-reconstructed the configurations for the target apps in the original
-dataset, and using these configurations were able to reproduce the results
-reported for that dataset.  We have also rechecked our configurations for
-the new dataset several times. We have released a replication package for
-others to check and
-validate.\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}}
-
-Another threat is related to the generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
-AppEvolve in generating applicable updates. This translates to 54 API usage
-locations on top of the 41 API usage locations in AppEvolve dataset, thus
-more than doubling the number of API usage locations and more than tripling the number of apps as compared to the dataset used in the original work. We
-believe this is sufficient to understand the capabilities of AppEvolve, as
-44 of the 54 API usages that we have added uncover limitations of
-AppEvolve. There might be other cases that AppEvolve cannot handle, but we
-believe that we have found many of them.
+handled by our mitigations future directions for improving the
+approach to updating deprecated API usage in Android apps, and threats to validity.
 
 \subsection{Cases Not Handled by Our Mitigation Strategy}
 
@@ -41,7 +18,7 @@ original code, a static field {\tt afChangeListener} of type {\tt
 argument of {\tt requestAudioFocus} and AppEvolve cannot generate an
 applicable update. When {\tt afChangeListener} is assigned to a local
 variable named {\tt af} in addition to our mitigation, AppEvolve can
-generate an applicable update.
+generate an applicable update. 
 
 %\vspace{\baselineskip}
 
@@ -225,3 +202,27 @@ be to choose good names for the newly introduced variables. Some recent
 studies use deep learning and mining software repositories to recommend
 method and class names~\cite{allamanis2015suggesting}. These approaches can
 potentially be extended for inferring good variable names in our context.
+
+\subsection{Threats to Validity}
+
+One threat is related to whether we have configured AppEvolve correctly. To
+mitigate this threat, we have tried our best to run AppEvolve following the
+instructions given by the authors in the AppEvolve documentation. We have
+also asked AppEvolve's first author how to configure AppEvolve correctly
+for new mobile apps. Based on the information obtained, we independently
+reconstructed the configurations for the target apps in the original
+dataset, and using these configurations were able to reproduce the results
+reported for that dataset.  We have also rechecked our configurations for
+the new dataset several times. We have released a replication package for
+others to check and
+validate.\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}}
+
+Another threat is related to the generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
+AppEvolve in generating applicable updates. This translates to 54 API usage
+locations on top of the 41 API usage locations in AppEvolve dataset, thus
+more than doubling the number of API usage locations and more than tripling the number of apps as compared to the dataset used in the original work. We
+believe this is sufficient to understand the capabilities of AppEvolve, as
+44 of the 54 API usages that we have added uncover limitations of
+AppEvolve. There might be other cases that AppEvolve cannot handle, but we
+believe that we have found many of them.
+
