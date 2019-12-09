@@ -103,9 +103,12 @@ formalized the impact of program transformations on program optimizations
 AppEvolve is also part of a line of research that has recently been
 attracting increasing interest on inferring program transformations from
 one or more examples.  LASE~\cite{Meng:2013:LLA:2486788.2486855} creates an
-edit script from examples, locate the edit locations \jl{really?}, and do
-the code transformation
-automatically. REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} is a technique
+edit script from common changes in a set of examples, locate the edit locations
+in a target application, and do the code transformation automatically. However
+as LASE is only able to abstract variable, method and type names it will never
+consider a function call to a variable to be the same as a function call to an
+expression and thus could benefit from our mitigations.
+REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} is a technique
 for automatic program transformation generation that is build based on code
 edits performed by developers as input-output
 examples. Genesis~\cite{Long:2017:AIC:3106237.3106253} automatically infers
