@@ -17,7 +17,7 @@ the new dataset several times. We have released a replication package for
 others to check and
 validate.\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}}
 
-Another threat is related to generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
+Another threat is related to the generalizability of the findings. We have added 54 new applications to evaluate the effectiveness of
 AppEvolve in generating applicable updates. This translates to 54 API usage
 locations on top of the 41 API usage locations in AppEvolve dataset, thus
 more than doubling the number of API usage locations and more than tripling the number of apps as compared to the dataset used in the original work. We
@@ -32,9 +32,9 @@ There are 8 failed updates in our dataset where our mitigation
 strategy is not successful. For the cases of {\tt static} and {\tt final}
 annotations, representing two failed updates where our mitigations do not
 work, we manage to manually alter the target code such that AppEvolve can
-successfully apply the learned edits. We show these cases below.
+successfully apply the learned edits. We present these cases below.
 
-We modified the code on the left hand side of Listing 8 in
+We modified the code on the left side of Listing 8 in
 Table~\ref{tab:mitigatefail} following the diff shown below. In the
 original code, a static field {\tt afChangeListener} of type {\tt
   Audio\-Manager.OnAudioFocusChangeListener} is directly put as the first
@@ -42,6 +42,8 @@ argument of {\tt requestAudioFocus} and AppEvolve cannot generate an
 applicable update. When {\tt afChangeListener} is assigned to a local
 variable named {\tt af} in addition to our mitigation, AppEvolve can
 generate an applicable update.
+
+%\vspace{\baselineskip}
 
 \begin{lstlisting}[language=diff,numbers=none]
 private static AudioManager mAudioManager;
@@ -69,8 +71,10 @@ public static void requestAudioFocus
 
 \vspace{\baselineskip}
 
-We modified the code on the left hand side of Listing 9 in
+We modified the code on the left side of Listing 9 in
 Table~\ref{tab:mitigatefail} following the diff shown below.
+
+%\vspace{\baselineskip}
 
 \begin{lstlisting}[language=diff,numbers=none]
 -private final Paint paint;
@@ -96,47 +100,49 @@ Table~\ref{tab:mitigatefail} following the diff shown below.
 In the original code, the field named {\tt paint} of type {\tt Paint} has a
 {\tt final} modifier. Removing this modifier after performing our
 mitigation results in an applicable update. It suggests that AppEvolve does
-not support {\tt final} modifier.
+not support the {\tt final} modifier.
 
 \subsection{Result assessment}
 
-We were initially surprised at the large difference between the results on
-our data set, where we obtained a success rate of
-18.51\%, and the results reported by the authors of AppEvolve, who
-obtained a success rate of 85.00\%, even though our dataset was
-constructed randomly, without taking into account the strengths or
-weaknesses of AppEvolve.  Indeed, given that AppEvolve relies on matching
-statements, abstracting only over variables, it is surprising that
-AppEvolve could achieve such high accuracy on e.g.\ simple getter functions such
-as {\tt getCurrentHour()} (e.g., Listing 3), that in our dataset are often
-used as subexpressions of arbitrarily complex statements, which may contain
-project-specific code.  Likewise, as illustrated by Listing 2, invocations
-of method calls may have arbitrarily complex, possibly project-specific,
-arguments that are not likely to be found in other codebases.
+We were initially surprised by the large difference between the results on
+our data set, where we obtained a success rate of 18.51\%, and the results
+reported by the authors of AppEvolve, who obtained a success rate of
+85.00\%, even though our dataset was constructed randomly, without taking
+into account the strengths or weaknesses of AppEvolve.  Indeed, given that
+AppEvolve relies on matching statements, abstracting only over variables,
+it is surprising that AppEvolve could achieve such high accuracy on
+e.g.\ simple getter methods such as {\tt getCurrentHour()} (e.g., Listing
+3). In our dataset, such methods are often used as subexpressions of
+arbitrarily complex statements, which may contain project-specific code.
+Likewise, as illustrated by Listing 2, invocations of method calls may have
+arbitrarily complex, possibly project-specific, arguments that are not
+likely to be found in other codebases.
 
 To understand better how AppEvolve is able to achieve a high rate of
-success in the reported evaluation, we investigate the examples and target
-apps used.  Given the difficulty of finding the original files for the
-examples, for which no origin information is provided, we focus on a single
-example, the call to {\tt getCurrentHour} in the app {\sc Conversations}
-version 1.8.0 in F-Droid (A2-U3 in the AppEvolve paper).  In F-Droid, we
-find that the only invocation of {\tt getCurrentHour} is found in the
-argument list of a call to the {\tt set} method of the {\tt Calendar
-  class}, a code structure similar to our Listing 3.  In the AppEvolve
-dataset, this call is extracted into a separate statement, analogous to our
-mitigation shown on the right hand side of Listing 3.  We have furthermore
-looked at one of the examples provided for this API, and have found the
-original on GitHub in the file {\tt RepeaterDialogFragment.java} from {\tt marekpiotrowskimp/nyndro\_remote} repository.  Again, we find that in the
+success in the previously reported evaluation, we investigate the examples
+and target apps used.  Given the difficulty of finding the original files
+for the examples, for which no origin information is provided, we focus on
+a single example, the call to {\tt getCurrentHour()} in the app {\sc
+  Conversations} version 1.8.0 in F-Droid (A02-U03 in the AppEvolve paper).
+In F-Droid, we find that the only invocation of {\tt getCurrentHour()}
+occurs in the argument list of a call to the {\tt set} method of the {\tt
+  Calendar} class, a code structure similar to the code shown on the left
+side of Listing 3.  In the AppEvolve dataset, this call is extracted into a
+separate statement, analogous to our mitigation shown on the right side of
+Listing 3.  We have furthermore looked at one of the examples provided for
+this API, and have found the original code on GitHub in the file {\tt
+  RepeaterDialogFragment.java} from the {\tt
+  marekpiotrowskimp/nyndro\_remote} repository.  Again, we find that in the
 GitHub code, the call appears in an argument list, while the corresponding
 example in the AppEvolve example set has been transformed analogous to our
 mitigation.  These changes convert invocations that occur in differing
 contexts to invocations that can be exploited by AppEvolve.
 
-We note that the observe issue appears to be a direct result of the key
+We note that the observed issue appears to be a direct result of the key
 design decision of AppEvolve, of not merging examples.  Merging could
 motivate discarding irrelevant context of the use of the deprecated method
-and extending the abstraction of subterms beyond variables, but as observed
-by the authors of AppEvolve, could result in discarding some information
+and extending the abstraction of subterms beyond variables, but, as observed
+by the authors of AppEvolve, it could discard some information
 that is necessary to correctly perform the transformation.
 
 \subsection{Future Directions}
@@ -174,7 +180,8 @@ AppEvolve and by the engineer is shown below.
 %created by the human.  Scores range from 0 to 1 where, 0 is least and 1 is
 %most readable.
 
-\vspace{0.2cm}\noindent {\bf AppEvolve's Update}%\ft{Need to update this example}
+
+\vspace{0.2cm}\noindent {\small\bf AppEvolve's Update}\ft{Need to update this example}
 \begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view){
   int varInt1;
@@ -193,7 +200,7 @@ public void displayTime(View view){
 \end{lstlisting}
 
 
-\vspace{0.2cm}\noindent {\bf Engineer's Update}
+\vspace{0.2cm}\noindent {\small\bf Engineer's Update}
 \begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view) {
     String time;
