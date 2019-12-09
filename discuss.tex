@@ -174,7 +174,7 @@ AppEvolve and by the engineer is shown below.
 %created by the human.  Scores range from 0 to 1 where, 0 is least and 1 is
 %most readable.
 
-\vspace{0.2cm}\noindent {\bf AppEvolve's Update}\ft{Need to update this example}
+\vspace{0.2cm}\noindent {\bf AppEvolve's Update}%\ft{Need to update this example}
 \begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view){
   int varInt1;
@@ -186,13 +186,7 @@ public void displayTime(View view){
   else {
     varInt1=timePicker.getCurrentHour();
   }
-  if (android.os.Build.VERSION.SDK_INT >=
-      android.os.Build.VERSION_CODES.M) {
-    varInt2=timePicker.getMinute();
-  }
-  else {
-    varInt2=timePicker.getCurrentMinute();
-  }
+  varInt2=timePicker.getCurrentMinute();
   String time=varInt1 + ":" + varInt2;
   Toast.makeText(this,time,Toast.LENGTH_SHORT).show();
 }
@@ -206,7 +200,7 @@ public void displayTime(View view) {
     if (android.os.Build.VERSION.SDK_INT >= 23) {
         // only for gingerbread and newer versions
         time = timePicker.getHour() + ":" +
-               timePicker.getMinute();
+               timePicker.getCurrentMinute();
     } else {
         time = timePicker.getCurrentHour() + ":" +
                timePicker.getCurrentMinute();
