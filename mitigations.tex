@@ -1,16 +1,15 @@
 To mitigate the observed failures, we tried to modify the deprecated API
 usages in the target app's source code so that AppEvolve could produce an
-applicable update. Specifically, we refactored these usages such that each
-deprecated API method invocation appears as the right hand side of an
-assignment statement, and such that each argument of the deprecated method
-is a simple variable, reminiscent of the three address code used in
-compiler intermediate representations \cite{dragon} \jl{I don't know why we
-did this.  Did we look at the examples?  Did we look at the target apps
-that were successfully updated?  Did we just try to make the code
-simpler?}\ft{We look at the target apps that were successfully updated and try to make the code simpler}.  The right side of Table~\ref{tab:mitigatesucc} shows a diff
-that applies these mitigations on the cases presented in
-Section~\ref{sec:findings} where the mitigation allows AppEvolve
-to produce applicable updates.
+applicable update. Looking at the 10 apps that were updated successfully,
+we observe that in each case the invocation of the deprecated method
+appears as the right hand side of an assignment statement, and any
+arguments of the deprecated method are simple variables \jl{please check}.
+We transform the remaining apps where possible accordingly, converting the
+invocations of the deprecated APIs to a form reminiscent of the three
+address code used in compiler intermediate representations \cite{dragon}.
+The right side of Table~\ref{tab:mitigatesucc} shows a diff that applies
+these mitigations on the cases presented in Section~\ref{sec:findings}
+where the mitigation allows AppEvolve to produce applicable updates.
 
 \begin{enumerate}
 \item After the refactoring described in Listing 1
