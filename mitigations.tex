@@ -35,6 +35,7 @@ Table~\ref{tab:mitigatesucc}, rather than directly inserting the result of
 invoking {\tt getCurrentHour} as the second argument of {\tt
 String.format}, the result is first assigned to fresh a variable named {\tt hour}
 of type {\tt int}.
+%\lx{may be clearer if we explicitly explain why the return above doesn't need be refactored in the same way as Listing 1, or why getCurrentMinute is not refactored either; it's because AppEvolve only deals with one by one and this case is only about getCurrentHour.}
 
 \item After the refactoring described in Listing 4 of
 Table~\ref{tab:mitigatesucc}, rather than concatenating the result of {\tt
