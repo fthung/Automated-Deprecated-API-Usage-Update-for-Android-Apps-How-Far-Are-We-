@@ -194,9 +194,10 @@ Spanned getTitle(){
 \begin{lstlisting}
 public void play() {
     if (mAudioManager.requestAudioFocus(
-    mAudioFocusListener, AudioManager.STREAM_MUSIC,
-    AudioManager.AUDIOFOCUS_GAIN) !=
-    AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            mAudioFocusListener,
+            AudioManager.STREAM_MUSIC,
+            AudioManager.AUDIOFOCUS_GAIN) !=
+        AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
         return;
     }
 }
@@ -204,20 +205,20 @@ public void play() {
 &
 \begin{lstlisting}[language=diff]
 public void play() {
--   if (mAudioManager.requestAudioFocus
--     (mAudioFocusListener, AudioManager.
--           STREAM_MUSIC,
--     AudioManager.AUDIOFOCUS_GAIN) !=
--     AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
--     return;
+-   if (mAudioManager.requestAudioFocus(
+-           mAudioFocusListener,
+-           AudioManager.STREAM_MUSIC,
+-           AudioManager.AUDIOFOCUS_GAIN) !=
+-       AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
+-       return;
 -   }
 +   int res;
 +   int arg1=AudioManager.STREAM_MUSIC;
 +   int arg2=AudioManager.AUDIOFOCUS_GAIN;
 +   res = mAudioManager.requestAudioFocus (mAudioFocusListener, arg1, arg2);
 +   if (res != AudioManager
-+     .AUDIOFOCUS_REQUEST_GRANTED) {
-+     return;
++       .AUDIOFOCUS_REQUEST_GRANTED) {
++       return;
 +   }
 }
 \end{lstlisting}
@@ -249,7 +250,7 @@ protected String getInputDataString() {
 \begin{lstlisting}
 public void displayTime(View view) {
     String time = timePicker.getCurrentHour()
-	    + ":" + timePicker.getCurrentMinute();
+       + ":" + timePicker.getCurrentMinute();
     Toast.makeText(this, time,
         Toast.LENGTH_SHORT).show();
 }
@@ -279,7 +280,8 @@ public Schedule generate() {
     SeekBar seekBar = (SeekBar) activity
         .findViewById(R.id.setLuminosity);
     int luminosity = seekBar.getProgress();
-    return new Schedule(hours, minutes, luminosity);
+    return new Schedule(hours, minutes,
+                        luminosity);
 }
 \end{lstlisting}
 &
@@ -294,7 +296,8 @@ public Schedule generate() {
     SeekBar seekBar = (SeekBar) activity
         .findViewById(R.id.setLuminosity);
     int luminosity = seekBar.getProgress();
-    return new Schedule(hours, minutes, luminosity);
+    return new Schedule(hours, minutes,
+                        luminosity);
 }
 \end{lstlisting}
 \\ \hline
@@ -305,7 +308,8 @@ protected void onClick() {
     ...
     Dialog d = builder.create();
     d.show();
-    ((TextView) d.findViewById(android.R.id.message))
+    ((TextView) d.findViewById(android.R.id.
+      message))
         .setTextAppearance(getContext(),
         android.R.style.TextAppearance_Small);
     ...
@@ -319,8 +323,8 @@ protected void onClick() {
     d.show();
 -   ((TextView) d.findViewById(android.R.id.
 -     message))
--   .setTextAppearance(getContext(),
--    android.R.style.TextAppearance_Small);
+-       .setTextAppearance(getContext(),
+   -    android.R.style.TextAppearance_Small);
 +   Context c = getContext();
 +   int i = android.R.style.
 +         TextAppearance_Small;
@@ -360,7 +364,8 @@ public class TestMediaPlayer extends MediaPlayer {
       .openRawResourceFd(withResource);
     assertNotNull(afd);
     setDataSource(afd.getFileDescriptor(),
-      afd.getStartOffset(), afd.getLength());
+                  afd.getStartOffset(),
+                  afd.getLength());
     afd.close();
     prepare();
   }
