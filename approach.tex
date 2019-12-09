@@ -28,13 +28,13 @@ Given this example and the mapping
 \texttt{getCurrentHour $\rightarrow$ getHour}, AppEvolve learns a generic
 patch for \texttt{getCurrentHour()} as shown in Figure~\ref{fig:deprecated_api_update_edits}.
 The generic patch updates a
-deprecated method \texttt{getCurrentHour} usage to a replacement method \texttt{getHour} usage.  {\em I} and {\em M} means that the corresponding piece of code are inserted and modified, respectively. Backward
+deprecated method \texttt{getCurrentHour} usage to a replacement method \texttt{getHour} usage.  {\em I} and {\em M} mean that the corresponding piece of code are inserted and modified, respectively. Backward
 compatibility is achieved by checking the version number of the mobile OS
 running the app. If the version is greater than or equal to a certain
 version number, the replacement method is used. Otherwise, the deprecated
 method is used.
 
-Note that AppEvolve can only perform API usage learning and update one mapping of a set of deprecated method at a time. Thus, even though {\tt getCurrentMinute} is also a deprecated method,  AppEvolve does not learn how to update it at the moment.
+Note that AppEvolve can only perform API usage learning and update one mapping at a time. Thus, even though {\tt getCurrentMinute} is also a deprecated method,  AppEvolve does not learn how to update it together with {\tt getCurrentMinute} since it is in a different mapping.
 
 \begin{figure}[htb]
 \begin{lstlisting}[language=diff,numbers=none]
