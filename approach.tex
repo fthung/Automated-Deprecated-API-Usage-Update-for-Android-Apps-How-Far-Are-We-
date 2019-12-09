@@ -37,18 +37,21 @@ method is used.
 
 \begin{figure}[htb]
 \begin{lstlisting}[language=diff,numbers=none]
-public ChromeNotificationBuilder addAction(int icon,
-    CharSequence title, PendingIntent intent) {
-- mBuilder.addAction(icon, title, intent);
-+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-+   Notification.Action action = new Notification.
-+     Action.Builder(Icon.createWithResource(mContext,
-+     icon), title, intent).build();
-+   mBuilder.addAction(action);
+private long addEventToGCal() {
+...
+int hourInt;
+int minInt;
+- hourInt = timepicker.getCurrentHour();
+- minInt = timepicker.getCurrentMinute();
++ if (android.os.Build.VERSION.SDK_INT >=
++       android.os.Build.VERSION_CODES.M) {
++  hourInt = timepicker.getHour();
++  minInt = timepicker.getMinute();
 + } else {
-+   mBuilder.addAction(icon, title, intent);
++  hourInt = timepicker.getCurrentHour();
++  minInt = timepicker.getCurrentMinute();
 + }
-  return this;
+...
 }
 \end{lstlisting}
 \caption{A deprecated API-usage update}
