@@ -13,16 +13,16 @@ al.~\cite{fazzini2019automated} to automate the updating of Android apps in
 response to deprecations of Android APIs.  The main idea of AppEvolve is
 that many software projects may use the APIs in similar ways, and thus
 existing codebases may already contain examples of how to update uses of
-deprecated APIs.  Given a target API that uses a deprecated API and
+deprecated APIs.  Given a target app that uses a deprecated API and
 information about the new API method(s) that should replace it, AppEvolve
 collects update examples from existing codebases, abstracts their variable
 references, ranks them according to their expected applicability, and then
 tries to apply the abstracted examples one by one to the target app.  If an
 abstracted example matches the code, the update is said to be {\em
-applicable}.  Results are furthermore validated by testing.  A key feature
-of AppEvolve is that it does not merge the abstracted examples into a
-single generic pattern, to avoid losing information that may be specific to
-particular usage contexts.
+applicable}.  Applicable updates are furthermore validated by testing.  A
+key feature of AppEvolve is that it does not merge the abstracted examples
+into a single generic pattern, to avoid losing information that may be
+specific to particular usage contexts.
 
 AppEvolve has been evaluated on a dataset involving 15 real-world apps and
 20 real API changes. The dataset contains 41 usage locations of these real
@@ -39,7 +39,7 @@ which AppEvolve cannot generate applicable updates.  To this end, we
 consider the same APIs and change examples as used in the AppEvolve
 evaluation, but create a new dataset of target apps.  In selecting the new
 target apps, we make no effort to take the expected strengths or weaknesses
-of AppEvolve into account, only checking that the apps use one of the
+of AppEvolve into account, and only check that the apps use one of the
 deprecated APIs considered in the AppEvolve dataset and do not use the
 corresponding replacement API.  Of the apps we found at GitHub that satisfy
 these properties, we randomly selected 54 mobile apps that are entirely
@@ -48,22 +48,23 @@ changes and 54 usage locations.
 
 We applied AppEvolve to update the deprecated-API usages in these mobile
 apps and analyzed the cases where it fails to update the apps. Indeed,
-running AppEvolve on our dataset generates applicable updates for 10 usage
-locations and only failed updates for 44 usage locations. Our analysis
-shows that AppEvolve produces applicable updates for a mobile app in cases
-where the API usage closely matches an API change example.  On the other
-hand, AppEvolve often fails to update a mobile app when there are minor
-syntactical differences between the invocations of the deprecated API in
-the target app and the change example.  It also fails when facing
-unsupported \jl{not really convinced about this} programming language
-features, when encountering edits that require modifications beyond method
-boundaries, or finding no relevant change examples in GitHub.  Of these
-limitations, only the latter two were mentioned in the AppEvolve paper.
+running AppEvolve on our dataset generates applicable updates for only 10
+out of 54 usage locations.  It generates only failed updates for the
+remaining 44 usage locations. Our analysis shows that AppEvolve produces
+applicable updates for a mobile app in cases where the API usage closely
+matches an API change example.  On the other hand, AppEvolve often fails to
+update a mobile app when there are minor syntactical differences between
+the invocations of the deprecated API in the target app and the change
+example.  It also fails when facing unsupported \jl{not really convinced
+about this} programming language features, when encountering edits that
+require modifications beyond method boundaries, and when finding no
+relevant change examples in GitHub.  Of these limitations, only the latter
+two were mentioned in the AppEvolve paper.
 
 To try to understand the issues leading to the drastic performance
 difference as compared to the results of the original AppEvolve evaluation,
 we refactor the use of the deperecated in the target app code so that it
-more closely resembles the uses found in change examples from which
+more closely resembles the uses found in the change examples from which
 AppEvolve learns the edits.  After refactoring, we found that AppEvolve can
 generate applicable updates for 81.82\% of the cases where it previously
 failed to do so.  Based on these results, we propose to mitigate the
@@ -75,9 +76,12 @@ automated deprecated-API usage updates for Android apps.
 The main contributions of this paper are as follows:
 \begin{itemize}
 	\item We  evaluate AppEvolve with additional Android apps to investigate if it can effectively perform API-usage updates in different situations. The dataset that we created contains three times more real-world apps than those used to evaluate AppEvolve in the original paper (54 vs 15).
-	\item We categorize the limitations of AppEvolve and show API usage instances in which these limitations are apparent.
+	\item We categorize the limitations of AppEvolve and show API usage
+	instances that are affected by these limitations.
 	\item We discuss how the limitations may be overcome to improve the automatic API-usage updates for Android apps.
-	\item We release a replication package to allow easy replication and evaluation of our experiments and results.%\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}}
+	\item We release a replication package to allow easy replication
+	and evaluation of our experiments and results. \jl{Need a URL!}
+%\footnote{\url{https://sites.google.com/smu.edu.sg/appevolve-replication}}
 	%\lx{if it's really 30GB, better to explain a bit why it is so big,
 	%e.g., containing much raw data crawled from GitHub?} \jl{This could
 	%be in the footnote.}
@@ -86,4 +90,4 @@ The main contributions of this paper are as follows:
 The remainder of this paper is structured as follows. Section~\ref{sec:approach} describes AppEvolve, the state-of-the-art work on automated updates of deprecated API usages in Android apps. Section~\ref{sec:replication} presents our replication settings. Section~\ref{sec:findings} presents our findings. Section~\ref{sec:mitigations} presents our mitigation strategy and results for some failed updates of Android apps.
 Section~\ref{sec:discuss} discusses limitations and threats to validity of our findings.
 Section~\ref{sec:related} presents related work.
-Last but not least, Section~\ref{sec:conclusion} concludes and presents promising future work.
+Finally, Section~\ref{sec:conclusion} concludes and presents promising future work.
