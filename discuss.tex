@@ -54,8 +54,7 @@ Table~\ref{tab:mitigatefail} following the diff shown below.
 %\vspace{\baselineskip}
 
 \begin{lstlisting}[language=diff,numbers=none]
--private final Paint paint;
-+private Paint paint;
+private final Paint paint;
 @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     canvas.drawColor(Color.GREEN);
@@ -64,7 +63,9 @@ Table~\ref{tab:mitigatefail} following the diff shown below.
 +   float c = getWidth();
 +   float d = getHeight();
 +   int flag = Canvas.CLIP_SAVE_FLAG;
-+   canvas.saveLayer(a,b,c,d, paint, flag);
++   Paint p;
++   p = paint;
++   canvas.saveLayer(a,b,c,d, p, flag);
 -   canvas.saveLayer(0, 0, canvas.getWidth(),
 -       canvas.getHeight(), paint,
 -       Canvas.ALL_SAVE_FLAG);
