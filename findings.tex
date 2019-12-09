@@ -340,6 +340,101 @@ protected void onClick() {
 \end{tabular}
 \end{table*}
 
+\begin{table*}
+\centering
+\caption{Successful simple refactoring mitigations that allow AppEvolve to generate applicable updates}\label{tab:mitigatesucc}
+\begin{tabular}{|p{.10\textwidth}|p{.40\textwidth}|p{.40\textwidth}|}
+\hline
+\textbf{Listing}
+  &
+  \textbf{Original Code}
+  &
+  \textbf{Refactoring Diff}
+ \\ \hline
+7. Incomplete support: static
+&
+\begin{lstlisting}
+private static AudioManager mAudioManager;
+private static OnAudioFocusChangeListener afChangeListener;
+public static void requestAudioFocus
+  (Context context) {
+  if(mAudioManager == null){
+    mAudioManager = (AudioManager)
+      context.getApplicationContext()
+      .getSystemService
+      (Context.AUDIO_SERVICE);
+  }
+  mAudioManager.requestAudioFocus(
+    afChangeListener,
+    AudioManager.STREAM_MUSIC,
+    AudioManager.AUDIOFOCUS_GAIN);
+}
+\end{lstlisting}
+&
+\begin{lstlisting}[language=diff]
+private static AudioManager mAudioManager;
+private static OnAudioFocusChangeListener afChangeListener;
+public static void requestAudioFocus
+  (Context context) {
+  if(mAudioManager == null){
+    mAudioManager = (AudioManager)
+      context.getApplicationContext()
+      .getSystemService
+      (Context.AUDIO_SERVICE);
+  }
+- mAudioManager.requestAudioFocus(
+-   afChangeListener,
+-   AudioManager.STREAM_MUSIC,
+-   AudioManager.AUDIOFOCUS_GAIN);
++ int res;
++ int a = AudioManager.STREAM_MUSIC;
++ int b = AudioManager.AUDIOFOCUS_GAIN;
++ AudioManager am = mAudioManager;
++ AudioManager.OnAudioFocusChangeListener
++      af = afChangeListener;
++ res = am.requestAudioFocus(af,a,b);
+}
+\end{lstlisting}
+\\ \hline
+8. Incomplete support: final
+&
+\begin{lstlisting}
+private final Paint paint;
+@Override protected void onDraw(Canvas canvas) {
+  super.onDraw(canvas);
+  canvas.drawColor(Color.GREEN);
+  canvas.saveLayer(0, 0, canvas.getWidth(),
+    canvas.getHeight(), paint,
+    Canvas.ALL_SAVE_FLAG);
+  canvas.restore();
+}
+\end{lstlisting}
+&
+\begin{lstlisting}[language=diff]
+private final Paint paint;
+@Override protected void onDraw(Canvas canvas) {
+  super.onDraw(canvas);
+  canvas.drawColor(Color.GREEN);
++ float a = 0;
++ float b = 0;
++ float c = getWidth();
++ float d = getHeight();
++ int flag = Canvas.CLIP_SAVE_FLAG;
++ Paint p;
++ p = paint;
++ canvas.saveLayer(a, b, c, d, p, flag);
+- canvas.saveLayer(0, 0, canvas.getWidth(),
+-   canvas.getHeight(), paint,
+-   Canvas.ALL_SAVE_FLAG);
+  canvas.restore();
+}
+\end{lstlisting}
+\\ \hline
+		
+\end{tabular}
+\end{table*}
+
+
 \begin{table}
 	\caption{Categories of failed updates that are unhandled by our mitigations}\label{tab:mitigatefail}
 \centering
@@ -349,7 +444,7 @@ protected void onClick() {
   &
   \textbf{Original Code}
  \\ \hline
-7. Incomplete support: inheritance
+9. Incomplete support: inheritance
 &
 \begin{lstlisting}
 public class TestMediaPlayer extends MediaPlayer {
@@ -369,40 +464,6 @@ public class TestMediaPlayer extends MediaPlayer {
     afd.close();
     prepare();
   }
-}
-\end{lstlisting}
-\\ \hline
-8. Incomplete support: static
-&
-\begin{lstlisting}
-private static AudioManager mAudioManager;
-private static OnAudioFocusChangeListener afChangeListener;
-public static void requestAudioFocus
-  (Context context) {
-  if(mAudioManager == null){
-    mAudioManager = (AudioManager)
-      context.getApplicationContext()
-      .getSystemService
-      (Context.AUDIO_SERVICE);
-  }
-  mAudioManager.requestAudioFocus(
-    afChangeListener,
-    AudioManager.STREAM_MUSIC,
-    AudioManager.AUDIOFOCUS_GAIN);
-}
-\end{lstlisting}
-\\ \hline
-9. Incomplete support: final
-&
-\begin{lstlisting}
-private final Paint paint;
-@Override protected void onDraw(Canvas canvas) {
-  super.onDraw(canvas);
-  canvas.drawColor(Color.GREEN);
-  canvas.saveLayer(0, 0, canvas.getWidth(),
-    canvas.getHeight(), paint,
-    Canvas.ALL_SAVE_FLAG);
-  canvas.restore();
 }
 \end{lstlisting}
 \\ \hline
