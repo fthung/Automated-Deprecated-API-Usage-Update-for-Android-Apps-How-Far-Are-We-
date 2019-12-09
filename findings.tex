@@ -137,29 +137,28 @@ Table~\ref{tab:mitigatesucc2} shows an example of this case.  Variable {\tt
 paint} that is used as the fourth argument to the deprecated API method
 {\tt saveLayer} is a final field.
 
-\item Inheritance: The code on the left hand side of the listing below uses the deprecated API method {\tt
+\item Inheritance: The code below uses the deprecated API method {\tt
 	set\-Audio\-Stream\-Type} of the class {\tt MediaPlayer}. In the code snippet,
 {\tt Test\-Media\-Player} extends {\tt MediaPlayer} and thus it inherits
 the {\tt setAudioStreamType} method. This method should be updated but
 AppEvolve does not seem to recognize it due to the use of inheritance.
 \begin{lstlisting}[language=text]
 public class TestMediaPlayer extends MediaPlayer {
-public TestMediaPlayer() {
-setAudioStreamType(AudioManager.STREAM_MUSIC);
-}
-public TestMediaPlayer(Context testContext,
-int withResource) throws Exception {
-this();
-AssetFileDescriptor afd =
-testContext.getResources()
-.openRawResourceFd(withResource);
-assertNotNull(afd);
-setDataSource(afd.getFileDescriptor(),
-afd.getStartOffset(),
-afd.getLength());
-afd.close();
-prepare();
-}
+  public TestMediaPlayer() {
+    setAudioStreamType(AudioManager.STREAM_MUSIC);
+  }
+  public TestMediaPlayer(Context testContext,
+    int withResource) throws Exception {
+    this();
+    AssetFileDescriptor afd = testContext.getResources()
+        .openRawResourceFd(withResource);
+    assertNotNull(afd);
+	setDataSource(afd.getFileDescriptor(),
+	afd.getStartOffset(),
+	afd.getLength());
+	afd.close();
+	prepare();
+  }
 }
 \end{lstlisting}
 
