@@ -2,11 +2,15 @@ To mitigate the observed failures, we tried to modify the deprecated API
 usages in the target app's source code so that AppEvolve could produce an
 applicable update. Looking at the 10 apps that were updated successfully,
 we observe that in each case the invocation of the deprecated method
-appears as the right hand side of an assignment statement, or any
+appears as the right-hand side of an assignment statement, or any
 arguments of the deprecated method are simple variables.
 We transform the remaining apps where possible accordingly, converting the
 invocations of the deprecated APIs to a form reminiscent of the three
 address code used in compiler intermediate representations \cite{dragon}.
+
+In essence, our mitigations refactor the deprecated method invocation in
+the target app to resemble the examples from which AppEvolve learns
+edits. 
 The right side of Table~\ref{tab:mitigatesucc} shows a diff that applies
 these mitigations on the cases presented in Section~\ref{sec:findings}
 where the mitigation allows AppEvolve to produce applicable updates.
@@ -51,8 +55,6 @@ TextView}. {\tt setTextAppearance} is then invoked from {\tt t}.
 
 \end{enumerate}
 
-In essence, our mitigations refactor the deprecated method invocation in
-the target app to resemble the examples from which AppEvolve learns
-edits. Our mitigations result in 38 successful updates out of the 44 failed
+Our mitigations result in 38 successful updates out of the 44 failed
 updates on the apps in our dataset (86\% success rate), overall giving
 success on 48 out of the 54 apps in our dataset (89\% success rate).
