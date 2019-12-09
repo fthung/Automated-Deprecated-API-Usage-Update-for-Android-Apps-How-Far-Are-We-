@@ -165,15 +165,15 @@ AppEvolve and by the engineer is shown below.
 \vspace{0.2cm}\noindent {\small\bf AppEvolve's Update}
 \begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view){
-  int varInt1;
+  int hour;
   if (android.os.Build.VERSION.SDK_INT >=
       android.os.Build.VERSION_CODES.M) {
-    varInt1=timePicker.getHour();
+    hour=timePicker.getHour();
   }
   else {
-    varInt1=timePicker.getCurrentHour();
+    hour=timePicker.getCurrentHour();
   }
-  String time=varInt1 + ":" + timePicker.getCurrentMinute();;
+  String time=hour + ":" + timePicker.getCurrentMinute();;
   Toast.makeText(this,time,Toast.LENGTH_SHORT).show();
 }
 \end{lstlisting}
