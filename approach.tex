@@ -23,8 +23,7 @@ As an example, in Android API version 23, the method
 version 1, was deprecated and the method \texttt{getHour()} was suggested
 as its replacement.  Figure~\ref{fig:deprecated_api_update_example} shows
 an example that modifies a usage of the method \texttt{getCurrentHour()} to
-its replacement method \texttt{getHour()}. Given this example, one can
-possibly learn a generic patch as shown in
+its replacement method \texttt{getHour()}. Given this example, AppEvolve learns a generic patch as shown in
 Figure~\ref{fig:deprecated_api_update_edits}. The generic patch updates a
 deprecated method usage to a replacement method usage.  Backward
 compatibility is achieved by checking the version number of the mobile OS
@@ -55,28 +54,34 @@ private long addEventToGCal() {
 \label{fig:deprecated_api_update_example}
 \end{figure}
 
+%\begin{figure}[htb]
+%\centering
+%\begin{lstlisting}[language=diff,numbers=none]
+%- $T2 = $T1.getCurrentHour();
+%+ if (android.os.Build.VERSION.SDK_INT >=
+%+       android.os.Build.VERSION_CODES.M) {
+%+  $T2 = $T1.getHour();
+%+ } else {
+%+  $T2 = $T1.getCurrentHour();
+%+ }
+%\end{lstlisting}
+%\caption{A generic patch for updating uses of \texttt{getCurrentHour()}}
+%\label{fig:deprecated_api_update_edits}
+%\end{figure}
+
 \begin{figure}[htb]
-\begin{lstlisting}[language=diff,numbers=none]
-- $T2 = $T1.getCurrentHour();
-+ if (android.os.Build.VERSION.SDK_INT >=
-+       android.os.Build.VERSION_CODES.M) {
-+  $T2 = $T1.getHour();
-+ } else {
-+  $T2 = $T1.getCurrentHour();
-+ }
-\end{lstlisting}
-\caption{A generic patch for updating uses of \texttt{getCurrentHour()}}
-\label{fig:deprecated_api_update_edits}
+	\centering
+	\begin{lstlisting}[language=text,numbers=none]
+I if SDK_INT >= M
+I $T = $T.getHour()
+M $T = $T.getCurrentHour()
+	\end{lstlisting}
+	\caption{AppEvolve's generic patch for updating uses of \texttt{getCurrentHour()}}
+	\label{fig:deprecated_api_update_edits}
 \end{figure}
 
-\jl{Figure \ref{fig:deprecated_api_update_edits} uses $-$ and $+$, but the
-  AppEvolve paper uses I M D and U.  Furthermore, the figures in the
-  AppEvolve paper don't use T1 and T2, and they don't use the syntax of
-  real Java code.  Please don't just comment out this comment, but respond
-  to it or do something about it.  It is important to represent AppEvolve
-  accurately.}
+\lx{Is this example intended to show the limitation of AppEvolve or a desired patch? This is related to the above sentence "..., one can possibly learn a generic patch as in Figure 2...": the sentence seems to imply the latter more; but if the example is more for showing the limitation of AppEvolve, it indeed should show the actual result from AppEvolve as accurately as possible and that sentence is better to be "..., AppEvolve would learn a patch as in Figure 2...". IMHO, it can be good to show both: first show the desired generic patch, and then show the actual patch from AppEvolve to show its limitations.}\ft{I think we should show only AppEvolve patch. It was only intended to introduce AppEvolve.  }
 
-\lx{Is this example intended to show the limitation of AppEvolve or a desired patch? This is related to the above sentence "..., one can possibly learn a generic patch as in Figure 2...": the sentence seems to imply the latter more; but if the example is more for showing the limitation of AppEvolve, it indeed should show the actual result from AppEvolve as accurately as possible and that sentence is better to be "..., AppEvolve would learn a patch as in Figure 2...". IMHO, it can be good to show both: first show the desired generic patch, and then show the actual patch from AppEvolve to show its limitations.}
 
 \subsection{Approach}
 \toolname\ takes as input a target app to update and a mapping from
@@ -160,6 +165,6 @@ identified by reading the API documentation. Using the API change, the API
 usage in each app is guaranteed to be: (1) different from the ones in the
 other apps and (2) updated in the subsequent API version.  When applied to
 the 15 apps considered, AppEvolve was able to update 17 out of 20 API
-usages (85.00\% success rate) and 37 out of 41 of their occurrences across
-the apps \jl{why no percentage?}.
+usages (85.00\% success rate) and 37 out of 41 (90.24\% success rate) of their occurrences across
+the apps. %\jl{why no percentage?}
 

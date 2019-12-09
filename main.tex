@@ -44,6 +44,8 @@
 	identifierstyle=\color{black},
   }
 
+
+
 % Very convenient to add comments on the paper. Just set the boolean
 % to false before sending the paper:
 \usepackage{ifthen}
@@ -58,6 +60,7 @@
 
 \newcommand{\jl}[1]{\mynote{Julia}{#1}}
 \newcommand{\lx}[1]{\mynote{JLX}{#1}}
+\newcommand{\ft}[1]{\mynote{Ferdian}{#1}}
 
 \hyphenation{App-Evolve}
 
@@ -92,8 +95,8 @@ eventually removed.  App developers face the challenge of keeping their
 apps up-to-date, to ensure that the apps work in both older and newer
 Android versions.  Currently, AppEvolve is the state-of-the-art approach to
 automate such updates, and it has been shown to be quite effective.  Still,
-the number of experiments reported is moderate \jl{Do we like this
-  sentence?  I felt that some transition was needed.}. In this work, we
+the number of experiments reported is moderate, involving only API usage updates in 41 usage locations \jl{Do we like this
+  sentence?  I felt that some transition was needed.}\ft{Added details about the moderate number}. In this work, we
 replicate the evaluation of AppEvolve and assess whether its effectiveness
 is generalizable. Given the set of APIs on which AppEvolve has been
 evaluated, we test AppEvolve on other mobile apps that use the same
@@ -102,11 +105,10 @@ updates for 81.48\% of our dataset, even though the relevant knowledge for
 correct API updates is available in the examples. We first categorize the
 limitations of AppEvolve that lead to these failures.  We then propose a
 mitigation strategy that solves 81.82\% of these failures by a simple
-refactoring of the app code to better resemble the code in the examples,
-which usually involves assigning a target API method invocation and
+refactoring of the app code to better resemble the code in the examples. The refactoring usually involves assigning a target API method invocation and
 arguments of the target API method into variables \jl{I suggest to drop
   this detail.  The sentence is long.  If we need this in the abstract, it
-  can be a separate sentence.}.  Indeed, we have also seen such
+  can be a separate senetnce.}\ft{make it a separate sentence}.  Indeed, we have also seen such
 transformations in the dataset distributed with the AppEvolve replication
 package, as compared to the original source code from which this dataset is
 derived.  Based on these findings, we propose some promising future

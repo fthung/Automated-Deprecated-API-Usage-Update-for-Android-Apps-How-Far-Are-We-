@@ -26,7 +26,7 @@ specific to particular usage contexts.
 
 AppEvolve has been evaluated on a dataset involving 15 real-world apps and
 20 real API changes. The dataset contains 41 usage locations of these real
-API changes. AppEvolve successfully produced validated applicable updates
+ API changes. AppEvolve successfully produced validated applicable updates
 for 85.00\% of these API changes and 90.24\% of their usage locations.  The
 paper on AppEvolve is accompanied by a replication package, containing the
 tool and the
@@ -56,8 +56,9 @@ matches an API change example.  On the other hand, AppEvolve often fails to
 update a mobile app when there are minor syntactical differences between
 the invocations of the deprecated API in the target app and the change
 example.  It also fails when facing unsupported \jl{not really convinced
-about this} programming language features, when encountering edits that
-require modifications beyond method boundaries, and when finding no
+about this}\ft{how about saying it as potentially unsupported programming
+language features?} programming language features, when encountering edits
+that require modifications beyond method boundaries, and when finding no
 relevant change examples in GitHub.  Of these limitations, only the latter
 two were mentioned in the AppEvolve paper.
 
