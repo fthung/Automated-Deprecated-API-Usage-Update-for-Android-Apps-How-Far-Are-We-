@@ -180,7 +180,7 @@ public void displayTime(View view){
 public void displayTime(View view) {
     String time;
     if (android.os.Build.VERSION.SDK_INT >= 23) {
-        // only for gingerbread and newer versions
+        // only for marshmallow and newer versions
         time = timePicker.getHour() + ":" +
                timePicker.getCurrentMinute();
     } else {
