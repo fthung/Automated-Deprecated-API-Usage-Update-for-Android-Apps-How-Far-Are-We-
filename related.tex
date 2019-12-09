@@ -97,38 +97,31 @@ of partial evaluation (specialization of programs to the values of some
 known inputs), in the form of {\em binding-time improvements}, in order to
 bring known values closer together, to allow code simplifications
 \cite{Jones:PE}.  Namjoshi and Pavlinovic have more generally studied and
-formalized the impact of program transformations on program optimizations
-\cite{Namjoshi:SAS18}.
+formalized the impact of program transformations on program analysis
+\cite{Namjoshi:SAS18}, considering both positive and negative impacts on
+precision.
 
-AppEvolve is also part of a line of research that has recently been
-attracting increasing interest on inferring program transformations from
-one or more examples.  LASE~\cite{Meng:2013:LLA:2486788.2486855} creates an
-edit script from common changes in a set of examples, locate the edit locations
-in a target application, and do the code transformation automatically. However
-as LASE is only able to abstract variable, method and type names it will never
-consider a function call to a variable to be the same as a function call to an
-expression and thus could benefit from our mitigations.
+AppEvolve is part of a line of research that has recently been attracting
+increasing interest on inferring program transformations from one or more
+examples.  Some that could potentially benefit from our mitigation include
+LASE~\cite{Meng:2013:LLA:2486788.2486855} and
+REFAZER~\cite{Rolim:2017:LSP:3097368.3097417}.
+LASE~\cite{Meng:2013:LLA:2486788.2486855} creates an edit script from
+common changes in a set of examples, locates the edit locations in a target
+application, and does the code transformation automatically. However LASE
+is only able to abstract variable, method and type names, and thus it will
+never consider a method invocation with a simple variable as an argument to
+be the same as a method invocation where the argument is a more complex
+expression.  Thus, it could potentially benefit from our mitigation.
 REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} learns rewrite rules from
-examples of changes provided by the user. Rewrite rules use a location
-expression to determine where to be applied, yet this expression does not
-necessarily hold if the target edit is in a structurally different
-location from the learning edits.
-Surprisingly, this issue that can be mitigated by our normalization process,
-was also brought up by the AppEvolve authors.
-Genesis~\cite{Long:2017:AIC:3106237.3106253} automatically infers
-patch generation transforms from previous successful
-patches. PHOENIX~\cite{Bavishi:2019:PAD:3338906.3338952} is a fully
-automated pipeline system that mines and cleans patches from examples and
-learns generalized executable repair strategies by leveraging a novel
-Domain Specific Language
-(DSL). Spdiff~\cite{Andersen:2012:SPI:2351676.2351753} infers
-transformation specifications from examples of both original and updated
-code.  Robbes and Lanza~\cite{10.1007/978-3-540-87875-9_13} presented a
-system that support example-based program transformation. The system takes
-an example manual change by developer and generalizes it to other
-application contexts.  CPatMiner~\cite{Nguyen:2019:GMI:3339505.3339608} is
-a graph-based mining approach for detecting repetitive code changes. This
-approach aims to detect semantic code change patterns from a large corpus
-and present them as graph.  \jl{These descriptions should be improved.  We
-  don't see how the capabilities of these tools relate to each other, not
-  how they relate to the capabilities of AppEvolve.}
+change examples provided by the user. Rewrite rules use some information
+about the change context to determine whether a rule should be applied,
+which can limit rule applicability when a deprecated API is used in
+different contexts.  Applying our mitigation to the context could reduce
+the diversity and increase the rule applicability.
+Some other transformation-rule inference systems, such as 
+PHOENIX~\cite{Bavishi:2019:PAD:3338906.3338952}, 
+Spdiff~\cite{Andersen:2012:SPI:2351676.2351753}, and
+REVISAR~\cite{Rolim:arxiv} can describe terms appearing in arbitrary
+contexts and containing arbitrary subexpressions, and may thus benefit less
+or not at all from our mitigation
