@@ -172,7 +172,7 @@ AppEvolve paper. The other categories are uncovered from our dataset.
   &
   \textbf{Refactoring Diff}
  \\ \hline
-1. Structurally different: return statement
+1. Structurally \newline different: return statement
 &
 \begin{lstlisting}
 Spanned getTitle(){
@@ -189,14 +189,15 @@ Spanned getTitle(){
 }
 \end{lstlisting}
 \\ \hline
-2. Structurally different: if statement
+2. Structurally \newline different: if \newline statement
 &
 \begin{lstlisting}
 public void play() {
     if (mAudioManager.requestAudioFocus(
-    mAudioFocusListener, AudioManager.STREAM_MUSIC,
-    AudioManager.AUDIOFOCUS_GAIN) !=
-    AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            mAudioFocusListener,
+            AudioManager.STREAM_MUSIC,
+            AudioManager.AUDIOFOCUS_GAIN) !=
+        AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
         return;
     }
 }
@@ -204,25 +205,25 @@ public void play() {
 &
 \begin{lstlisting}[language=diff]
 public void play() {
--   if (mAudioManager.requestAudioFocus
--     (mAudioFocusListener, AudioManager.
--           STREAM_MUSIC,
--     AudioManager.AUDIOFOCUS_GAIN) !=
--     AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
--     return;
+-   if (mAudioManager.requestAudioFocus(
+-           mAudioFocusListener,
+-           AudioManager.STREAM_MUSIC,
+-           AudioManager.AUDIOFOCUS_GAIN) !=
+-       AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
+-       return;
 -   }
 +   int res;
 +   int arg1=AudioManager.STREAM_MUSIC;
 +   int arg2=AudioManager.AUDIOFOCUS_GAIN;
 +   res = mAudioManager.requestAudioFocus (mAudioFocusListener, arg1, arg2);
 +   if (res != AudioManager
-+     .AUDIOFOCUS_REQUEST_GRANTED) {
-+     return;
++       .AUDIOFOCUS_REQUEST_GRANTED) {
++       return;
 +   }
 }
 \end{lstlisting}
 \\ \hline
-3. Structurally different: method argument
+3. Structurally \newline different: method argument
 &
 \begin{lstlisting}
 protected String getInputDataString() {
@@ -244,12 +245,12 @@ protected String getInputDataString() {
 }
 \end{lstlisting}
 \\ \hline
-4. Structurally different: arithmetic operand
+4. Structurally \newline different: arithmetic operand
 &
 \begin{lstlisting}
 public void displayTime(View view) {
     String time = timePicker.getCurrentHour()
-	    + ":" + timePicker.getCurrentMinute();
+       + ":" + timePicker.getCurrentMinute();
     Toast.makeText(this, time,
         Toast.LENGTH_SHORT).show();
 }
@@ -268,7 +269,7 @@ public void displayTime(View view) {
 }
 \end{lstlisting}
 \\ \hline
-5. Direct assignment after declaration
+5. Direct \newline assignment \newline after declaration
 &
 \begin{lstlisting}
 public Schedule generate() {
@@ -279,7 +280,8 @@ public Schedule generate() {
     SeekBar seekBar = (SeekBar) activity
         .findViewById(R.id.setLuminosity);
     int luminosity = seekBar.getProgress();
-    return new Schedule(hours, minutes, luminosity);
+    return new Schedule(hours, minutes,
+                        luminosity);
 }
 \end{lstlisting}
 &
@@ -294,18 +296,20 @@ public Schedule generate() {
     SeekBar seekBar = (SeekBar) activity
         .findViewById(R.id.setLuminosity);
     int luminosity = seekBar.getProgress();
-    return new Schedule(hours, minutes, luminosity);
+    return new Schedule(hours, minutes,
+                        luminosity);
 }
 \end{lstlisting}
 \\ \hline
-6. Complex expressions
+6. Complex \newline expressions
 &
 \begin{lstlisting}
 protected void onClick() {
     ...
     Dialog d = builder.create();
     d.show();
-    ((TextView) d.findViewById(android.R.id.message))
+    ((TextView) d.findViewById(android.R.id.
+      message))
         .setTextAppearance(getContext(),
         android.R.style.TextAppearance_Small);
     ...
@@ -319,8 +323,8 @@ protected void onClick() {
     d.show();
 -   ((TextView) d.findViewById(android.R.id.
 -     message))
--   .setTextAppearance(getContext(),
--    android.R.style.TextAppearance_Small);
+-       .setTextAppearance(getContext(),
+   -    android.R.style.TextAppearance_Small);
 +   Context c = getContext();
 +   int i = android.R.style.
 +         TextAppearance_Small;
@@ -360,7 +364,8 @@ public class TestMediaPlayer extends MediaPlayer {
       .openRawResourceFd(withResource);
     assertNotNull(afd);
     setDataSource(afd.getFileDescriptor(),
-      afd.getStartOffset(), afd.getLength());
+                  afd.getStartOffset(),
+                  afd.getLength());
     afd.close();
     prepare();
   }
