@@ -108,10 +108,14 @@ in a target application, and do the code transformation automatically. However
 as LASE is only able to abstract variable, method and type names it will never
 consider a function call to a variable to be the same as a function call to an
 expression and thus could benefit from our mitigations.
-REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} is a technique
-for automatic program transformation generation that is build based on code
-edits performed by developers as input-output
-examples. Genesis~\cite{Long:2017:AIC:3106237.3106253} automatically infers
+REFAZER~\cite{Rolim:2017:LSP:3097368.3097417} learns rewrite rules from
+examples of changes provided by the user. Rewrite rules use a location
+expression to determine where to be applied, yet this expression does not
+necessarily hold if the target edit is in a structurally different
+location from the learning edits.
+Surprisingly, this issue that can be mitigated by our normalization process,
+was also brought up by the AppEvolve authors.
+Genesis~\cite{Long:2017:AIC:3106237.3106253} automatically infers
 patch generation transforms from previous successful
 patches. PHOENIX~\cite{Bavishi:2019:PAD:3338906.3338952} is a fully
 automated pipeline system that mines and cleans patches from examples and
