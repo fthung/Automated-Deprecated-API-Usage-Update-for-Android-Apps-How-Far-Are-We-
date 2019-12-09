@@ -122,7 +122,8 @@ The above example involves a use of the deprecated API {\tt
 addGpsStatusListener}. Updating a use of this API requires adding a private
 field {\tt callback} of type {\em GnssStatus.Callback}.
 Since AppEvolve only learns edits inside a method containing the deprecated
-API usage, it misses this necessary addition.
+API usage, it misses this necessary addition.  In the AppEvolve paper, this
+category is described as missing context information.
 
 \vspace{0.25\baselineskip}\noindent\textbf{4) Incomplete support of programming language features.} AppEvolve fails to update cases in which the update involves programming language features such as:
 \begin{itemize}
