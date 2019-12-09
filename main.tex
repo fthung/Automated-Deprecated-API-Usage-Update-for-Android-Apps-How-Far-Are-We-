@@ -50,8 +50,8 @@
 % to false before sending the paper:
 \usepackage{ifthen}
 \newboolean{showcomments}
-%\setboolean{showcomments}{true}
-\setboolean{showcomments}{false}
+\setboolean{showcomments}{true}
+%\setboolean{showcomments}{false}
 \ifthenelse{\boolean{showcomments}}
 { \newcommand{\mynote}[2]{\textcolor{red}{
     \fbox{\bfseries\sffamily\scriptsize#1}
