@@ -37,21 +37,19 @@ method is used.
 
 \begin{figure}[htb]
 \begin{lstlisting}[language=diff,numbers=none]
-...
-@Override
-@SuppressWarnings("deprecation")
-public ChromeNotificationBuilder addAction(int icon, CharSequence title, PendingIntent intent) {
+public ChromeNotificationBuilder addAction(int icon,
+    CharSequence title, PendingIntent intent) {
 - mBuilder.addAction(icon, title, intent);
-- return this;
 + if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-+   Notification.Action action = new Notification.Action.Builder(Icon.createWithResource(mContext, icon), title, intent).build();
++   Notification.Action action = new Notification.
++     Action.Builder(Icon.createWithResource(mContext,
++     icon), title, intent).build();
 +   mBuilder.addAction(action);
 + } else {
 +   mBuilder.addAction(icon, title, intent);
 + }
-+ return this;
+  return this;
 }
-...
 \end{lstlisting}
 \caption{A deprecated API-usage update}
 \label{fig:deprecated_api_update_example}
