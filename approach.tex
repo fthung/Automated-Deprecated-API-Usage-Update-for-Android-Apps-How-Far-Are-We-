@@ -22,9 +22,8 @@ As an example, in Android API version 23, the method
 {\tt get\-Current\-Hour()}, that had been present in the Android API since
 version 1, was deprecated and the method \texttt{getHour()} was suggested
 as its replacement.  Figure~\ref{fig:deprecated_api_update_example} shows
-an example that modifies a usage of the methods \texttt{getCurrentHour()}
-and \texttt{getCurrentMinute()} to their replacement methods
-\texttt{getHour()} and \texttt{getMinute()} respectively.
+an example that modifies, among other changes, a usage of the method
+\texttt{getCurrentHour()} to its replacement method \texttt{getHour()}.
 Given this example and the mapping
 \texttt{getCurrentHour $\rightarrow$ getHour}, AppEvolve learns a generic
 patch as shown in Figure~\ref{fig:deprecated_api_update_edits}.
