@@ -127,21 +127,40 @@ category is described as missing context information.
 
 \vspace{0.25\baselineskip}\noindent\textbf{4) Specific programming language features.} AppEvolve fails to update cases in which the update involves programming language features such as:
 \begin{itemize}
-\item Inheritance: The code on the left hand side of Listing 7 in
-Table~\ref{tab:mitigatefail} uses the deprecated API method {\tt
-set\-Audio\-Stream\-Type} of the class {\tt MediaPlayer}. In the code snippet,
-{\tt Test\-Media\-Player} extends {\tt MediaPlayer} and thus it inherits
-the {\tt setAudioStreamType} method. This method should be updated but
-AppEvolve does not seem to recognize it due to the use of inheritance.
-\item Static modifier:  The code on the left hand side of Listing 8 in
-Table~\ref{tab:mitigatefail} shows an example of this case.  The deprecated
+\item Static modifier:  The code on the left hand side of Listing 7 in
+Table~\ref{tab:mitigatesucc2} shows an example of this case.  The deprecated
 API method {\tt requestAudioFocus} is invoked by {\tt mAudioManager}, which
 is a static field.
 
-\item Final modifier: The code in the left hand side of Listing 9 in
-Table~\ref{tab:mitigatefail} shows an example of this case.  Variable {\tt
+\item Final modifier: The code in the left hand side of Listing 8 in
+Table~\ref{tab:mitigatesucc2} shows an example of this case.  Variable {\tt
 paint} that is used as the fourth argument to the deprecated API method
 {\tt saveLayer} is a final field.
+
+\item Inheritance: The code below uses the deprecated API method {\tt
+	set\-Audio\-Stream\-Type} of the class {\tt MediaPlayer}. In the code snippet,
+{\tt Test\-Media\-Player} extends {\tt MediaPlayer} and thus it inherits
+the {\tt setAudioStreamType} method. This method should be updated but
+AppEvolve does not seem to recognize it due to the use of inheritance.
+\begin{lstlisting}[language=text]
+public class TestMediaPlayer extends MediaPlayer {
+  public TestMediaPlayer() {
+    setAudioStreamType(AudioManager.STREAM_MUSIC);
+  }
+  public TestMediaPlayer(Context testContext,
+    int withResource) throws Exception {
+    this();
+    AssetFileDescriptor afd = testContext.getResources()
+        .openRawResourceFd(withResource);
+    assertNotNull(afd);
+	setDataSource(afd.getFileDescriptor(),
+	afd.getStartOffset(),
+	afd.getLength());
+	afd.close();
+	prepare();
+  }
+}
+\end{lstlisting}
 
 \end{itemize}
 
@@ -163,7 +182,7 @@ AppEvolve paper. The other categories are uncovered from our dataset.
 
 \begin{table*}
 \centering
-\caption{Successful simple refactoring mitigations that allow AppEvolve to generate applicable updates}\label{tab:mitigatesucc}
+\caption{Successful simple refactoring mitigations that allow AppEvolve to generate applicable updates (Part I)}\label{tab:mitigatesucc}
 \begin{tabular}{|p{.10\textwidth}|p{.40\textwidth}|p{.40\textwidth}|}
 \hline
 \textbf{Listing}
@@ -342,7 +361,7 @@ protected void onClick() {
 
 \begin{table*}
 \centering
-\caption{Successful simple refactoring mitigations that allow AppEvolve to generate applicable updates}\label{tab:mitigatesucc}
+\caption{Successful simple refactoring mitigations that allow AppEvolve to generate applicable updates (Part II)}\label{tab:mitigatesucc2}
 \begin{tabular}{|p{.10\textwidth}|p{.40\textwidth}|p{.40\textwidth}|}
 \hline
 \textbf{Listing}
@@ -435,40 +454,40 @@ private final Paint paint;
 \end{table*}
 
 
-\begin{table}
-	\caption{Categories of failed updates that are unhandled by our mitigations}\label{tab:mitigatefail}
-\centering
-\begin{tabular}{|p{.08\textwidth}|p{.35\textwidth}|}
-\hline
-\textbf{Listing}
-  &
-  \textbf{Original Code}
- \\ \hline
-9. Incomplete support: inheritance
-&
-\begin{lstlisting}
-public class TestMediaPlayer extends MediaPlayer {
-  public TestMediaPlayer() {
-    setAudioStreamType(AudioManager.STREAM_MUSIC);
-  }
-  public TestMediaPlayer(Context testContext,
-    int withResource) throws Exception {
-    this();
-    AssetFileDescriptor afd =
-      testContext.getResources()
-      .openRawResourceFd(withResource);
-    assertNotNull(afd);
-    setDataSource(afd.getFileDescriptor(),
-                  afd.getStartOffset(),
-                  afd.getLength());
-    afd.close();
-    prepare();
-  }
-}
-\end{lstlisting}
-\\ \hline
- \end{tabular}
- \end{table}
+%\begin{table}
+%	\caption{Categories of failed updates that are unhandled by our mitigations}\label{tab:mitigatefail}
+%\centering
+%\begin{tabular}{|p{.08\textwidth}|p{.35\textwidth}|}
+%\hline
+%\textbf{Listing}
+%  &
+%  \textbf{Original Code}
+% \\ \hline
+%9. Incomplete support: inheritance
+%&
+%\begin{lstlisting}
+%public class TestMediaPlayer extends MediaPlayer {
+%  public TestMediaPlayer() {
+%    setAudioStreamType(AudioManager.STREAM_MUSIC);
+%  }
+%  public TestMediaPlayer(Context testContext,
+%    int withResource) throws Exception {
+%    this();
+%    AssetFileDescriptor afd =
+%      testContext.getResources()
+%      .openRawResourceFd(withResource);
+%    assertNotNull(afd);
+%    setDataSource(afd.getFileDescriptor(),
+%                  afd.getStartOffset(),
+%                  afd.getLength());
+%    afd.close();
+%    prepare();
+%  }
+%}
+%\end{lstlisting}
+%\\ \hline
+% \end{tabular}
+% \end{table}
 
   \lstdefinelanguage{text}{
 	basicstyle=\ttfamily\extrabold\scriptsize,
