@@ -116,7 +116,7 @@ arguments that are not likely to be found in other codebases.
 
 To understand better how AppEvolve is able to achieve a high rate of
 success in the reported evaluation, we investigate the examples and target
-programs used.  Given the difficulty of finding the original files for the
+apps used.  Given the difficulty of finding the original files for the
 examples, for which no origin information is provided, we focus on a single
 example, the call to {\tt getCurrentHour} in the app {\sc Conversations}
 version 1.8.0 in F-Droid (A2-U3 in the AppEvolve paper).  In F-Droid, we
@@ -174,8 +174,8 @@ AppEvolve and by the engineer are shown below.
 %created by the human.  Scores range from 0 to 1 where, 0 is least and 1 is
 %most readable.
 
-\vspace{0.2cm}\noindent {\bf AppEvolve's Update}
-\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
+\vspace{0.2cm}\noindent {\bf AppEvolve's Update}\ft{Need to update this example}
+\begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view){
   int varInt1;
   int varInt2;
@@ -197,8 +197,8 @@ public void displayTime(View view){
 \end{lstlisting}
 
 
-\vspace{0.7cm}\noindent {\bf Engineer's Update}
-\vspace{0.5cm}\begin{lstlisting}[language=diff,numbers=none]
+\vspace{0.2cm}\noindent {\bf Engineer's Update}
+\begin{lstlisting}[language=diff,numbers=none]
 public void displayTime(View view) {
     String time;
     if (android.os.Build.VERSION.SDK_INT >= 23) {

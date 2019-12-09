@@ -410,3 +410,14 @@ private final Paint paint;
 	aboveskip=5pt,
 	belowskip= 5pt
 }
+
+\lstdefinelanguage{diff}{
+	basicstyle=\ttfamily\extrabold\scriptsize,
+	morecomment=[f][\color{diffstart}]{@},
+	morecomment=[f][\color{diffincl}]{+},
+	morecomment=[f][\color{diffrem}]{-},
+	keepspaces=true,
+	identifierstyle=\color{black},
+	aboveskip=5pt,
+	belowskip= 5pt
+}
