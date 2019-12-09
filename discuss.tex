@@ -79,7 +79,7 @@ In the original code, the field named {\tt paint} of type {\tt Paint} has a
 mitigation results in an applicable update. It suggests that AppEvolve does
 not support the {\tt final} modifier.
 
-\subsection{Result assessment}
+\subsection{Result Assessment}
 
 We were initially surprised by the large difference between the results on
 our data set, where we obtained a success rate of 18.51\%, and the results
@@ -124,6 +124,8 @@ that is necessary to correctly perform the transformation.
 
 \subsection{Future Directions}
 
+\noindent
+{\bf Code normalization.}
 Our above analysis suggests that our mitigation succeeds because the
 AppEvolve authors have already performed such a mitigation in the change
 examples included in the AppEvolve replication package.  To improve the
@@ -136,6 +138,8 @@ resulting code can then be refactored again to restore the coding style of
 the developers.  Our mitigations represent a subset of the normalizations
 that may be possible.
 
+\noindent
+{\bf Coding Style and Readability.}
 Any tool that automatically transforms code runs the risk of converting the
 code to a style that is incompatible with the preferences of the given
 app's developers.  In the case of AppEvolve, there is already the risk of
@@ -193,7 +197,10 @@ public void displayTime(View view) {
 
 %\jl{the following two paragraphs have to be merged.}
 
-\vspace{0.5cm}The code made manually by the engineer is substantially
+\vspace{0.5cm}
+\noindent
+{\bf Semantic Preservation.}
+The code made manually by the engineer is substantially
 different from the code produced by AppEvolve, and developers may indeed
 prefer the code made by the engineer. In particular, the engineer did not
 introduce fresh variables and provide a more concise code.  Future work may investigate how to
